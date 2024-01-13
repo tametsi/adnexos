@@ -1,0 +1,27 @@
+---
+import CONSTS from '@/consts';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+	desc?: string;
+	title?: string;
+}
+
+const { desc, title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={desc || CONSTS.DEFAULT_DESC} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title || CONSTS.DEFAULT_TITLE}</title>
+		<ViewTransitions />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
