@@ -1,0 +1,14 @@
+{
+	"name": "adnexos",
+	"version": "0.1.0",
+	"scripts": {
+		"check": "prettier --check .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"prettier": "^3.2.1",
+		"prettier-plugin-astro": "^0.12.3",
+		"prettier-plugin-svelte": "^3.1.2",
+		"prettier-plugin-tailwindcss": "^0.5.11"
+	}
+}
