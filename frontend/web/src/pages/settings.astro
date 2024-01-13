@@ -1,0 +1,11 @@
+---
+import PageNav from '@/layouts/PageNav.astro';
+import { WrenchIcon } from 'lucide-svelte';
+
+export const navIndex = 3;
+export const icon = WrenchIcon;
+---
+
+<PageNav url="/settings">
+	<Fragment slot="heading">Settings</Fragment>
+</PageNav>

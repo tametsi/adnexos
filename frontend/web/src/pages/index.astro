@@ -1,7 +1,11 @@
 ---
-import Page from '@/layouts/Page.astro';
+import PageNav from '@/layouts/PageNav.astro';
+import { HomeIcon } from 'lucide-svelte';
+
+export const navIndex = 1;
+export const icon = HomeIcon;
 ---
 
-<Page>
-	<!--  -->
-</Page>
+<PageNav url="/">
+	<Fragment slot="heading">Groups</Fragment>
+</PageNav>

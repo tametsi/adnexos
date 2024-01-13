@@ -1,0 +1,11 @@
+---
+import PageNav from '@/layouts/PageNav.astro';
+import { CoinsIcon } from 'lucide-svelte';
+
+export const navIndex = 2;
+export const icon = CoinsIcon;
+---
+
+<PageNav url="/finances">
+	<Fragment slot="heading">Finances</Fragment>
+</PageNav>

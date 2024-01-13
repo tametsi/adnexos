@@ -1,0 +1,30 @@
+---
+import type { AstroInstance } from 'astro';
+
+interface Props {
+	activeUrl: string;
+}
+const { activeUrl } = Astro.props;
+
+// fetch page components
+const components: (AstroInstance & { navIndex?: number; icon?: any })[] =
+	await Astro.glob('../pages/*.astro');
+// filter and sort components to show them in btm-nav
+const pages = components
+	.filter(x => x.navIndex && x.icon)
+	.toSorted((a, b) => (a.navIndex ?? 0) - (b.navIndex ?? 0))
+	.map(x => ({
+		url: x.url || '/',
+		icon: x.icon,
+	}));
+---
+
+<div class="btm-nav bg-base-200">
+	{
+		pages.map(x => (
+			<a href={x.url} class:list={[{ active: activeUrl === x.url }]}>
+				<x.icon />
+			</a>
+		))
+	}
+</div>
