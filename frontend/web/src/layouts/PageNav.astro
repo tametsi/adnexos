@@ -11,10 +11,10 @@ const { desc, title, url } = Astro.props;
 ---
 
 <Page {title} {desc}>
-	<div class="max-h-[calc(100vh_-_4rem)] overflow-auto p-2">
+	<div class="bg-base-100 h-[calc(100vh_-_4rem)] overflow-auto p-2">
 		{
 			Astro.slots.has('heading') && (
-				<h1 class="py-2 text-3xl font-bold">
+				<h1 class="overflow-hidden text-ellipsis py-2 text-3xl font-bold">
 					<slot name="heading" />
 				</h1>
 			)
