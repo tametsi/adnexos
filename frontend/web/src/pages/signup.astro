@@ -1,6 +1,10 @@
 ---
+import SignUpCard from '@/components/SignUpCard.svelte';
 import Page from '@/layouts/Page.astro';
 ---
 
 <Page title="Signup | Adnexos">
+	<div class="flex h-screen items-center justify-center p-2">
+		<SignUpCard client:load />
+	</div>
 </Page>
