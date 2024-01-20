@@ -7,7 +7,7 @@ interface Props {
 const { activeUrl } = Astro.props;
 
 // fetch page components
-const components: (AstroInstance & { navIndex?: number; icon?: any })[] =
+const components: (AstroInstance & { title?: string; navIndex?: number; icon?: any })[] =
 	await Astro.glob('../pages/*.astro');
 // filter and sort components to show them in btm-nav
 const pages = components
@@ -16,13 +16,14 @@ const pages = components
 	.map(x => ({
 		url: x.url || '/',
 		icon: x.icon,
+		title: x.title,
 	}));
 ---
 
 <div class="btm-nav bg-base-200">
 	{
 		pages.map(x => (
-			<a href={x.url} class:list={[{ active: activeUrl === x.url }]}>
+			<a href={x.url} aria-label={x.title} class:list={[{ active: activeUrl === x.url }]}>
 				<x.icon />
 			</a>
 		))
