@@ -10,7 +10,10 @@
 			<a href={backHref} class="btn btn-ghost btn-circle" aria-label="Go back">
 				<ArrowLeftIcon />
 			</a>
-			<slot name="title" />
+
+			<span class="overflow-hidden text-ellipsis">
+				<slot name="title" />
+			</span>
 		</h2>
 
 		<slot />

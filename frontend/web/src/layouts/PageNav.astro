@@ -13,9 +13,22 @@ const { desc, title, url } = Astro.props;
 <Page {title} {desc}>
 	<div class="bg-base-100 h-[calc(100vh_-_4rem)] overflow-auto p-2">
 		{
-			Astro.slots.has('heading') && (
-				<h1 class="overflow-hidden text-ellipsis py-2 text-3xl font-bold">
+			// just a heading
+			Astro.slots.has('heading') && !Astro.slots.has('button') && (
+				<h1 class="mb-4 overflow-hidden text-ellipsis py-2 text-3xl font-bold">
 					<slot name="heading" />
+				</h1>
+			)
+		}
+		{
+			// heading with awesome button
+			Astro.slots.has('heading') && Astro.slots.has('button') && (
+				<h1 class="mb-4 flex items-center justify-between gap-4 py-2 text-3xl font-bold">
+					<span class="overflow-hidden text-ellipsis">
+						<slot name="heading" />
+					</span>
+
+					<slot name="button" />
 				</h1>
 			)
 		}

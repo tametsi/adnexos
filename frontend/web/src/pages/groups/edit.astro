@@ -1,0 +1,10 @@
+---
+import EditGroupCard from '@/components/groups/EditGroupCard.svelte';
+import Page from '@/layouts/Page.astro';
+---
+
+<Page title="Edit group | Adnexos">
+	<div class="flex h-screen items-center justify-center p-2">
+		<EditGroupCard client:load />
+	</div>
+</Page>
