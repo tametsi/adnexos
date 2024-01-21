@@ -14,7 +14,7 @@
 					alt="Avatar"
 				/>
 			{:else}
-				<UserIcon size="" />
+				<UserIcon size="auto" />
 			{/if}
 		</div>
 	</figure>
