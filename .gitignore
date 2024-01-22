@@ -2,7 +2,16 @@
 # Project #
 ###########
 
+# ToDo :)
+T[Oo]D[Oo].md
+
 pb_data
+
+# generated pwa assets
+**/public/apple-*.png
+**/public/pwa-*.png
+**/public/maskable-*.png
+**/public/favicon.ico
 
 ###########
 # Node.js #

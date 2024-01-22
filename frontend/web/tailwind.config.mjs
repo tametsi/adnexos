@@ -1,3 +1,5 @@
+import consts from './src/consts';
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
@@ -9,14 +11,14 @@ export default {
 			{
 				default: {
 					...require('daisyui/src/theming/themes')['light'],
-					primary: '#a3ccaa',
-					secondary: '#fca5a5',
-					'secondary-content': '#1f2937',
+					primary: consts.COLOR.PRIMARY,
+					secondary: consts.COLOR.SECONDARY,
+					'secondary-content': consts.COLOR.SECONDARY_CONTENT,
 				},
 				dark: {
 					...require('daisyui/src/theming/themes')['dracula'],
-					primary: '#a3ccaa',
-					secondary: '#fca5a5',
+					primary: consts.COLOR.PRIMARY,
+					secondary: consts.COLOR.SECONDARY,
 				},
 			},
 		],

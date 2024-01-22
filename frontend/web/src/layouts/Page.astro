@@ -1,6 +1,9 @@
 ---
+import AppleSplashLinks from '@/components/AppleSplashLinks.astro';
+import ReloadPromt from '@/components/ReloadPromt.svelte';
 import CONSTS from '@/consts';
 import { ViewTransitions } from 'astro:transitions';
+import { pwaInfo } from 'virtual:pwa-info';
 
 interface Props {
 	desc?: string;
@@ -16,13 +19,21 @@ const { desc, title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content={desc || CONSTS.DEFAULT_DESC} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" sizes="48x48" />
+		<link rel="icon" href="/logo.svg" sizes="any" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+		<AppleSplashLinks />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content={CONSTS.THEME_COLOR} />
 		<title>{title || CONSTS.DEFAULT_TITLE}</title>
 		<ViewTransitions />
+		{pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
 	</head>
 	<body>
 		<slot />
+
+		<div class="toast min-w-24 max-w-xl whitespace-normal p-2">
+			<ReloadPromt client:only="svelte" />
+		</div>
 	</body>
 </html>
