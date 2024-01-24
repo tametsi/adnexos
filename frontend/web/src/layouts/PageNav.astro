@@ -5,9 +5,9 @@ import Page from '@/layouts/Page.astro';
 interface Props {
 	desc?: string;
 	title?: string;
-	url: string;
+	activeUrl: string;
 }
-const { desc, title, url } = Astro.props;
+const { desc, title, activeUrl } = Astro.props;
 ---
 
 <Page {title} {desc}>
@@ -36,5 +36,5 @@ const { desc, title, url } = Astro.props;
 		<slot />
 	</div>
 
-	<BottomNavigation activeUrl={url} />
+	<BottomNavigation {activeUrl} />
 </Page>
