@@ -61,7 +61,7 @@
 			<span class="label-text">Members</span>
 		</div>
 
-		<div class="flex gap-2">
+		<div class="flex flex-wrap gap-2">
 			<!-- owner 👑 -->
 			<span class="btn btn-outline btn-sm rounded-badge gap-2">
 				<CrownIcon

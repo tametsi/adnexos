@@ -9,7 +9,13 @@
 <div class="card bg-base-200 card-compact w-full overflow-x-hidden shadow-md">
 	<div class="card-body">
 		<h2 class="card-title flex justify-between gap-0">
-			<div class="overflow-hidden text-ellipsis">{group.name}</div>
+			<a
+				href="/groups/view?groupId={group.id}"
+				aria-label="View group {group.name}"
+				class="overflow-hidden text-ellipsis"
+			>
+				{group.name}
+			</a>
 
 			<!-- edit btn -->
 			{#if group.owner === $auth?.id}
