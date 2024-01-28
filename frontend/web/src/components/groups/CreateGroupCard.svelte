@@ -14,7 +14,7 @@
 			.catch(); // TODO error handling
 </script>
 
-<DialogCard backHref="/" on:submit={create}>
+<DialogCard backUrl="/" on:submit={create}>
 	<svelte:fragment slot="title">Create new group</svelte:fragment>
 
 	<!-- new group's name -->

@@ -38,8 +38,8 @@
 	};
 </script>
 
-<DialogCard backHref="/" on:submit={edit}>
-	<svelte:fragment slot="title">Edit <i>{group.name || 'Group'}</i></svelte:fragment>
+<DialogCard backUrl="/" on:submit={edit}>
+	<svelte:fragment slot="title">Edit Group</svelte:fragment>
 
 	<!-- name -->
 	<label class="form-control w-full">
@@ -63,7 +63,7 @@
 
 		<div class="flex flex-wrap gap-2">
 			<!-- owner 👑 -->
-			<span class="btn btn-outline btn-sm rounded-badge gap-2">
+			<span class="btn btn-outline no-animation btn-sm rounded-badge gap-2">
 				<CrownIcon
 					size="18"
 					color="var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)))"

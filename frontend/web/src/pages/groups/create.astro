@@ -1,10 +1,8 @@
 ---
-import Page from '@/layouts/Page.astro';
 import CreateGroupCard from '@/components/groups/CreateGroupCard.svelte';
+import PageDialog from '@/layouts/PageDialog.astro';
 ---
 
-<Page title="Create new group | Adnexos">
-	<div class="flex h-screen items-center justify-center p-2">
-		<CreateGroupCard client:load />
-	</div>
-</Page>
+<PageDialog title="Create new group | Adnexos">
+	<CreateGroupCard client:load />
+</PageDialog>

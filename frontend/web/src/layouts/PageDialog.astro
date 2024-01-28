@@ -1,0 +1,15 @@
+---
+import Page from '@/layouts/Page.astro';
+
+interface Props {
+	desc?: string;
+	title?: string;
+}
+const { desc, title } = Astro.props;
+---
+
+<Page {desc} {title}>
+	<div class="flex min-h-screen items-center justify-center p-2">
+		<slot />
+	</div>
+</Page>

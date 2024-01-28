@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { ArrowLeftIcon } from 'lucide-svelte';
 
-	export let backHref = '/';
+	export let backUrl = '/';
 </script>
 
 <div class="card bg-base-200 w-full max-w-sm shadow-xl">
 	<form on:submit|preventDefault class="card-body">
 		<h2 class="card-title">
-			<a href={backHref} class="btn btn-ghost btn-circle" aria-label="Go back">
+			<a href={backUrl} class="btn btn-ghost btn-circle" aria-label="Go back">
 				<ArrowLeftIcon />
 			</a>
 

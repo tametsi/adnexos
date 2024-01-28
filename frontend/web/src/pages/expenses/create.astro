@@ -1,10 +1,8 @@
 ---
 import CreateExpenseCard from '@/components/expenses/CreateExpenseCard.svelte';
-import Page from '@/layouts/Page.astro';
+import PageDialog from '@/layouts/PageDialog.astro';
 ---
 
-<Page title="Create new expense | Adnexos">
-	<div class="flex h-screen items-center justify-center p-2">
-		<CreateExpenseCard client:load />
-	</div>
-</Page>
+<PageDialog title="Create new expense | Adnexos">
+	<CreateExpenseCard client:load />
+</PageDialog>

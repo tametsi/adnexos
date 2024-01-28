@@ -12,7 +12,7 @@
 			.catch(); // TODO error handling
 </script>
 
-<DialogCard backHref="/settings" on:submit={login}>
+<DialogCard backUrl="/settings" on:submit={login}>
 	<svelte:fragment slot="title">Login</svelte:fragment>
 
 	<!-- email or username -->

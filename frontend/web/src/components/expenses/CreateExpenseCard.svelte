@@ -47,7 +47,7 @@
 	};
 </script>
 
-<DialogCard backHref={group ? `/groups/view?groupId=${group.id}` : '/'} on:submit={create}>
+<DialogCard backUrl={group ? `/groups/view?groupId=${group.id}` : '/'} on:submit={create}>
 	<svelte:fragment slot="title">Create new expense</svelte:fragment>
 
 	<!-- group -->

@@ -1,10 +1,8 @@
 ---
-import Page from '@/layouts/Page.astro';
 import LoginCard from '@/components/LoginCard.svelte';
+import PageDialog from '@/layouts/PageDialog.astro';
 ---
 
-<Page title="Login | Adnexos">
-	<div class="flex h-screen items-center justify-center p-2">
-		<LoginCard client:load />
-	</div>
-</Page>
+<PageDialog title="Login | Adnexos">
+	<LoginCard client:load />
+</PageDialog>

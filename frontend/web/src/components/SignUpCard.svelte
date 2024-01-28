@@ -22,7 +22,7 @@
 	};
 </script>
 
-<DialogCard backHref="/settings" on:submit={signUp}>
+<DialogCard backUrl="/settings" on:submit={signUp}>
 	<svelte:fragment slot="title">Sign up</svelte:fragment>
 
 	<!-- email -->
