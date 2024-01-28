@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Loading from '@/components/Loading.svelte';
 	import GroupDetails from '@/components/groups/GroupDetails.svelte';
 	import pb from '@/lib/pb';
 
@@ -6,7 +7,7 @@
 </script>
 
 {#await req}
-	<div class="loading loading-dots loading-lg m-auto"></div>
+	<Loading />
 {:then groups}
 	<div class="flex flex-col gap-2">
 		{#each groups.items as group}
