@@ -8,11 +8,13 @@
 		group: RecordModel | undefined,
 		members: RecordModel[] = [];
 
-	onMount(
+	onMount(async () => {
 		// get all groups allowed for the user
-		async () =>
-			(groups = await $pb.collection('groups').getFullList({ expand: 'members,owner' })),
-	);
+		groups = await $pb.collection('groups').getFullList({ expand: 'members,owner' });
+
+		// group to select based on url param
+		data.group = new URLSearchParams(window.location.search).get('groupId') || '';
+	});
 
 	let data: Partial<RecordModel> = {
 		title: '',

@@ -1,4 +1,5 @@
 ---
+import CreateGroupExpenseBtn from '@/components/groups/CreateGroupExpenseBtn.svelte';
 import ListGroupExpenses from '@/components/groups/ListGroupExpenses.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 ---
@@ -6,7 +7,7 @@ import PageNav from '@/layouts/PageNav.astro';
 <PageNav activeUrl="/">
 	<Fragment slot="heading">Expenses</Fragment>
 	<Fragment slot="button">
-		<a href="/expenses/create" class="btn btn-neutral btn-outline btn-sm">Create</a>
+		<CreateGroupExpenseBtn client:idle />
 	</Fragment>
 
 	<ListGroupExpenses client:load />
