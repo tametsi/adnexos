@@ -1,13 +1,15 @@
 ---
 import BottomNavigation from '@/components/BottomNavigation.astro';
 import Page from '@/layouts/Page.astro';
+import { ArrowLeftIcon } from 'lucide-svelte';
 
 interface Props {
 	desc?: string;
 	title?: string;
 	activeUrl: string;
+	backBtn?: boolean;
 }
-const { desc, title, activeUrl } = Astro.props;
+const { desc, title, activeUrl, backBtn = false } = Astro.props;
 ---
 
 <Page {title} {desc}>
@@ -15,7 +17,16 @@ const { desc, title, activeUrl } = Astro.props;
 		{
 			// just a heading
 			Astro.slots.has('heading') && !Astro.slots.has('button') && (
-				<h1 class="mb-4 overflow-hidden text-ellipsis py-2 text-3xl font-bold">
+				<h1 class="mb-4 truncate py-2 text-3xl font-bold">
+					{backBtn && (
+						<button
+							onclick="window.history.back()"
+							class="btn btn-sm btn-ghost btn-circle align-text-bottom"
+							aria-label="Go back"
+						>
+							<ArrowLeftIcon />
+						</button>
+					)}
 					<slot name="heading" />
 				</h1>
 			)
@@ -24,7 +35,16 @@ const { desc, title, activeUrl } = Astro.props;
 			// heading with awesome button
 			Astro.slots.has('heading') && Astro.slots.has('button') && (
 				<h1 class="mb-4 flex items-center justify-between gap-4 py-2 text-3xl font-bold">
-					<span class="overflow-hidden text-ellipsis">
+					<span class="truncate">
+						{backBtn && (
+							<button
+								onclick="window.history.back()"
+								class="btn btn-sm btn-ghost btn-circle align-text-bottom"
+								aria-label="Go back"
+							>
+								<ArrowLeftIcon />
+							</button>
+						)}
 						<slot name="heading" />
 					</span>
 
