@@ -1,0 +1,14 @@
+---
+import EditExpenseBtn from '@/components/expenses/EditExpenseBtn.svelte';
+import ExpenseDetails from '@/components/expenses/ExpenseDetails.svelte';
+import PageNav from '@/layouts/PageNav.astro';
+---
+
+<PageNav activeUrl="/expenses" backBtn>
+	<Fragment slot="heading">Expense</Fragment>
+	<Fragment slot="button">
+		<EditExpenseBtn client:idle />
+	</Fragment>
+
+	<ExpenseDetails client:load />
+</PageNav>

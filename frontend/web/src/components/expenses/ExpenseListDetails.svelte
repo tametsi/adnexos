@@ -10,13 +10,15 @@
 <div class="card card-compact bg-base-200 shadow-md">
 	<div class="card-body">
 		<h3 class="card-title flex justify-between">
-			<span class="truncate">{expense.title || 'Expense'}</span>
+			<a href="/expenses/view?id={expense.id}" class="truncate">
+				{expense.title || 'Expense'}
+			</a>
 			<span
 				class:text-error={e.toPay > 0}
 				class:text-success={e.toPay < 0}
 				class="whitespace-nowrap"
 			>
-				{e.toPayDisplay}
+				{e.balanceDisplay}
 			</span>
 		</h3>
 
