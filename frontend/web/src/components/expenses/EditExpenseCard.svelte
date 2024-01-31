@@ -5,17 +5,16 @@
 	import { onMount } from 'svelte';
 
 	let id = '',
-		groups: RecordModel[] = [],
-		group: RecordModel | undefined,
 		members: RecordModel[] = [];
 
 	onMount(async () => {
-		// get all groups allowed for the user
-		groups = await $pb.collection('groups').getFullList({ expand: 'members,owner' });
-
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		data = await $pb.collection('expenses').getOne(id);
+
+		// TODO obtain members by expanding
+		data = await $pb.collection('expenses').getOne(id, { expand: 'group.members,group.owner' });
 		data.amount /= 100; // don't show cents to the user
+		members = data?.expand?.group?.expand?.members || [];
+		if (data?.expand?.group?.expand?.owner) members.push(data.expand.group.expand.owner);
 	});
 
 	let data: Partial<RecordModel> = {
@@ -27,26 +26,17 @@
 		members: [],
 	};
 
-	$: {
-		// changed group => update group
-		if (group?.id !== data.group) {
-			group = groups?.find?.(x => x.id === data.group);
-			members = group ? [group.expand?.owner, ...(group.expand?.members || [])] : [];
-
-			// remove members who are no group members
-			data.members = data.members.filter((x: RecordModel) =>
-				[group?.owner, ...(group?.members || [])].includes(x),
-			);
-		}
-	}
-
 	const edit = async () => {
 		if (data.amount === 0 || data.members?.length === 0) return;
-		data.amount = Math.floor(data.amount * 100);
 
 		await $pb
 			.collection('expenses')
-			.update(data.id || id, data)
+			// only send possibly changed data
+			.update(data.id || id, {
+				title: data?.title,
+				amount: Math.floor(data.amount * 100),
+				members: data.members,
+			})
 			.then(() => window.location.replace(`/expenses/view?id=${data.id || id}`));
 	};
 
@@ -55,27 +45,6 @@
 
 <DialogCard {backUrl} on:submit={edit}>
 	<svelte:fragment slot="title">Edit expense</svelte:fragment>
-
-	<!-- group -->
-	<div class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Group</span>
-		</div>
-
-		<div class="flex flex-wrap gap-2">
-			{#each groups || [] as x (x.id)}
-				<input
-					type="radio"
-					name="group"
-					bind:group={data.group}
-					value={x.id}
-					required
-					aria-label={x?.name}
-					class="btn btn-outline btn-sm rounded-badge"
-				/>
-			{/each}
-		</div>
-	</div>
 
 	<!-- title -->
 	<label class="form-control w-full">
@@ -112,7 +81,7 @@
 		</div>
 
 		<div class="flex flex-wrap gap-2">
-			{#each members || [] as x (x.id)}
+			{#each members as x (x.id)}
 				<input
 					type="checkbox"
 					name="members"
