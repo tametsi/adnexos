@@ -1,17 +1,8 @@
-<!--
-	@component
-	Used for creation/editing, see param `edit`
- -->
-
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
-
-	/** toggle for edit/mode @default false */
-	export let edit = false;
-	let id = '';
 
 	let groups: RecordModel[] = [],
 		group: RecordModel | undefined,
@@ -23,13 +14,6 @@
 
 		// group to select based on url param
 		data.group = new URLSearchParams(window.location.search).get('groupId') || '';
-
-		if (!edit) return;
-
-		// only for editing mode
-		id = new URLSearchParams(window.location.search).get('id') || '';
-		data = await $pb.collection('expenses').getOne(id);
-		data.amount /= 100; // don't show cents to the user
 	});
 
 	let data: Partial<RecordModel> = {
@@ -48,35 +32,25 @@
 			members = group ? [group.expand?.owner, ...(group.expand?.members || [])] : [];
 
 			// select all members by default
-			if (!edit) data.members = members.map(x => x.id);
-			// remove members who are no group members
-			else
-				data.members = data.members.filter((x: RecordModel) =>
-					[group?.owner, ...(group?.members || [])].includes(x),
-				);
+			data.members = members.map(x => x.id);
 		}
 	}
 
-	$: backUrl = id ? `/expenses/view?id=${id}` : group ? `/groups/view?groupId=${group.id}` : '/';
-	const action = async () => {
+	const create = async () => {
 		if (data.amount === 0 || data.members?.length === 0) return;
 		data.amount = Math.floor(data.amount * 100);
 
-		if (!edit)
-			await $pb
-				.collection('expenses')
-				.create(data)
-				.then(() => window.location.replace(`/groups/view?groupId=${data.group}`));
-		else
-			await $pb
-				.collection('expenses')
-				.update(data.id || id, data)
-				.then(() => window.location.replace(`/expenses/view?id=${data.id || id}`));
+		await $pb
+			.collection('expenses')
+			.create(data)
+			.then(() => window.location.replace(`/groups/view?groupId=${data.group}`));
 	};
+
+	$: backUrl = group ? `/groups/view?groupId=${group.id}` : '/';
 </script>
 
-<DialogCard {backUrl} on:submit={action}>
-	<svelte:fragment slot="title">{edit ? 'Edit expense' : 'Create new expense'}</svelte:fragment>
+<DialogCard {backUrl} on:submit={create}>
+	<svelte:fragment slot="title">Create new expense</svelte:fragment>
 
 	<!-- group -->
 	<div class="form-control w-full">
@@ -149,7 +123,7 @@
 
 	<!-- actions -->
 	<svelte:fragment slot="actions">
-		<button type="submit" class="btn btn-primary">{edit ? 'Edit' : 'Create'}</button>
+		<button type="submit" class="btn btn-primary">Create</button>
 		<a href={backUrl} class="btn btn-ghost">Cancel</a>
 	</svelte:fragment>
 </DialogCard>

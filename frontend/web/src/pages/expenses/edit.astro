@@ -1,8 +1,8 @@
 ---
-import CreateEditExpenseCard from '@/components/expenses/CreateEditExpenseCard.svelte';
+import EditExpenseCard from '@/components/expenses/EditExpenseCard.svelte';
 import PageDialog from '@/layouts/PageDialog.astro';
 ---
 
 <PageDialog title="Edit expense | Adnexos">
-	<CreateEditExpenseCard edit client:load />
+	<EditExpenseCard client:load />
 </PageDialog>
