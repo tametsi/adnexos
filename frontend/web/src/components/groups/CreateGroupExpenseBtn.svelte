@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	let groupId: string;
-	onMount(() => (groupId = new URLSearchParams(window.location.search).get('groupId') || ''));
+	onMount(() => (groupId = new URLSearchParams(window.location.search).get('id') || ''));
 </script>
 
 <a

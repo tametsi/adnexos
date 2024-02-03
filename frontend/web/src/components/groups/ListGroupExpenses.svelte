@@ -5,14 +5,14 @@
 	import type { ListResult, RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	let groupId: string,
+	let id: string,
 		req: Promise<ListResult<RecordModel>> = new Promise(() => {});
 
 	onMount(() => {
-		groupId = new URLSearchParams(window.location.search).get('groupId') || '';
+		id = new URLSearchParams(window.location.search).get('id') || '';
 
 		req = $pb.collection('expenses').getList(1, 100, {
-			filter: `group = "${groupId}" && isSettled = false`,
+			filter: `group = "${id}" && isSettled = false`,
 			sort: '-created',
 			expand: 'members,source',
 		}); // TODO error handling

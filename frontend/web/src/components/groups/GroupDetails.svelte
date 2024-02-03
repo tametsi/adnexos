@@ -10,7 +10,7 @@
 	<div class="card-body">
 		<h2 class="card-title flex justify-between gap-0">
 			<a
-				href="/groups/view?groupId={group.id}"
+				href="/groups/view?id={group.id}"
 				aria-label="View group {group.name}"
 				class="overflow-hidden text-ellipsis"
 			>

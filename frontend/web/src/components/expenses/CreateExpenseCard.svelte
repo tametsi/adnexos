@@ -43,10 +43,10 @@
 		await $pb
 			.collection('expenses')
 			.create(data)
-			.then(() => window.location.replace(`/groups/view?groupId=${data.group}`));
+			.then(() => window.location.replace(`/groups/view?id=${data.group}`));
 	};
 
-	$: backUrl = group ? `/groups/view?groupId=${group.id}` : '/';
+	$: backUrl = group ? `/groups/view?id=${group.id}` : '/';
 </script>
 
 <DialogCard {backUrl} on:submit={create}>

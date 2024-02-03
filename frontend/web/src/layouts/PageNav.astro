@@ -7,6 +7,7 @@ interface Props {
 	desc?: string;
 	title?: string;
 	activeUrl: string;
+	/** basic back btn, uses `window.history.back` */
 	backBtn?: boolean;
 }
 const { desc, title, activeUrl, backBtn = false } = Astro.props;
