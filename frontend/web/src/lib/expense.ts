@@ -4,12 +4,26 @@ import type { RecordModel } from 'pocketbase';
  * @param id the members (or source) id who wants to know its balance
  * @returns the fully featured balance
  */
-const calculateBalance = (expense: RecordModel, id: string) =>
-	!expense.members?.includes(id) && expense.source === id
-		? expense.amount
-		: expense.source === id
-			? expense.amount - expense.amount / expense.members?.length
-			: -expense.amount / expense.members?.length;
+const calculateBalance = (expense: RecordModel, id: string) => {
+	if (!expense.members?.includes(id) && expense.source !== id)
+		// not involved
+		return 0;
+
+	if (!expense.members?.includes(id) && expense.source === id)
+		// just paid
+		return expense.amount;
+
+	if (expense.members?.length === 1)
+		// only member and source (wtf?)
+		return -expense.amount;
+
+	// conditions met now:
+	// - source is in members
+	// - members length is not 1
+	return expense.source === id
+		? expense.amount - expense.amount / expense.members?.length
+		: -expense.amount / expense.members?.length;
+};
 
 /**
  * simple helper function that brings light into the dark expenses
@@ -21,7 +35,7 @@ export const calculateExpense = (expense: RecordModel, me: string) => {
 	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
 
 	const amountPaid = me === expense.source ? expense.amount : 0;
-	const toPay = -calculateBalance(expense, me);
+	const balance = calculateBalance(expense, me);
 
 	let members = expense.expand?.members as RecordModel[] | undefined;
 	if (!members?.find(x => x.id === expense.source) && expense.expand?.source)
@@ -47,9 +61,9 @@ export const calculateExpense = (expense: RecordModel, me: string) => {
 		/** the amount paid by me (might be negative), `0` means it's paid by someone else */
 		amountPaid,
 		/** raw value in cents (integer (hopefully)), negative values => I get money back */
-		toPay,
+		toPay: balance === 0 ? balance : -balance,
 		/** inverted `toPay`! formatted in provided currency, positve values => I get money back */
-		balanceDisplay: f.format(((toPay === 0 ? 1 : -1) * toPay) / 100),
+		balanceDisplay: f.format(balance / 100),
 
 		/**
 		 * members with basic member information and their expense balance
