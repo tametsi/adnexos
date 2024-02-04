@@ -9,7 +9,7 @@ export default {
 	daisyui: {
 		themes: [
 			{
-				default: {
+				light: {
 					...require('daisyui/src/theming/themes')['light'],
 					primary: consts.COLOR.PRIMARY,
 					secondary: consts.COLOR.SECONDARY,

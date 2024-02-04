@@ -1,6 +1,7 @@
 ---
 import AppleSplashLinks from '@/components/AppleSplashLinks.astro';
 import ReloadPromt from '@/components/ReloadPromt.svelte';
+import ThemeHandler from '@/components/ThemeHandler.svelte';
 import CONSTS from '@/consts';
 import { ViewTransitions } from 'astro:transitions';
 import { pwaInfo } from 'virtual:pwa-info';
@@ -35,5 +36,7 @@ const { desc, title } = Astro.props;
 		<div class="toast min-w-24 max-w-xl whitespace-normal p-2">
 			<ReloadPromt client:only="svelte" />
 		</div>
+
+		<ThemeHandler client:only="svelte" />
 	</body>
 </html>

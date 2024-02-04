@@ -1,5 +1,6 @@
 ---
 import AccDetails from '@/components/settings/AccDetails.svelte';
+import SettingsForm from '@/components/settings/SettingsForm.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 import { WrenchIcon } from 'lucide-svelte';
 
@@ -12,4 +13,8 @@ export const icon = WrenchIcon;
 	<Fragment slot="heading">Settings</Fragment>
 
 	<AccDetails client:load />
+
+	<div class="divider divider-primarys">Settings</div>
+
+	<SettingsForm client:load />
 </PageNav>
