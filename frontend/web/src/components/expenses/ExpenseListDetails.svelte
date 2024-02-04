@@ -1,16 +1,22 @@
 <script lang="ts">
 	import { calculateExpense } from '@/lib/expense';
 	import { auth } from '@/lib/pb';
+	import { UsersIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
-	export let expense: RecordModel;
+	export let expense: RecordModel,
+		/** shows information about the group, needs expanded group */
+		showGroup = false;
 	const e = calculateExpense(expense, $auth?.id);
 </script>
 
 <div class="card card-compact bg-base-200 shadow-md">
 	<div class="card-body">
 		<h3 class="card-title flex justify-between">
-			<a href="/expenses/view?id={expense.id}" class="truncate">
+			<a
+				href="/expenses/view?id={expense.id}{showGroup ? '' : `&groupId=${expense.group}`}"
+				class="truncate"
+			>
 				{expense.title || 'Expense'}
 			</a>
 			<span
@@ -22,8 +28,16 @@
 			</span>
 		</h3>
 
-		<!-- members -->
 		<div class="flex flex-wrap gap-2">
+			{#if showGroup}
+				<!-- group -->
+				<span class="badge badge-outline badge-primary badge-sm gap-1">
+					<UsersIcon size="12" />
+					{expense.expand?.group?.name || expense.group}
+				</span>
+			{/if}
+
+			<!-- members -->
 			{#each expense.expand?.members || [] as x}
 				<span class="badge badge-outline badge-sm">{x?.name}</span>
 			{/each}

@@ -2,7 +2,6 @@
 	import Loading from '@/components/Loading.svelte';
 	import { calculateExpense } from '@/lib/expense';
 	import pb, { auth } from '@/lib/pb';
-	import { group } from '@/lib/stores';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
@@ -11,13 +10,7 @@
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		req = $pb
-			.collection('expenses')
-			.getOne(id, { expand: 'members,source' })
-			.then(x => {
-				$group = x.group || ''; // set the active group
-				return x;
-			});
+		req = $pb.collection('expenses').getOne(id, { expand: 'members,source' });
 	});
 
 	const remove = async () => {

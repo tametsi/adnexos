@@ -1,4 +1,5 @@
 ---
+import ListExpenses from '@/components/expenses/ListExpenses.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 import { CoinsIcon } from 'lucide-svelte';
 
@@ -9,4 +10,7 @@ export const icon = CoinsIcon;
 
 <PageNav activeUrl="/expenses">
 	<Fragment slot="heading">Expenses</Fragment>
+	<a slot="button" href="/expenses/create" class="btn btn-neutral btn-outline btn-sm"> Create</a>
+
+	<ListExpenses client:load />
 </PageNav>

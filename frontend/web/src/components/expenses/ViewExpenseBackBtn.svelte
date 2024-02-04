@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { group } from '@/lib/stores';
 	import { ArrowLeftIcon } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
+	let groupId = '';
+	onMount(() => (groupId = new URLSearchParams(window.location.search).get('groupId') || ''));
+
+	$: backUrl = groupId ? `http://localhost:4321/groups/view?id=${groupId}` : '/expenses';
 </script>
 
-<a
-	href={$group ? `http://localhost:4321/groups/view?id=${$group}` : '/'}
-	class="btn btn-sm btn-ghost btn-circle align-text-bottom"
-	aria-label="Go back"
->
+<a href={backUrl} class="btn btn-sm btn-ghost btn-circle align-text-bottom" aria-label="Go back">
 	<ArrowLeftIcon />
 </a>
