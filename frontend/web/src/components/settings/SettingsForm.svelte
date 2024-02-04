@@ -1,9 +1,13 @@
 <script lang="ts">
 	import pb, { auth } from '@/lib/pb';
 
-	let settings = {
+	const readSettings = () => ({
 		theme: $auth?.theme || '',
-	};
+	});
+
+	let settings = readSettings();
+	// super awesome way of resetting the settings <3
+	auth.subscribe(() => (settings = readSettings()));
 
 	const update = () => $pb.collection('users').update($auth?.id, settings);
 </script>

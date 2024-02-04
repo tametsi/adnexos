@@ -3,6 +3,7 @@
 	import { UserIcon } from 'lucide-svelte';
 
 	const logout = () => $pb.authStore.clear();
+	const refresh = () => $pb.collection('users').authRefresh();
 </script>
 
 <div class="flex flex-col items-stretch text-center">
@@ -30,6 +31,12 @@
 
 	<div class="flex flex-col items-center gap-2 py-4">
 		{#if $auth}
+			<button
+				on:click={refresh}
+				class="btn btn-neutral btn-wide btn-sm btn-outline max-w-full"
+			>
+				Refresh
+			</button>
 			<button on:click={logout} class="btn btn-error btn-wide btn-sm btn-outline max-w-full">
 				Logout
 			</button>
