@@ -18,7 +18,7 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 		{
 			// just a heading
 			Astro.slots.has('heading') && !Astro.slots.has('button') && (
-				<h1 class="mb-4 truncate py-2 text-3xl font-bold">
+				<h1 class="mb-4 py-2 text-3xl font-bold">
 					{backBtn && (
 						<button
 							onclick="window.history.back()"
@@ -28,7 +28,9 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 							<ArrowLeftIcon />
 						</button>
 					)}
-					<slot name="heading" />
+					<span class="truncate">
+						<slot name="heading" />
+					</span>
 				</h1>
 			)
 		}
