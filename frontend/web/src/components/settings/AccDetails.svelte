@@ -10,7 +10,10 @@
 		if ($settings.id)
 			$pb.collection('settings')
 				.getOne($settings.id)
-				.then(x => ($settings = x));
+				.then(x => {
+					$settings = x;
+					localStorage.setItem('settings', JSON.stringify(x));
+				});
 	};
 </script>
 
