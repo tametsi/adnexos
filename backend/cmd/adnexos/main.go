@@ -8,6 +8,7 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/tametsi/adnexos/internal/service"
 )
 
 func main() {
@@ -23,6 +24,9 @@ func main() {
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: true,
 	})
+
+	// register custom business logic
+	service.Register(app)
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)

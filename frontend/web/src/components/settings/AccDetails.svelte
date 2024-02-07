@@ -1,9 +1,17 @@
 <script lang="ts">
 	import pb, { auth } from '@/lib/pb';
+	import { settings } from '@/lib/stores';
 	import { UserIcon } from 'lucide-svelte';
 
 	const logout = () => $pb.authStore.clear();
-	const refresh = () => $pb.collection('users').authRefresh();
+	const refresh = () => {
+		$pb.collection('users').authRefresh();
+
+		if ($settings.id)
+			$pb.collection('settings')
+				.getOne($settings.id)
+				.then(x => ($settings = x));
+	};
 </script>
 
 <div class="flex flex-col items-stretch text-center">

@@ -1,15 +1,21 @@
 <script lang="ts">
 	import pb, { auth } from '@/lib/pb';
+	import { settings } from '@/lib/stores';
 
-	const readSettings = () => ({
-		theme: $auth?.theme || '',
-	});
+	const update = () => {
+		// update existing settings
+		if ($settings.id)
+			return $pb
+				.collection('settings')
+				.update($settings.id || '', $settings)
+				.then(x => localStorage.setItem('settings', JSON.stringify(x)));
 
-	let settings = readSettings();
-	// super awesome way of resetting the settings <3
-	auth.subscribe(() => (settings = readSettings()));
-
-	const update = () => $pb.collection('users').update($auth?.id, settings);
+		// create new settings
+		$settings.user = $auth?.id;
+		$pb.collection('settings')
+			.create($settings)
+			.then(x => localStorage.setItem('settings', JSON.stringify(x)));
+	};
 </script>
 
 <form
@@ -25,7 +31,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={settings.theme}
+				bind:group={$settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="System"
 				value=""
@@ -33,7 +39,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={settings.theme}
+				bind:group={$settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="Light"
 				value="light"
@@ -41,7 +47,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={settings.theme}
+				bind:group={$settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="Dark"
 				value="dark"
