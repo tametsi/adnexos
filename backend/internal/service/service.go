@@ -8,8 +8,9 @@ import (
 func Register(app core.App) error {
 	p := &plugin{app: app}
 
-	// create settings request
-	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreateRequest)
+	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
+
+	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
 
 	return nil
 }

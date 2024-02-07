@@ -5,16 +5,16 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	let id = '';
-	let group: Partial<RecordModel> = {
-		name: '',
-		members: [],
-		owner: $auth?.id || '',
-	};
+	let id = '',
+		group: Partial<RecordModel> = {
+			name: '',
+			members: [],
+			owner: $auth?.id || '',
+		};
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		group = await $pb.collection('groups').getOne(id, { expand: 'members' }); // TODO error handling
+		group = await $pb.collection('groups').getOne(id, { expand: 'members' });
 	});
 
 	const removeMember = (id: string) => {
@@ -22,19 +22,26 @@
 		if (group.expand)
 			group.expand.members = group.expand?.members.filter((x: RecordModel) => x.id !== id);
 	};
-	const edit = async () =>
+
+	const edit = async () => {
+		if (group.owner !== $auth?.id)
+			// new owner => switch new owner in members with old owner (me)
+			group.members = group.members.map((x: string) => (x === group.owner ? $auth?.id : x));
+
 		await $pb
 			.collection('groups')
 			.update(id, { name: group.name, members: group.members, owner: group.owner })
 			.then(() => window.location.replace('/'))
-			.catch(); // TODO error handling
+			.catch();
+	};
+
 	const remove = async () => {
 		if (confirm('Do you really want to delete this awesome group?'))
 			await $pb
 				.collection('groups')
 				.delete(id)
 				.then(() => window.location.replace('/'))
-				.catch(); // TODO error handling
+				.catch();
 	};
 </script>
 
@@ -85,8 +92,7 @@
 	</div>
 
 	<!-- owner -->
-	<!-- TODO server-side logic: add old owner to members and remove new owner from members -->
-	<!-- <div class="form-control w-full">
+	<div class="form-control w-full">
 		<div class="label">
 			<span class="label-text">Owner</span>
 		</div>
@@ -113,7 +119,7 @@
 				/>
 			{/each}
 		</div>
-	</div> -->
+	</div>
 
 	<!-- actions -->
 	<svelte:fragment slot="actions">

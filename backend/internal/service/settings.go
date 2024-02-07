@@ -10,8 +10,7 @@ import (
 )
 
 // fires on settings create request to check if settings for user already exists
-func (p *plugin) onSettingsCreateRequest(e *core.RecordCreateEvent) error {
-
+func (p *plugin) onSettingsCreate(e *core.RecordCreateEvent) error {
 	userId := e.Record.GetString("user")
 	if userId == "" {
 		return nil // nothing to do here, the req will fail later...
