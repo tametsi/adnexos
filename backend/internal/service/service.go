@@ -8,6 +8,9 @@ import (
 func Register(app core.App) error {
 	p := &plugin{app: app}
 
+	app.OnRecordBeforeCreateRequest("expenses").Add(p.onExpensesBeforeCreate)
+	app.OnRecordBeforeUpdateRequest("expenses").Add(p.onExpensesBeforeUpdate)
+
 	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
 
 	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
