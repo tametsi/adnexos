@@ -15,7 +15,7 @@
 			filter: `group = "${id}" && isSettled = false`,
 			sort: '-created',
 			expand: 'members,source',
-		}); // TODO error handling
+		});
 	});
 </script>
 

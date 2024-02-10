@@ -9,7 +9,7 @@
 			.collection('users')
 			.authWithPassword(identity, password)
 			.then(() => window.location.replace('/settings'))
-			.catch(); // TODO error handling
+			.catch();
 </script>
 
 <DialogCard backUrl="/settings" on:submit={login}>

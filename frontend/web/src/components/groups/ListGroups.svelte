@@ -3,7 +3,7 @@
 	import GroupDetails from '@/components/groups/GroupDetails.svelte';
 	import pb from '@/lib/pb';
 
-	let req = $pb.collection('groups').getList(1, 200, { expand: 'members,owner' }); // TODO error handling
+	let req = $pb.collection('groups').getList(1, 200, { expand: 'members,owner' });
 </script>
 
 {#await req}

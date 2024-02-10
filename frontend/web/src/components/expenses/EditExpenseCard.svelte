@@ -10,7 +10,6 @@
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
 
-		// TODO obtain members by expanding
 		data = await $pb.collection('expenses').getOne(id, { expand: 'group.members,group.owner' });
 		data.amount /= 100; // don't show cents to the user
 		members = data?.expand?.group?.expand?.members || [];

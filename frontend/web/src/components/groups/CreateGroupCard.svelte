@@ -11,7 +11,7 @@
 			.collection('groups')
 			.create(data)
 			.then(() => window.location.replace('/'))
-			.catch(); // TODO error handling
+			.catch();
 </script>
 
 <DialogCard backUrl="/" on:submit={create}>

@@ -11,11 +11,11 @@
 	};
 	const signUp = async () => {
 		if (!data.email || data.password !== data.passwordConfirm || data.password.length < 8)
-			return; // TODO error message
+			return;
 
 		if (!data.name) data.name = data.username;
 
-		await $pb.collection('users').create(data).catch(); // TODO error handling
+		await $pb.collection('users').create(data).catch();
 
 		await $pb.collection('users').authWithPassword(data.email, data.password).catch();
 		window.location.replace('/settings');
