@@ -18,7 +18,7 @@
 
 	let data: Partial<RecordModel> = {
 		title: '',
-		amount: 0,
+		amount: undefined,
 		group: '',
 		isSettled: false,
 		source: $auth?.id,
