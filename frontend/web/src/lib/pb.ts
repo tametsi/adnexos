@@ -2,6 +2,7 @@ import { readable, writable } from 'svelte/store';
 import PocketBase, { type AuthModel } from 'pocketbase';
 
 const pb = new PocketBase('http://127.0.0.1:8090');
+pb.autoCancellation(false);
 
 /** Default PocketBase instance */
 export default writable(pb);

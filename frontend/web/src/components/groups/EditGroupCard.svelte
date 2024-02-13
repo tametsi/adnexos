@@ -31,7 +31,7 @@
 		await $pb
 			.collection('groups')
 			.update(id, { name: group.name, members: group.members, owner: group.owner })
-			.then(() => window.location.replace('/'))
+			.then(() => window.location.replace(backUrl))
 			.catch();
 	};
 
@@ -43,9 +43,11 @@
 				.then(() => window.location.replace('/'))
 				.catch();
 	};
+
+	$: backUrl = id ? `/groups/view?id=${id}` : '/';
 </script>
 
-<DialogCard backUrl="/" on:submit={edit}>
+<DialogCard {backUrl} on:submit={edit}>
 	<svelte:fragment slot="title">Edit Group</svelte:fragment>
 
 	<!-- name -->
@@ -124,7 +126,7 @@
 	<!-- actions -->
 	<svelte:fragment slot="actions">
 		<button type="submit" class="btn btn-primary">Edit</button>
-		<a href="/" class="btn btn-ghost">Cancel</a>
+		<a href={backUrl} class="btn btn-ghost">Cancel</a>
 		<button type="button" on:click={remove} class="btn btn-error btn-outline">Delete</button>
 	</svelte:fragment>
 </DialogCard>

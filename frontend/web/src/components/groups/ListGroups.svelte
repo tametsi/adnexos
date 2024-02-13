@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Loading from '@/components/Loading.svelte';
-	import GroupDetails from '@/components/groups/GroupDetails.svelte';
+	import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
 	import pb from '@/lib/pb';
 
 	let req = $pb.collection('groups').getList(1, 200, { expand: 'members,owner' });
@@ -11,7 +11,7 @@
 {:then groups}
 	<div class="flex flex-col gap-2">
 		{#each groups.items as group}
-			<GroupDetails {group}></GroupDetails>
+			<GroupListDetails {group}></GroupListDetails>
 		{/each}
 	</div>
 

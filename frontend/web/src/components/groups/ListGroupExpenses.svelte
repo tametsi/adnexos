@@ -19,10 +19,15 @@
 	});
 </script>
 
+<!-- create expense btn -->
+<a href="/expenses/create?groupId={id}" class="btn btn-primary btn-outline w-full">
+	Create Expense
+</a>
+
 {#await req}
 	<Loading />
 {:then expenses}
-	<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2 py-2">
 		{#each expenses?.items as expense}
 			<ExpenseListDetails {expense} />
 		{/each}

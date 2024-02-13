@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { auth } from '@/lib/pb';
-	import { PenIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
 	export let group: RecordModel;
@@ -16,17 +14,6 @@
 			>
 				{group.name}
 			</a>
-
-			<!-- edit btn -->
-			{#if group.owner === $auth?.id}
-				<a
-					href="/groups/edit?id={group.id}"
-					aria-label="Edit group"
-					class="btn btn-ghost btn-square btn-sm"
-				>
-					<PenIcon size="18" />
-				</a>
-			{/if}
 		</h2>
 
 		<!-- members -->

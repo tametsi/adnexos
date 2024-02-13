@@ -1,14 +1,18 @@
 ---
-import CreateGroupExpenseBtn from '@/components/groups/CreateGroupExpenseBtn.svelte';
+import EditGroupNavBtn from '@/components/groups/EditGroupNavBtn.svelte';
+import GroupViewDetails from '@/components/groups/GroupViewDetails.svelte';
 import ListGroupExpenses from '@/components/groups/ListGroupExpenses.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 ---
 
 <PageNav activeUrl="/">
-	<Fragment slot="heading">Expenses</Fragment>
+	<Fragment slot="heading">Group Details</Fragment>
 	<Fragment slot="button">
-		<CreateGroupExpenseBtn client:idle />
+		<EditGroupNavBtn client:idle />
 	</Fragment>
+	<GroupViewDetails client:load />
+
+	<div class="divider">Expenses</div>
 
 	<ListGroupExpenses client:load />
 </PageNav>
