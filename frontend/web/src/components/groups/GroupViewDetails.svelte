@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Loading from '@/components/Loading.svelte';
+	import InviteList from '@/components/groups/InviteList.svelte';
 	import pb from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
@@ -27,4 +28,15 @@
 			{/each}
 		</li>
 	</ul>
+
+	<!-- Invites -->
+	<div class="py-2">
+		<div class="bg-base-200 collapse-arrow collapse grid-cols-1 shadow-md">
+			<input type="checkbox" />
+			<div class="collapse-title text-xl font-medium">Invites</div>
+			<div class="collapse-content">
+				<InviteList groupId={g.id} groupOwner={g.owner} />
+			</div>
+		</div>
+	</div>
 {/await}
