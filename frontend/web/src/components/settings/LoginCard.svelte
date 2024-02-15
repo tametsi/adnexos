@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import OAuth2Login from '@/components/settings/OAuth2Login.svelte';
 	import pb from '@/lib/pb';
 
 	let identity = '',
@@ -47,5 +48,10 @@
 	<svelte:fragment slot="actions">
 		<button class="btn btn-primary" type="submit">Login</button>
 		<a href="/signup" class="btn btn-ghost">Sign up instead</a>
+	</svelte:fragment>
+
+	<svelte:fragment slot="bottom">
+		<div class="divider">OR</div>
+		<OAuth2Login />
 	</svelte:fragment>
 </DialogCard>

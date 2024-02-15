@@ -22,5 +22,7 @@
 		<div class="card-actions flex-row-reverse pt-4">
 			<slot name="actions" />
 		</div>
+
+		<slot name="bottom" />
 	</form>
 </div>
