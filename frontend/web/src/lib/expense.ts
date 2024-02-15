@@ -37,7 +37,7 @@ export const calculateExpense = (expense: RecordModel, me: string) => {
 	const amountPaid = me === expense.source ? expense.amount : 0;
 	const balance = calculateBalance(expense, me);
 
-	let members = expense.expand?.members as RecordModel[] | undefined;
+	let members = [...((expense.expand?.members as RecordModel[] | undefined) || [])];
 	if (!members?.find(x => x.id === expense.source) && expense.expand?.source)
 		members?.push(expense.expand.source);
 
