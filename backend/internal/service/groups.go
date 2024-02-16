@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 	"slices"
+	"time"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
@@ -17,6 +18,10 @@ func (p *plugin) groupJoinRoute(c echo.Context) error {
 	invite, err := p.app.Dao().FindRecordById("invites", id)
 	if err != nil {
 		return apis.NewNotFoundError("Invite not found.", nil)
+	}
+
+	if expires := invite.GetDateTime("expires").Time(); time.Now().After(expires) {
+		return apis.NewApiError(http.StatusBadRequest, "Invite expired.", nil)
 	}
 
 	group, err := p.app.Dao().FindRecordById("groups", invite.GetString("group"))
