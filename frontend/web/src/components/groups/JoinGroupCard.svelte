@@ -7,10 +7,13 @@
 
 	onMount(() => (id = new URLSearchParams(window.location.search).get('id') || ''));
 
-	const join = () =>
-		$pb
-			.send(`/api/collections/groups/join/${id}`, { method: 'GET' })
-			.then(() => window.location.replace('/'));
+	const join = () => {
+		if (id.startsWith(window.location.origin)) id = new URL(id).searchParams.get('id') || id;
+
+		$pb.send(`/api/collections/groups/join/${id}`, { method: 'GET' }).then(() =>
+			window.location.replace('/'),
+		);
+	};
 </script>
 
 <DialogCard backUrl="/" on:submit={join}>
@@ -24,7 +27,7 @@
 			type="text"
 			bind:value={id}
 			required
-			placeholder="name"
+			placeholder="invite"
 			class="input input-bordered w-full"
 		/>
 	</label>
