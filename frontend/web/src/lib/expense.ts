@@ -46,7 +46,7 @@ export const calculateExpense = (expense: RecordModel, me: string) => {
 
 		return {
 			id: x.id,
-			name: x.name,
+			name: x.name || x.username,
 			avatar: x.avatar,
 			/** members balance, positive values => they get money */
 			balance,

@@ -19,7 +19,7 @@
 		<!-- members -->
 		<div class="flex gap-2">
 			{#each [group.expand?.owner, ...(group.expand?.members || [])] as x}
-				<span class="badge badge-outline badge-lg">{x?.name}</span>
+				<span class="badge badge-outline badge-lg">{x?.name || x?.username}</span>
 			{/each}
 		</div>
 	</div>

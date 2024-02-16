@@ -39,14 +39,15 @@
 
 			<!-- members -->
 			{#each expense.expand?.members || [] as x}
-				<span class="badge badge-outline badge-sm">{x?.name}</span>
+				<span class="badge badge-outline badge-sm">{x?.name || x?.username}</span>
 			{/each}
 		</div>
 
 		<div class="flex flex-wrap justify-between gap-2">
 			<!-- paid by -->
 			<p>
-				{expense.expand?.source?.name || expense.source} •
+				{expense.expand?.source?.name || expense.expand?.source?.username || expense.source}
+				•
 				<span class:text-error={e.amountPaid > 0} class:text-success={e.amountPaid < 0}>
 					{e.amountDisplay}
 				</span>

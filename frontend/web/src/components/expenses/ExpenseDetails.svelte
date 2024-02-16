@@ -42,7 +42,7 @@
 			<div class="stat-desc">
 				paid by {e.e.source === $auth?.id
 					? 'yourself'
-					: e.e.expand?.source?.name || e.e.source}
+					: e.e.expand?.source?.name || e.e.expand?.source?.username || e.e.source}
 			</div>
 		</div>
 

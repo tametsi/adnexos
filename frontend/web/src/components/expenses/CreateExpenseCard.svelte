@@ -114,7 +114,7 @@
 					name="members"
 					value={x.id}
 					bind:group={data.members}
-					aria-label={x.name}
+					aria-label={x.name || x.username}
 					class="btn btn-outline btn-sm rounded-badge"
 				/>
 			{/each}

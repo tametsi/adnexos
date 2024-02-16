@@ -87,7 +87,7 @@
 					class="btn btn-outline btn-sm rounded-badge gap-2"
 				>
 					<XIcon size="18" />
-					{x?.name}
+					{x?.name || x?.username}
 				</button>
 			{/each}
 		</div>
@@ -116,7 +116,7 @@
 					name="owner"
 					bind:group={group.owner}
 					value={x.id}
-					aria-label={x?.name}
+					aria-label={x?.name || x?.username}
 					class="btn btn-outline btn-sm rounded-badge"
 				/>
 			{/each}

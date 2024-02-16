@@ -22,9 +22,11 @@
 		<li class="pb-2 text-xl font-bold">{g.name}</li>
 
 		<li class="flex flex-wrap gap-2">
-			<span class="badge badge-outline">{g.expand?.owner.name}</span>
+			<span class="badge badge-outline">
+				{g.expand?.owner.name || g.expand?.owner.username}
+			</span>
 			{#each g.expand?.members || [] as member}
-				<span class="badge badge-outline">{member.name}</span>
+				<span class="badge badge-outline">{member.name || member.username}</span>
 			{/each}
 		</li>
 	</ul>
