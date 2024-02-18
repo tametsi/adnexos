@@ -3,7 +3,9 @@
 	import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
 	import pb from '@/lib/pb';
 
-	let req = $pb.collection('groups').getList(1, 200, { expand: 'members,owner' });
+	let req = $pb
+		.collection('groups')
+		.getList(1, 200, { fields: '*,balance', expand: 'members,owner' });
 </script>
 
 {#await req}

@@ -1,6 +1,10 @@
 package service
 
 import (
+	"slices"
+	"strings"
+
+	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
@@ -21,6 +25,8 @@ func Register(app core.App) error {
 	app.OnRecordBeforeCreateRequest("expenses").Add(p.onExpensesBeforeCreate)
 	app.OnRecordBeforeUpdateRequest("expenses").Add(p.onExpensesBeforeUpdate)
 
+	app.OnRecordViewRequest("groups").Add(p.onGroupsView)
+	app.OnRecordsListRequest("groups").Add(p.onGroupsList)
 	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
 
 	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
@@ -30,4 +36,17 @@ func Register(app core.App) error {
 
 type plugin struct {
 	app core.App
+}
+
+// helpers
+
+// checks whether `value` is present in a comma separated list in query param `fields`
+func hasFieldValue(ctx echo.Context, value string) bool {
+	fields := ctx.QueryParams().Get("fields")
+	if fields == "" {
+		return false
+	}
+	fieldValues := strings.Split(fields, ",")
+
+	return slices.Contains(fieldValues, value)
 }

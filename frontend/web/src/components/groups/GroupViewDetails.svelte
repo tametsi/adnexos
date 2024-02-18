@@ -5,23 +5,46 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
+	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
+
 	let id: string,
 		req: Promise<RecordModel> = new Promise(() => {});
 
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
 
-		req = $pb.collection('groups').getOne(id, { expand: 'owner,members' });
+		req = $pb.collection('groups').getOne(id, { fields: '*,balance', expand: 'owner,members' });
 	});
 </script>
 
 {#await req}
 	<Loading />
 {:then g}
-	<ul class="px-2">
-		<li class="pb-2 text-xl font-bold">{g.name}</li>
+	<ul>
+		<li
+			class="from-primary to-secondary truncate text-clip bg-gradient-to-r bg-clip-text text-center text-4xl font-bold text-transparent"
+		>
+			{g.name}
+		</li>
 
-		<li class="flex flex-wrap gap-2">
+		<li class="stats bg-base-200 my-2 w-full">
+			<div class="stat">
+				<div class="stat-title">Members</div>
+				<div class="stat-value">{g.members.length + 1}</div>
+			</div>
+			<div class="stat">
+				<div class="stat-title">Balance</div>
+				<div
+					class="stat-value"
+					class:text-success={g.balance > 0}
+					class:text-error={g.balance < 0}
+				>
+					{f.format(g.balance / 100)}
+				</div>
+			</div>
+		</li>
+
+		<li class="flex flex-wrap gap-2 px-2">
 			<span class="badge badge-outline">
 				{g.expand?.owner.name || g.expand?.owner.username}
 			</span>

@@ -6,8 +6,10 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/models/schema"
 )
 
 func (p *plugin) groupJoinRoute(c echo.Context) error {
@@ -67,4 +69,81 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
 	}
 
 	return nil
+}
+
+func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
+	if !hasFieldValue(e.HttpContext, "balance") {
+		return nil
+	}
+
+	// temporarily add balance field to collection
+	e.Record.Collection().Schema.AddField(&schema.SchemaField{
+		Name: "balance",
+		Type: "int",
+	})
+
+	auth := apis.RequestInfo(e.HttpContext).AuthRecord
+	balance, err := p.calculateBalanceForGroup(e.Record.Id, auth.Id)
+	if err != nil {
+		return err
+	}
+
+	e.Record.Set("balance", balance)
+
+	return nil
+}
+
+func (p *plugin) onGroupsList(e *core.RecordsListEvent) error {
+	if !hasFieldValue(e.HttpContext, "balance") {
+		return nil
+	}
+
+	// temporarily add balance field to collection
+	e.Collection.Schema.AddField(&schema.SchemaField{
+		Name: "balance",
+		Type: "int",
+	})
+
+	auth := apis.RequestInfo(e.HttpContext).AuthRecord
+
+	for _, record := range e.Records {
+		balance, err := p.calculateBalanceForGroup(record.Id, auth.Id)
+		if err != nil {
+			return err
+		}
+
+		record.Set("balance", balance)
+	}
+
+	return nil
+}
+
+func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {
+	balance := 0
+
+	var balancePlus int
+	// + balance for all expenses with source == me
+	err := p.app.Dao().DB().
+		NewQuery("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE `group` = {:group} AND source = {:auth} AND isSettled = false").
+		Bind(dbx.Params{
+			"group": groupId,
+			"auth":  authId,
+		}).Row(&balancePlus)
+	if err != nil {
+		return 0, apis.NewApiError(http.StatusInternalServerError, "Failed to query DB to calculate balance (1).", err)
+	}
+	balance += balancePlus
+
+	// - balance for all expenses with: members contains me
+	expenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
+		dbx.Params{"group": groupId, "auth": authId})
+	if err != nil {
+		return 0, apis.NewApiError(http.StatusInternalServerError, "Failed to query DB to calculate balance (2).", err)
+	}
+
+	for _, expense := range expenses {
+		balance -= expense.GetInt("amount") / len(expense.GetStringSlice("members"))
+	}
+
+	return balance, nil
 }
