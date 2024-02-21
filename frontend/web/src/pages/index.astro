@@ -10,8 +10,9 @@ export const icon = HomeIcon;
 
 <PageNav activeUrl="/">
 	<Fragment slot="heading">Groups</Fragment>
-	<Fragment slot="button">
-		<a href="/groups/create" class="btn btn-neutral btn-outline btn-sm">Create</a>
+	<Fragment slot="menu">
+		<li><a href="/groups/create">Create Group</a></li>
+		<li><a href="/groups/join">Join Group</a></li>
 	</Fragment>
 
 	<ListGroups client:load />

@@ -1,7 +1,7 @@
 ---
 import BottomNavigation from '@/components/BottomNavigation.astro';
 import Page from '@/layouts/Page.astro';
-import { ArrowLeftIcon } from 'lucide-svelte';
+import { ArrowLeftIcon, MoreVerticalIcon } from 'lucide-svelte';
 
 interface Props {
 	desc?: string;
@@ -17,7 +17,7 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 	<div class="bg-base-100 flex h-[calc(100vh_-_4rem)] flex-col overflow-auto p-2">
 		{
 			// just a heading
-			Astro.slots.has('heading') && !Astro.slots.has('button') && (
+			Astro.slots.has('heading') && !Astro.slots.has('button') && !Astro.slots.has('menu') && (
 				<h1 class="mb-4 py-2 text-3xl font-bold">
 					{backBtn && (
 						<button
@@ -36,7 +36,7 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 		}
 		{
 			// heading with awesome button
-			Astro.slots.has('heading') && Astro.slots.has('button') && (
+			Astro.slots.has('heading') && (Astro.slots.has('button') || Astro.slots.has('menu')) && (
 				<h1 class="mb-4 flex items-center justify-between gap-4 py-2 text-3xl font-bold">
 					<span class="truncate">
 						{backBtn && (
@@ -52,6 +52,25 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 					</span>
 
 					<slot name="button" />
+
+					{Astro.slots.has('menu') && (
+						<div class="dropdown dropdown-end">
+							<div
+								tabindex="0"
+								class="btn btn-sm btn-circle btn-ghost"
+								role="button"
+								aria-label="More actions"
+							>
+								<MoreVerticalIcon />
+							</div>
+							<ul
+								tabindex="0"
+								class="dropdown-content menu menu-lg bg-base-300 rounded-box z-20 w-52 p-2 shadow-md"
+							>
+								<slot name="menu" />
+							</ul>
+						</div>
+					)}
 				</h1>
 			)
 		}
