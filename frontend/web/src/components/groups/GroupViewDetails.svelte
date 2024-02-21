@@ -2,8 +2,9 @@
 	import Loading from '@/components/Loading.svelte';
 	import InviteList from '@/components/groups/InviteList.svelte';
 	import pb from '@/lib/pb';
+	import { group } from '@/lib/stores';
 	import type { RecordModel } from 'pocketbase';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
 
@@ -13,8 +14,12 @@
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
 
-		req = $pb.collection('groups').getOne(id, { fields: '*,balance', expand: 'owner,members' });
+		req = $pb
+			.collection('groups')
+			.getOne(id, { fields: '*,balance', expand: 'owner,members' })
+			.then(x => ($group = x));
 	});
+	onDestroy(() => ($group = null));
 </script>
 
 {#await req}

@@ -7,9 +7,8 @@ import PageNav from '@/layouts/PageNav.astro';
 
 <PageNav activeUrl="/">
 	<Fragment slot="heading">Group Details</Fragment>
-	<Fragment slot="button">
-		<EditGroupNavBtn client:idle />
-	</Fragment>
+	<EditGroupNavBtn client:idle slot="button" />
+
 	<GroupViewDetails client:load />
 
 	<div class="divider">Expenses</div>

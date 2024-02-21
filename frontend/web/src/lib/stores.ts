@@ -5,3 +5,6 @@ import { writable } from 'svelte/store';
 export const settings = writable<Partial<RecordModel>>({
 	theme: '',
 });
+
+/** current group store */
+export const group = writable<Partial<RecordModel> | null>(null);
