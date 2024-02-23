@@ -1,4 +1,4 @@
-package service
+package plugin
 
 import (
 	"slices"

@@ -8,7 +8,7 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
-	"github.com/tametsi/adnexos/internal/service"
+	"github.com/tametsi/adnexos/internal/plugin"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	})
 
 	// register custom business logic
-	service.Register(app)
+	plugin.Register(app)
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
