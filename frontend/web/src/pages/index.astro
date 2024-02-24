@@ -1,4 +1,5 @@
 ---
+import NavActionMenu from '@/components/NavActionMenu.svelte';
 import ListGroups from '@/components/groups/ListGroups.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 import { HomeIcon } from 'lucide-svelte';
@@ -10,9 +11,11 @@ export const icon = HomeIcon;
 
 <PageNav activeUrl="/">
 	<Fragment slot="heading">Groups</Fragment>
-	<Fragment slot="menu">
-		<li><a href="/groups/create">Create Group</a></li>
-		<li><a href="/groups/join">Join Group</a></li>
+	<Fragment slot="button">
+		<NavActionMenu>
+			<li><a href="/groups/create">Create Group</a></li>
+			<li><a href="/groups/join">Join Group</a></li>
+		</NavActionMenu>
 	</Fragment>
 
 	<ListGroups client:load />
