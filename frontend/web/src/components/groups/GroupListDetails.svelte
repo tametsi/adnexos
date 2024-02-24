@@ -29,7 +29,7 @@
 		</h2>
 
 		<!-- members -->
-		<div class="flex gap-2">
+		<div class="flex flex-wrap gap-2">
 			{#each [group.expand?.owner, ...(group.expand?.members || [])] as x}
 				<span class="badge badge-outline badge-lg">{x?.name || x?.username}</span>
 			{/each}
