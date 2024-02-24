@@ -32,7 +32,7 @@ func (p *plugin) groupJoinRoute(c echo.Context) error {
 	}
 
 	members := group.GetStringSlice("members")
-	if slices.Contains(members, auth.Id) {
+	if slices.Contains(members, auth.Id) || group.GetString("owner") == auth.Id {
 		return apis.NewBadRequestError("Already joined, du Witzbold", nil)
 	}
 	group.Set("members", append(members, auth.Id))
