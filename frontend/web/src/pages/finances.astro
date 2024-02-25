@@ -1,0 +1,16 @@
+---
+import ListExpenses from '@/components/finances/ListExpenses.svelte';
+import PageNav from '@/layouts/PageNav.astro';
+import { CoinsIcon } from 'lucide-svelte';
+
+export const title = 'Finances';
+export const navIndex = 2;
+export const icon = CoinsIcon;
+---
+
+<PageNav activeUrl="/finances">
+	<Fragment slot="heading">Finances</Fragment>
+	<a slot="button" href="/expenses/create" class="btn btn-neutral btn-outline btn-sm">Create</a>
+
+	<ListExpenses client:load />
+</PageNav>
