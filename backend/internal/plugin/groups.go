@@ -9,7 +9,9 @@ import (
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/models/schema"
+	"github.com/tametsi/adnexos/internal/service"
 )
 
 func (p *plugin) groupJoinRoute(c echo.Context) error {
@@ -43,6 +45,88 @@ func (p *plugin) groupJoinRoute(c echo.Context) error {
 	}
 
 	return c.NoContent(http.StatusNoContent)
+}
+
+func (p *plugin) groupSettleRoute(c echo.Context) error {
+	id := c.PathParam("id")
+
+	auth := apis.RequestInfo(c).AuthRecord
+
+	group, err := p.app.Dao().FindRecordById("groups", id)
+
+	if err != nil {
+		return apis.NewNotFoundError("Group not found.", err)
+	}
+
+	if auth.Id != group.GetString("owner") {
+		return apis.NewForbiddenError("Owner mismatch.", nil)
+	}
+
+	// gather expenses
+	recordExpenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && isSettled = false", "", -1, 0,
+		dbx.Params{"group": id})
+	if err != nil {
+		return apis.NewApiError(http.StatusInternalServerError, "Failed to query expenses.", err)
+	}
+
+	// map expenses
+	expenses := []service.Expenses{}
+	for _, e := range recordExpenses {
+		expenses = append(expenses, service.Expenses{
+			Amount:  e.GetInt("amount"),
+			Members: e.GetStringSlice("members"),
+			Source:  e.GetString("source"),
+		})
+	}
+
+	fullMembers := append(group.GetStringSlice("members"), group.GetString("owner"))
+	finances := &service.Finances{
+		Members: make(map[string]int),
+		Map:     make([][]int, len(fullMembers)),
+	}
+	for i, member := range fullMembers {
+		finances.Members[member] = i
+		finances.Map[i] = make([]int, len(fullMembers))
+	}
+
+	finances.AddExpenses(expenses)
+	finances.Merge()
+
+	// TODO optimization
+
+	// payment creation
+	collection, err := p.app.Dao().FindCollectionByNameOrId("payments")
+	if err != nil {
+		return apis.NewApiError(http.StatusInternalServerError, "Find payments collection.", err)
+	}
+
+	paymentRecords := []models.Record{}
+	for _, payment := range finances.CreatePayments() {
+		record := models.NewRecord(collection)
+		record.Set("to", payment.To)
+		record.Set("from", payment.From)
+		record.Set("amount", payment.Amount)
+
+		err = p.app.Dao().SaveRecord(record)
+		if err != nil {
+			return apis.NewApiError(http.StatusInternalServerError,
+				"Saving at least one payment failed. Check already saved payments!", err)
+		}
+
+		paymentRecords = append(paymentRecords, *record)
+	}
+
+	// mark expenses settled
+	for _, e := range recordExpenses {
+		e.Set("isSettled", true)
+
+		err = p.app.Dao().SaveRecord(e)
+		if err != nil {
+			return apis.NewApiError(http.StatusInternalServerError, "Update expenses.", err)
+		}
+	}
+
+	return c.JSON(http.StatusOK, paymentRecords)
 }
 
 // fires on groups update request to check if no new user have been added

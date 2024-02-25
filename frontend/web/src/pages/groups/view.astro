@@ -1,5 +1,5 @@
 ---
-import EditGroupNavBtn from '@/components/groups/EditGroupNavBtn.svelte';
+import ViewGroupNavActions from '@/components/groups/ViewGroupNavActions.svelte';
 import GroupViewDetails from '@/components/groups/GroupViewDetails.svelte';
 import ListGroupExpenses from '@/components/groups/ListGroupExpenses.svelte';
 import PageNav from '@/layouts/PageNav.astro';
@@ -7,7 +7,7 @@ import PageNav from '@/layouts/PageNav.astro';
 
 <PageNav activeUrl="/">
 	<Fragment slot="heading">Group Details</Fragment>
-	<EditGroupNavBtn client:idle slot="button" />
+	<ViewGroupNavActions client:idle slot="button" />
 
 	<GroupViewDetails client:load />
 
