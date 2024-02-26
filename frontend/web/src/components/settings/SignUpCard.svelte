@@ -2,14 +2,16 @@
 	import DialogCard from '@/components/DialogCard.svelte';
 	import OAuth2Login from '@/components/settings/OAuth2Login.svelte';
 	import pb from '@/lib/pb';
+	import { onMount } from 'svelte';
 
 	let data = {
-		email: '',
-		username: '',
-		name: '',
-		password: '',
-		passwordConfirm: '',
-	};
+			email: '',
+			username: '',
+			name: '',
+			password: '',
+			passwordConfirm: '',
+		},
+		redirect = '';
 	const signUp = async () => {
 		if (!data.email || data.password !== data.passwordConfirm || data.password.length < 8)
 			return;
@@ -19,8 +21,10 @@
 		await $pb.collection('users').create(data).catch();
 
 		await $pb.collection('users').authWithPassword(data.email, data.password).catch();
-		window.location.replace('/settings');
+		window.location.replace(redirect || '/settings');
 	};
+
+	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));
 </script>
 
 <DialogCard backUrl="/settings" on:submit={signUp}>
@@ -95,11 +99,13 @@
 	<!-- actions -->
 	<svelte:fragment slot="actions">
 		<button class="btn btn-primary" type="submit">Sign up</button>
-		<a href="/login" class="btn btn-ghost">Login instead</a>
+		<a href="/login{redirect ? `?redirect=${redirect}` : ''}" class="btn btn-ghost">
+			Log in instead
+		</a>
 	</svelte:fragment>
 
 	<svelte:fragment slot="bottom">
 		<div class="divider">OR</div>
-		<OAuth2Login />
+		<OAuth2Login {redirect} />
 	</svelte:fragment>
 </DialogCard>
