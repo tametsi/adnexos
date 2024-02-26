@@ -17,7 +17,7 @@
 	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));
 </script>
 
-<DialogCard backUrl="/settings" on:submit={login}>
+<DialogCard backUrl={redirect ? '' : '/settings'} on:submit={login}>
 	<svelte:fragment slot="title">Login</svelte:fragment>
 
 	<!-- email or username -->
