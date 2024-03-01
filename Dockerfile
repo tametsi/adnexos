@@ -1,0 +1,49 @@
+##############
+## FRONTEND ##
+##############
+FROM node:20-slim AS build-frontend-web
+
+RUN corepack enable
+WORKDIR /app
+
+# deps
+COPY frontend/web/package.json frontend/web/pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
+
+# gen pwa assets
+COPY frontend/web/pwa-assets.config.ts .
+COPY frontend/web/src/consts.ts src/consts.ts
+COPY frontend/web/public/logo.svg public/logo.svg
+RUN pnpm gen:pwa-assets
+
+COPY frontend/web .
+RUN pnpm build
+
+
+#############
+## BACKEND ##
+#############
+FROM golang:1.22-alpine AS build-backend
+
+WORKDIR /app
+
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download && go mod verify
+
+COPY backend .
+RUN go build -v -o ./adnexos cmd/adnexos/main.go
+
+
+#########
+## RUN ##
+#########
+FROM alpine
+
+WORKDIR /app
+
+COPY --from=build-frontend-web /app/dist pb_public/
+COPY --from=build-backend /app/adnexos adnexos
+
+EXPOSE 8090
+CMD ["./adnexos", "serve", "--http=0.0.0.0:8090"]
