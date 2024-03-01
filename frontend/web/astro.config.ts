@@ -12,7 +12,10 @@ export default defineConfig({
 		astroPwa({
 			manifest,
 			registerType: 'prompt',
-			includeAssets: ['logo.svg'],
+			includeAssets: ['logo.svg', 'apple-touch-icon-180x180.png'],
+			workbox: {
+				ignoreURLParametersMatching: [/.*/],
+			},
 		}),
 	],
 });
