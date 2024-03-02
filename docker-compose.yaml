@@ -1,0 +1,21 @@
+version: '3'
+name: adnexos
+
+services:
+  app:
+    image: 'tametsi/adnexos:${IMAGE_TAG}'
+    container_name: 'adnexos'
+    # ports:
+    #   - '8090:8090'
+    volumes:
+      - pb-data:/app/pb_data
+    networks:
+      - app_network
+
+volumes:
+  pb-data:
+
+networks:
+  app_network:
+    name: ${NETWORK_NAME}
+    external: true
