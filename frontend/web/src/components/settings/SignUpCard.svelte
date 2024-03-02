@@ -20,7 +20,10 @@
 
 		await $pb.collection('users').create(data).catch();
 
-		await $pb.collection('users').authWithPassword(data.email, data.password).catch();
+		await $pb
+			.collection('users')
+			.authWithPassword(data.email, data.password, { expand: 'settings_via_user' })
+			.catch();
 		window.location.replace(redirect || '/settings');
 	};
 

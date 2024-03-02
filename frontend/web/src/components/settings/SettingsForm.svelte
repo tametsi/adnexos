@@ -1,20 +1,30 @@
 <script lang="ts">
 	import pb, { auth } from '@/lib/pb';
-	import { settings } from '@/lib/stores';
+	import { type RecordModel } from 'pocketbase';
+
+	let settings: Partial<RecordModel> = { theme: '' };
+	$: {
+		if ($auth?.expand?.settings_via_user?.[0]) settings = $auth?.expand?.settings_via_user?.[0];
+	}
 
 	const update = () => {
+		const saveSettings = (settings: RecordModel) => {
+			const authStore = $pb.authStore;
+			if (!authStore.model) return;
+
+			const model = { ...authStore.model };
+			((model.expand ??= {}).settings_via_user ??= [])[0] = settings;
+
+			authStore.save(authStore.token, model);
+		};
+
 		// update existing settings
-		if ($settings.id)
-			return $pb
-				.collection('settings')
-				.update($settings.id || '', $settings)
-				.then(x => localStorage.setItem('settings', JSON.stringify(x)));
+		if (settings.id)
+			return $pb.collection('settings').update(settings.id, settings).then(saveSettings);
 
 		// create new settings
-		$settings.user = $auth?.id;
-		$pb.collection('settings')
-			.create($settings)
-			.then(x => localStorage.setItem('settings', JSON.stringify(x)));
+		settings.user = $auth?.id;
+		$pb.collection('settings').create(settings).then(saveSettings);
 	};
 </script>
 
@@ -31,7 +41,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={$settings.theme}
+				bind:group={settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="System"
 				value=""
@@ -39,7 +49,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={$settings.theme}
+				bind:group={settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="Light"
 				value="light"
@@ -47,7 +57,7 @@
 			<input
 				type="radio"
 				name="theme-buttons"
-				bind:group={$settings.theme}
+				bind:group={settings.theme}
 				class="btn theme-controller join-item grow"
 				aria-label="Dark"
 				value="dark"

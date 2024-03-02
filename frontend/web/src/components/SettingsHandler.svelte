@@ -1,19 +1,13 @@
 <!--
 	@component
-	client-only component which
-	1. loads the settings from `localStorage`
-	2. sets the theme from `settings` store
+	client-only component, setting the theme from `settings`-expand in auth store
  -->
 
 <script lang="ts">
-	import { settings } from '@/lib/stores';
-	import { onMount } from 'svelte';
+	import { auth } from '@/lib/pb';
 
-	onMount(() => {
-		// load settings from localStorage
-		const s = localStorage.getItem('settings');
-		if (s) $settings = JSON.parse(s);
-	});
-
-	$: document.documentElement.setAttribute('data-theme', $settings?.theme || '');
+	$: document.documentElement.setAttribute(
+		'data-theme',
+		$auth?.expand?.settings_via_user?.[0]?.theme || '',
+	);
 </script>

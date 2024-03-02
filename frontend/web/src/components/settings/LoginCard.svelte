@@ -10,7 +10,7 @@
 	const login = async () =>
 		await $pb
 			.collection('users')
-			.authWithPassword(identity, password)
+			.authWithPassword(identity, password, { expand: 'settings_via_user' })
 			.then(() => window.location.replace(redirect || '/settings'))
 			.catch();
 

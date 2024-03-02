@@ -1,19 +1,12 @@
 <script lang="ts">
 	import pb, { auth } from '@/lib/pb';
-	import { settings } from '@/lib/stores';
 	import { UserIcon } from 'lucide-svelte';
 
 	const logout = () => $pb.authStore.clear();
 	const refresh = () => {
-		$pb.collection('users').authRefresh();
-
-		if ($settings.id)
-			$pb.collection('settings')
-				.getOne($settings.id)
-				.then(x => {
-					$settings = x;
-					localStorage.setItem('settings', JSON.stringify(x));
-				});
+		$pb.collection('users')
+			.authRefresh({ expand: 'settings_via_user' })
+			.then(x => x.record.expand);
 	};
 </script>
 

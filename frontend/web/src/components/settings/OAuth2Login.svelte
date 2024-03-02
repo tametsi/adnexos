@@ -6,7 +6,7 @@
 	const oAuth2 = (provider: string) => () =>
 		$pb
 			.collection('users')
-			.authWithOAuth2({ provider })
+			.authWithOAuth2({ provider, query: { expand: 'settings_via_user' } })
 			.then(() => window.location.replace(redirect || '/settings'));
 </script>
 
