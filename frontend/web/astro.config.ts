@@ -15,6 +15,7 @@ export default defineConfig({
 			includeAssets: ['logo.svg', 'apple-touch-icon-180x180.png'],
 			workbox: {
 				ignoreURLParametersMatching: [/.*/],
+				navigateFallbackDenylist: [/^\/_(\/.*)?$/, /^\/api\/.*$/],
 			},
 		}),
 	],
