@@ -10,7 +10,7 @@
 	export let group: RecordModel;
 </script>
 
-<div class="card bg-base-200 card-compact w-full overflow-x-hidden shadow-md">
+<div class="card card-compact w-full overflow-x-hidden">
 	<div class="card-body">
 		<h2 class="card-title flex justify-between gap-1 truncate">
 			<a

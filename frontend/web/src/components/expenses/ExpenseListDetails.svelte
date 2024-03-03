@@ -10,7 +10,7 @@
 	const e = calculateExpense(expense, $auth?.id);
 </script>
 
-<div class="card card-compact bg-base-200 shadow-md">
+<div class="card card-compact">
 	<div class="card-body">
 		<h3 class="card-title flex justify-between">
 			<a
