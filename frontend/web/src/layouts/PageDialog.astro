@@ -9,7 +9,7 @@ const { desc, title } = Astro.props;
 ---
 
 <Page {desc} {title}>
-	<div class="flex min-h-screen items-center justify-center p-2">
+	<div class="flex min-h-screen flex-col items-center justify-center gap-3 p-2">
 		<slot />
 	</div>
 </Page>

@@ -1,4 +1,5 @@
 ---
+import RequireAuth from '@/components/RequireAuth.svelte';
 import AccDetails from '@/components/settings/AccDetails.svelte';
 import SettingsForm from '@/components/settings/SettingsForm.svelte';
 import PageNav from '@/layouts/PageNav.astro';
@@ -14,6 +15,10 @@ export const icon = WrenchIcon;
 	<a slot="button" href="/users/edit" class="btn btn-neutral btn-outline btn-sm">Edit Profile</a>
 
 	<AccDetails client:load />
+
+	<div class="mx-auto w-64 max-w-full pt-4">
+		<a href="/about" class="btn btn-outline btn-wide max-w-full">About Adnexos</a>
+	</div>
 
 	<div class="divider divider-primarys">Settings</div>
 

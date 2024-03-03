@@ -2,7 +2,7 @@
 	import { auth } from '@/lib/pb';
 	import { onMount } from 'svelte';
 
-	export let except = ['/login', '/signup'];
+	export let except = ['/login', '/signup', '/about'];
 
 	onMount(() => {
 		if ($auth?.id || except.some(x => window.location.pathname.startsWith(x))) return;

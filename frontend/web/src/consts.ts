@@ -1,6 +1,6 @@
 export default {
 	DEFAULT_TITLE: 'Adnexos',
-	DEFAULT_DESC: 'Adnexos',
+	DEFAULT_DESC: 'Effortlessly split expenses among friends in any situation.',
 	THEME_COLOR: '#282a36',
 
 	COLOR: {
