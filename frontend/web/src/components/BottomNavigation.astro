@@ -1,4 +1,5 @@
 ---
+import { scale } from '@/lib/transitions';
 import type { AstroInstance } from 'astro';
 
 interface Props {
@@ -22,10 +23,33 @@ const pages = components
 
 <div class="btm-nav bg-base-200">
 	{
-		pages.map(x => (
-			<a href={x.url} aria-label={x.title} class:list={[{ active: activeUrl === x.url }]}>
-				<x.icon />
-			</a>
-		))
+		pages.map(x => {
+			const active = activeUrl === x.url;
+			return (
+				<a
+					href={x.url}
+					aria-label={x.title}
+					class:list={[{ 'opacity-70': !active, 'scale-125': active }]}
+					transition:animate={scale}
+				>
+					<x.icon />
+				</a>
+			);
+		})
 	}
 </div>
+
+<style>
+	@keyframes scaleIn {
+		from {
+			transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
+				skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(1) scaleY(1);
+		}
+	}
+	@keyframes scaleOut {
+		to {
+			transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
+				skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(1) scaleY(1);
+		}
+	}
+</style>
