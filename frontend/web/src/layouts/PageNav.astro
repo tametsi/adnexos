@@ -7,10 +7,10 @@ interface Props {
 	desc?: string;
 	title?: string;
 	activeUrl: string;
-	/** basic back btn, uses `window.history.back` */
-	backBtn?: boolean;
+	/** string: back link href */
+	back?: string;
 }
-const { desc, title, activeUrl, backBtn = false } = Astro.props;
+const { desc, title, activeUrl, back = false } = Astro.props;
 ---
 
 <Page {title} {desc}>
@@ -19,14 +19,14 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 			// just a heading
 			Astro.slots.has('heading') && !Astro.slots.has('button') && (
 				<h1 class="mb-4 py-2 text-3xl font-bold">
-					{backBtn && (
-						<button
-							onclick="window.history.back()"
+					{back && (
+						<a
+							href={back}
 							class="btn btn-sm btn-ghost btn-circle align-text-bottom"
 							aria-label="Go back"
 						>
 							<ArrowLeftIcon />
-						</button>
+						</a>
 					)}
 					<span class="truncate">
 						<slot name="heading" />
@@ -39,14 +39,14 @@ const { desc, title, activeUrl, backBtn = false } = Astro.props;
 			Astro.slots.has('heading') && Astro.slots.has('button') && (
 				<h1 class="mb-4 flex items-center justify-between gap-4 py-2 text-3xl font-bold">
 					<span class="truncate">
-						{backBtn && (
-							<button
-								onclick="window.history.back()"
+						{back && (
+							<a
+								href={back}
 								class="btn btn-sm btn-ghost btn-circle align-text-bottom"
 								aria-label="Go back"
 							>
 								<ArrowLeftIcon />
-							</button>
+							</a>
 						)}
 						<slot name="heading" />
 					</span>
