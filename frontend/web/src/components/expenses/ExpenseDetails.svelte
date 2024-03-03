@@ -79,8 +79,10 @@
 			{/each}
 		</ul>
 
-		<button on:click={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
-			Delete
-		</button>
+		{#if $auth?.id === e.e.source}
+			<button on:click={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
+				Delete
+			</button>
+		{/if}
 	</div>
 {/await}
