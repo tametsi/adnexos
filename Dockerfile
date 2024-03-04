@@ -18,6 +18,8 @@ COPY frontend/web/public/logo.svg public/logo.svg
 RUN pnpm gen:pwa-assets
 
 COPY frontend/web .
+ARG VERSION=UNKNOWN
+ENV VERSION=$VERSION
 RUN pnpm build
 
 
