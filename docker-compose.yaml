@@ -3,7 +3,7 @@ name: adnexos
 
 services:
   app:
-    image: 'tametsi/adnexos:${IMAGE_TAG}'
+    image: '${IMAGE_ID}:${IMAGE_TAG}'
     container_name: 'adnexos'
     # ports:
     #   - '8090:8090'
