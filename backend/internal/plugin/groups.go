@@ -141,12 +141,14 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
 	oldMembers := oldRecord.GetStringSlice("members")
 	newMembers := e.Record.GetStringSlice("members")
 
+	admin, _ := e.HttpContext.Get(apis.ContextAdminKey).(*models.Admin)
+
 	for _, v := range newMembers {
 		if newOwner == v {
 			return apis.NewBadRequestError("Owner is not allowed to be a member.", nil)
 		}
 
-		if !slices.Contains(oldMembers, v) && v != oldOwner {
+		if !slices.Contains(oldMembers, v) && v != oldOwner && admin == nil {
 			// member has been added
 			return apis.NewBadRequestError("Adding members is not allowed.", nil)
 		}
