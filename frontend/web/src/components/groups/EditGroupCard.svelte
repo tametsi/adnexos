@@ -39,14 +39,6 @@
 			.catch(error('Failed to update the group.'));
 	};
 
-	const remove = () => {
-		if (confirm('Do you really want to delete this awesome group?'))
-			$pb.collection('groups')
-				.delete(id)
-				.then(() => window.location.replace('/'))
-				.catch(error('Failed to delete the group.'));
-	};
-
 	$: backUrl = id ? `/groups/view?id=${id}` : '/';
 </script>
 
@@ -102,7 +94,7 @@
 			<span class="label-text">Owner</span>
 		</div>
 
-		<div class="flex gap-2">
+		<div class="flex flex-wrap gap-2">
 			<input
 				type="radio"
 				name="owner"
@@ -130,6 +122,5 @@
 	<svelte:fragment slot="actions">
 		<button type="submit" class="btn btn-primary">Edit</button>
 		<a href={backUrl} class="btn btn-ghost">Cancel</a>
-		<button type="button" on:click={remove} class="btn btn-error btn-outline">Delete</button>
 	</svelte:fragment>
 </DialogCard>
