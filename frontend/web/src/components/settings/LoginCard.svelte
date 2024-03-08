@@ -1,18 +1,19 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import OAuth2Login from '@/components/settings/OAuth2Login.svelte';
+	import { error } from '@/lib/alert';
 	import pb from '@/lib/pb';
 	import { onMount } from 'svelte';
 
 	let identity = '',
 		password = '',
 		redirect = '';
-	const login = async () =>
-		await $pb
+	const login = () =>
+		$pb
 			.collection('users')
 			.authWithPassword(identity, password, { expand: 'settings_via_user' })
 			.then(() => window.location.replace(redirect || '/settings'))
-			.catch();
+			.catch(error('Login failed.'));
 
 	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));
 </script>

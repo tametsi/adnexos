@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { CopyIcon, Trash2Icon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
@@ -19,20 +21,24 @@
 	const create = async () => {
 		$pb.collection('invites')
 			.create({ creator: $auth?.id, group: groupId, expires: new Date(Date.now() + 6.048e8) })
-			.then(x => (invites = [...invites, x]));
+			.then(x => (invites = [...invites, x]))
+			.catch(error('Failed to create invite.'));
 	};
 	const copy = (id: string) => () => navigator.clipboard.writeText(buildInvite(id));
 	const remove = (id: string) => () =>
 		$pb
 			.collection('invites')
 			.delete(id)
-			.then(() => (invites = invites.filter(x => x.id !== id)));
+			.then(() => (invites = invites.filter(x => x.id !== id)))
+			.catch(error('Failed to delete invite.'));
 </script>
 
 <button on:click={create} class="btn btn-outline btn-primary mb-1 w-full">Create Invite</button>
 
 {#await req}
 	<Loading />
+{:catch}
+	<Error />
 {/await}
 
 {#each invites as invite (invite.id)}

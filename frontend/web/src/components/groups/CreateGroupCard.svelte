@@ -1,17 +1,18 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 
 	let data = {
 		name: '',
 		owner: $auth?.id,
 	};
-	const create = async () =>
-		await $pb
+	const create = () =>
+		$pb
 			.collection('groups')
 			.create(data)
 			.then(() => window.location.replace('/'))
-			.catch();
+			.catch(error('Failed to create group.'));
 </script>
 
 <DialogCard backUrl="/" on:submit={create}>

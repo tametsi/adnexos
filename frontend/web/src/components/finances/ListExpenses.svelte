@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import ExpenseListDetails from '@/components/expenses/ExpenseListDetails.svelte';
 	import pb, { auth } from '@/lib/pb';
@@ -18,4 +19,6 @@
 			<ExpenseListDetails {expense} showGroup />
 		{/each}
 	</div>
+{:catch}
+	<Error />
 {/await}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import OAuth2Login from '@/components/settings/OAuth2Login.svelte';
+	import alerts, { error } from '@/lib/alert';
 	import pb from '@/lib/pb';
 	import { onMount } from 'svelte';
 
@@ -13,17 +14,28 @@
 		},
 		redirect = '';
 	const signUp = async () => {
-		if (!data.email || data.password !== data.passwordConfirm || data.password.length < 8)
-			return;
+		if (data.password !== data.passwordConfirm)
+			return alerts.push({ level: 'ERROR', msg: 'Passwords must be equal.' });
+		if (data.password.length < 8)
+			return alerts.push({ level: 'ERROR', msg: 'Password must be at least 8 characters.' });
 
 		if (!data.name) data.name = data.username;
 
-		await $pb.collection('users').create(data).catch();
+		try {
+			await $pb.collection('users').create(data).catch();
+		} catch (e) {
+			return error('Failed to create account.')(e as any);
+		}
 
-		await $pb
-			.collection('users')
-			.authWithPassword(data.email, data.password, { expand: 'settings_via_user' })
-			.catch();
+		try {
+			await $pb
+				.collection('users')
+				.authWithPassword(data.email, data.password, { expand: 'settings_via_user' });
+		} catch (e) {
+			error('Account created. Failed to login automatically.')(e as any);
+			return window.location.replace('/login');
+		}
+
 		window.location.replace(redirect || '/settings');
 	};
 

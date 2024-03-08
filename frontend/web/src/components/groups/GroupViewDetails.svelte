@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import InviteList from '@/components/groups/InviteList.svelte';
 	import pb from '@/lib/pb';
@@ -69,4 +70,6 @@
 			</div>
 		</li>
 	</ul>
+{:catch}
+	<Error />
 {/await}

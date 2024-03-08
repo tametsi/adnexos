@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { alerts } from '@/lib/stores';
+	import alerts from '@/lib/alert';
 	import { InfoIcon, SirenIcon, SprayCanIcon, XIcon } from 'lucide-svelte';
 
 	const remove = (id: number) => () => alerts.remove(id);

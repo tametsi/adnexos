@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import alerts, { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
@@ -10,7 +11,11 @@
 
 	onMount(async () => {
 		// get all groups allowed for the user
-		groups = await $pb.collection('groups').getFullList({ expand: 'members,owner' });
+		try {
+			groups = await $pb.collection('groups').getFullList({ expand: 'members,owner' });
+		} catch (e) {
+			return error('Failed to fetch groups.')(e as any);
+		}
 
 		// group to select based on url param
 		data.group = new URLSearchParams(window.location.search).get('groupId') || '';
@@ -36,14 +41,19 @@
 		}
 	}
 
-	const create = async () => {
-		if (data.amount === 0 || data.members?.length === 0) return;
+	const create = () => {
+		if (data.amount === 0) return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
+		if (data.members?.length === 0)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'You need some members on the expense, too.',
+			});
 		data.amount = Math.floor(data.amount * 100);
 
-		await $pb
-			.collection('expenses')
+		$pb.collection('expenses')
 			.create(data)
-			.then(() => window.location.replace(`/groups/view?id=${data.group}`));
+			.then(() => window.location.replace(`/groups/view?id=${data.group}`))
+			.catch(error('Failed to creaet expense.'));
 	};
 
 	$: backUrl = group ? `/groups/view?id=${group.id}` : '/';

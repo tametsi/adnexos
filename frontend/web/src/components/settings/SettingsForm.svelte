@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { type RecordModel } from 'pocketbase';
 
@@ -20,11 +21,18 @@
 
 		// update existing settings
 		if (settings.id)
-			return $pb.collection('settings').update(settings.id, settings).then(saveSettings);
+			return $pb
+				.collection('settings')
+				.update(settings.id, settings)
+				.then(saveSettings)
+				.catch(error('Failed to save settings.'));
 
 		// create new settings
 		settings.user = $auth?.id;
-		$pb.collection('settings').create(settings).then(saveSettings);
+		$pb.collection('settings')
+			.create(settings)
+			.then(saveSettings)
+			.catch(error('Failed to create settings.'));
 	};
 </script>
 

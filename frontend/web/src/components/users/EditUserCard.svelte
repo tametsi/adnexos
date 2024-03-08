@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 
 	let data = { ...$auth };
@@ -11,7 +12,8 @@
 				{ username: data.username, name: data.name },
 				{ expand: 'settings_via_user' },
 			)
-			.then(() => window.location.replace('/settings'));
+			.then(() => window.location.replace('/settings'))
+			.catch(error('Failed to save.'));
 </script>
 
 <DialogCard backUrl="/settings" on:submit={edit}>

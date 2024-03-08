@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import ExpenseListDetails from '@/components/expenses/ExpenseListDetails.svelte';
 	import pb from '@/lib/pb';
@@ -32,4 +33,6 @@
 			<ExpenseListDetails {expense} />
 		{/each}
 	</div>
+{:catch}
+	<Error />
 {/await}

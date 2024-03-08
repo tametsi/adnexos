@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
+	import { error } from '@/lib/alert';
 	import { calculateExpense } from '@/lib/expense';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
@@ -13,12 +15,12 @@
 		req = $pb.collection('expenses').getOne(id, { expand: 'members,source' });
 	});
 
-	const remove = async () => {
+	const remove = () => {
 		if (confirm('Do you really want to delete this expense? Really?...'))
-			await $pb
-				.collection('expenses')
+			$pb.collection('expenses')
 				.delete(id)
-				.then(() => window.history.back());
+				.then(() => window.history.back())
+				.catch(error('Failed to delete expense.'));
 	};
 </script>
 
@@ -85,4 +87,6 @@
 			</button>
 		{/if}
 	</div>
+{:catch}
+	<Error />
 {/await}

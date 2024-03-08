@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { CrownIcon, XIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
@@ -14,7 +15,11 @@
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		group = await $pb.collection('groups').getOne(id, { expand: 'members' });
+		try {
+			group = await $pb.collection('groups').getOne(id, { expand: 'members' });
+		} catch (e) {
+			error('Failed to fetch group.')(e as any);
+		}
 	});
 
 	const removeMember = (id: string) => {
@@ -23,25 +28,23 @@
 			group.expand.members = group.expand?.members.filter((x: RecordModel) => x.id !== id);
 	};
 
-	const edit = async () => {
+	const edit = () => {
 		if (group.owner !== $auth?.id)
 			// new owner => switch new owner in members with old owner (me)
 			group.members = group.members.map((x: string) => (x === group.owner ? $auth?.id : x));
 
-		await $pb
-			.collection('groups')
+		$pb.collection('groups')
 			.update(id, { name: group.name, members: group.members, owner: group.owner })
 			.then(() => window.location.replace(backUrl))
-			.catch();
+			.catch(error('Failed to update the group.'));
 	};
 
-	const remove = async () => {
+	const remove = () => {
 		if (confirm('Do you really want to delete this awesome group?'))
-			await $pb
-				.collection('groups')
+			$pb.collection('groups')
 				.delete(id)
 				.then(() => window.location.replace('/'))
-				.catch();
+				.catch(error('Failed to delete the group.'));
 	};
 
 	$: backUrl = id ? `/groups/view?id=${id}` : '/';

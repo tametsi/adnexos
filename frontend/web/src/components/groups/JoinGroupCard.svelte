@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import { error } from '@/lib/alert';
 	import pb from '@/lib/pb';
 	import { onMount } from 'svelte';
 
@@ -10,9 +11,9 @@
 	const join = () => {
 		if (id.startsWith(window.location.origin)) id = new URL(id).searchParams.get('id') || id;
 
-		$pb.send(`/api/collections/groups/join/${id}`, { method: 'GET' }).then(() =>
-			window.location.replace('/'),
-		);
+		$pb.send(`/api/collections/groups/join/${id}`, { method: 'GET' })
+			.then(() => window.location.replace('/'))
+			.catch(error('Failed to join.'));
 	};
 </script>
 

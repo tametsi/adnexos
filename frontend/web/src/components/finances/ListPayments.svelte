@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import PaymentsTable from '@/components/finances/PaymentsTable.svelte';
 	import pb from '@/lib/pb';
@@ -25,4 +26,8 @@
 
 		<div class="divider">Expenses</div>
 	{/if}
+{:catch}
+	<div class="divider">Payments</div>
+	<Error />
+	<div class="divider">Expenses</div>
 {/await}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import alerts, { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
@@ -10,7 +11,13 @@
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
 
-		data = await $pb.collection('expenses').getOne(id, { expand: 'group.members,group.owner' });
+		try {
+			data = await $pb
+				.collection('expenses')
+				.getOne(id, { expand: 'group.members,group.owner' });
+		} catch (e) {
+			return error('Failed to fetch expense.')(e as any);
+		}
 		data.amount /= 100; // don't show cents to the user
 		members = data?.expand?.group?.expand?.members || [];
 		if (data?.expand?.group?.expand?.owner) members.push(data.expand.group.expand.owner);
@@ -25,18 +32,23 @@
 		members: [],
 	};
 
-	const edit = async () => {
-		if (data.amount === 0 || data.members?.length === 0) return;
+	const edit = () => {
+		if (data.amount === 0) return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
+		if (data.members?.length === 0)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'You need some members on the expense, too.',
+			});
 
-		await $pb
-			.collection('expenses')
+		$pb.collection('expenses')
 			// only send possibly changed data
 			.update(data.id || id, {
 				title: data?.title,
 				amount: Math.floor(data.amount * 100),
 				members: data.members,
 			})
-			.then(() => window.location.replace(`/expenses/view?id=${data.id || id}`));
+			.then(() => window.location.replace(`/expenses/view?id=${data.id || id}`))
+			.catch(error('Failed to edit expense.'));
 	};
 
 	$: backUrl = id ? `/expenses/view?id=${id}` : '/';

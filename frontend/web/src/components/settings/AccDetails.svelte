@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { UserIcon } from 'lucide-svelte';
 
@@ -6,7 +7,8 @@
 	const refresh = () => {
 		$pb.collection('users')
 			.authRefresh({ expand: 'settings_via_user' })
-			.then(x => x.record.expand);
+			.then(x => x.record.expand)
+			.catch(error('Failed to refresh account details.'));
 	};
 </script>
 

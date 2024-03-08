@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
 	import pb from '@/lib/pb';
@@ -33,4 +34,6 @@
 			Currently only {groups.items.length} groups are shown
 		{/if}
 	</p>
+{:catch}
+	<Error />
 {/await}

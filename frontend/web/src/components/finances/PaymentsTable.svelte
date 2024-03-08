@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { Trash2Icon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
@@ -21,7 +22,8 @@
 
 		$pb.collection('payments')
 			.delete(p.id)
-			.then(() => (payments = payments.filter(x => x.id !== p.id)));
+			.then(() => (payments = payments.filter(x => x.id !== p.id)))
+			.catch(error('Failed to delete payment.'));
 	};
 </script>
 
