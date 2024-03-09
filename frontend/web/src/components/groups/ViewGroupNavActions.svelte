@@ -3,6 +3,7 @@
 	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import { group } from '@/lib/stores';
+	import { HandCoinsIcon, LogOutIcon, SquarePenIcon, Trash2Icon } from 'lucide-svelte';
 
 	const settle = () => {
 		if (!confirm('Sure? Cannot be undone.')) return;
@@ -30,9 +31,9 @@
 
 <NavActionMenu>
 	{#if $group?.owner === $auth?.id}
-		<li><a href="/groups/edit?id={$group?.id}">Edit</a></li>
-		<li><button on:click={remove} class="text-error">Delete</button></li>
+		<li><a href="/groups/edit?id={$group?.id}"><SquarePenIcon /> Edit</a></li>
+		<li><button on:click={remove} class="text-error"><Trash2Icon /> Delete</button></li>
 	{/if}
-	<li><button on:click={settle}>Settle Up</button></li>
-	<li><button on:click={leave}>Leave</button></li>
+	<li><button on:click={settle}><HandCoinsIcon /> Settle Up</button></li>
+	<li><button on:click={leave} class="text-error"><LogOutIcon /> Leave</button></li>
 </NavActionMenu>
