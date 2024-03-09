@@ -10,16 +10,16 @@
 	export let group: RecordModel;
 </script>
 
-<div class="card card-compact w-full overflow-x-hidden">
+<a
+	href="/groups/view?id={group.id}"
+	aria-label="View group {group.name}"
+	class="card card-compact w-full overflow-x-hidden"
+>
 	<div class="card-body">
 		<h2 class="card-title flex justify-between gap-1 truncate">
-			<a
-				href="/groups/view?id={group.id}"
-				aria-label="View group {group.name}"
-				class="overflow-hidden text-ellipsis"
-			>
+			<span class="overflow-hidden text-ellipsis">
 				{group.name}
-			</a>
+			</span>
 
 			{#if group.balance !== undefined}
 				<div class:text-success={group.balance > 0} class:text-error={group.balance < 0}>
@@ -35,4 +35,4 @@
 			{/each}
 		</div>
 	</div>
-</div>
+</a>

@@ -10,15 +10,16 @@
 	const e = calculateExpense(expense, $auth?.id);
 </script>
 
-<div class="card card-compact">
+<a
+	href="/expenses/view?id={expense.id}{showGroup ? '' : `&groupId=${expense.group}`}"
+	aria-label="View expense {expense.title}"
+	class="card card-compact"
+>
 	<div class="card-body">
 		<h3 class="card-title flex justify-between">
-			<a
-				href="/expenses/view?id={expense.id}{showGroup ? '' : `&groupId=${expense.group}`}"
-				class="truncate"
-			>
+			<span class="truncate">
 				{expense.title || 'Expense'}
-			</a>
+			</span>
 			<span
 				class:text-error={e.toPay > 0}
 				class:text-success={e.toPay < 0}
@@ -60,4 +61,4 @@
 			</span>
 		</div>
 	</div>
-</div>
+</a>
