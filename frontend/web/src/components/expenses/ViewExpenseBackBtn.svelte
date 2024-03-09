@@ -5,7 +5,7 @@
 	let groupId = '';
 	onMount(() => (groupId = new URLSearchParams(window.location.search).get('groupId') || ''));
 
-	$: backUrl = groupId ? `http://localhost:4321/groups/view?id=${groupId}` : '/finances';
+	$: backUrl = groupId ? `/groups/view?id=${groupId}` : '/finances';
 </script>
 
 <a href={backUrl} class="btn btn-sm btn-ghost btn-circle align-text-bottom" aria-label="Go back">
