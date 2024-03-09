@@ -54,12 +54,9 @@ func (p *plugin) groupSettleRoute(c echo.Context) error {
 
 	group, err := p.app.Dao().FindRecordById("groups", id)
 
-	if err != nil {
+	members := group.GetStringSlice("members")
+	if err != nil || (!slices.Contains(members, auth.Id) && group.GetString("owner") != auth.Id) {
 		return apis.NewNotFoundError("Group not found.", err)
-	}
-
-	if auth.Id != group.GetString("owner") {
-		return apis.NewForbiddenError("Owner mismatch.", nil)
 	}
 
 	// gather expenses

@@ -21,10 +21,10 @@
 	};
 </script>
 
-{#if $group?.owner === $auth?.id}
-	<NavActionMenu>
+<NavActionMenu>
+	{#if $group?.owner === $auth?.id}
 		<li><a href="/groups/edit?id={$group?.id}">Edit</a></li>
-		<li><button on:click={settle}>Settle Up</button></li>
 		<li><button on:click={remove} class="text-error">Delete</button></li>
-	</NavActionMenu>
-{/if}
+	{/if}
+	<li><button on:click={settle}>Settle Up</button></li>
+</NavActionMenu>
