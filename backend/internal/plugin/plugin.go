@@ -17,6 +17,8 @@ func Register(app core.App) error {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/api/collections/groups/join/:id", p.groupJoinRoute,
 			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
+		e.Router.POST("/api/collections/groups/:id/leave", p.groupLeaveRoute,
+			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
 		e.Router.POST("/api/collections/groups/:id/settle", p.groupSettleRoute,
 			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
 

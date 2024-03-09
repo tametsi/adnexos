@@ -19,6 +19,13 @@
 			.then(() => window.location.replace('/'))
 			.catch(error('Failed to delete the group.'));
 	};
+	const leave = () => {
+		if (!confirm('Do you really want to leave this group?')) return;
+
+		$pb.send(`/api/collections/groups/${$group?.id}/leave`, { method: 'POST' })
+			.then(() => window.location.replace('/'))
+			.catch(error('Failed to leave.'));
+	};
 </script>
 
 <NavActionMenu>
@@ -27,4 +34,5 @@
 		<li><button on:click={remove} class="text-error">Delete</button></li>
 	{/if}
 	<li><button on:click={settle}>Settle Up</button></li>
+	<li><button on:click={leave}>Leave</button></li>
 </NavActionMenu>

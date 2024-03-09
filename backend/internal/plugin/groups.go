@@ -47,6 +47,36 @@ func (p *plugin) groupJoinRoute(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
+func (p *plugin) groupLeaveRoute(c echo.Context) error {
+	id := c.PathParam("id")
+
+	group, err := p.app.Dao().FindRecordById("groups", id)
+	if err != nil {
+		return apis.NewNotFoundError("Group not found.", err)
+	}
+
+	auth := apis.RequestInfo(c).AuthRecord
+
+	if group.GetString("owner") == auth.Id {
+		return apis.NewBadRequestError("Set a new owner first.", nil)
+	}
+
+	members := group.GetStringSlice("members")
+	if !slices.Contains(members, auth.Id) {
+		return apis.NewNotFoundError("Group not found.", nil)
+	}
+
+	members = slices.DeleteFunc(members, func(x string) bool { return x == auth.Id })
+
+	group.Set("members", members)
+	err = p.app.Dao().SaveRecord(group)
+	if err != nil {
+		return apis.NewApiError(http.StatusInternalServerError, "Failed to update group.", err)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
 func (p *plugin) groupSettleRoute(c echo.Context) error {
 	id := c.PathParam("id")
 
