@@ -1,18 +1,31 @@
 ---
 import consts from '@/consts';
-import PageNav from '@/layouts/PageNav.astro';
+import Page from '@/layouts/Page.astro';
+import { ArrowLeftIcon } from 'lucide-svelte';
 ---
 
-{
-	// FIXME back navigation if !$auth.id
-}
-<PageNav activeUrl="/settings" back="/settings">
-	<Fragment slot="heading">About</Fragment>
+<Page>
+	<h1 class="mb-4 px-2 py-4 text-3xl font-bold">
+		<button
+			onclick="window.history.back()"
+			aria-label="Go back"
+			class="btn btn-sm btn-ghost btn-circle align-text-bottom"
+		>
+			<ArrowLeftIcon />
+		</button>
 
-	<div class="flex flex-col items-stretch gap-4 text-center">
-		<figure class="avatar m-auto w-32 max-w-full">
-			<img src="/logo.svg" alt="Logo" />
-		</figure>
+		<span class="truncate">
+			<slot name="heading" />
+			About
+		</span>
+	</h1>
+
+	<div class="flex flex-col items-stretch gap-4 p-2 text-center">
+		<a href="/">
+			<figure class="avatar m-auto w-32 max-w-full">
+				<img src="/logo.svg" alt="Logo" />
+			</figure>
+		</a>
 
 		<h2 class="text-4xl">{consts.DEFAULT_TITLE}</h2>
 		<p class="opacity-80">{consts.DEFAULT_DESC}</p>
@@ -84,4 +97,4 @@ import PageNav from '@/layouts/PageNav.astro';
 			<li class="font-mono">... and of course &lt;3</li>
 		</ul>
 	</div>
-</PageNav>
+</Page>
