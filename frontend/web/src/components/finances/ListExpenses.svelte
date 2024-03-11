@@ -1,30 +1,48 @@
 <script lang="ts">
 	import Error from '@/components/Error.svelte';
+	import LoadMorePagination from '@/components/LoadMorePagination.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import ExpenseListDetails from '@/components/expenses/ExpenseListDetails.svelte';
 	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
+	import { onMount } from 'svelte';
+
+	const load = (page = 1, reset = false, ..._: unknown[]) =>
+		$pb
+			.collection('expenses')
+			.getList(page, 15, {
+				filter: `isSettled = false && (source = "${$auth?.id}" || members.id ?= "${$auth?.id}")${filterGroupsQuery}`,
+				sort: '-created',
+				expand: 'members,source,group',
+			})
+			.then(x => {
+				items = reset ? x.items : [...items, ...x.items];
+				lastPage = x.page;
+				total = x.totalItems;
+			});
 
 	let groups: RecordModel[] = [],
 		filterGroups: string[] = [],
-		filterGroupsQuery = '';
+		filterGroupsQuery = '',
+		items: RecordModel[] = [],
+		lastPage = 0,
+		total = 0;
 
 	$: {
 		if (filterGroups.length === 0) filterGroupsQuery = '';
 		else filterGroupsQuery = ` && (${filterGroups.map(x => `group = "${x}"`).join(' || ')})`;
 	}
 
-	$: req = $pb.collection('expenses').getList(1, 100, {
-		filter: `isSettled = false && (source = "${$auth?.id}" || members.id ?= "${$auth?.id}")${filterGroupsQuery}`,
-		sort: '-created',
-		expand: 'members,source,group',
-	});
+	$: req = load(1, true, filterGroupsQuery);
 
-	$pb.collection('groups')
-		.getFullList({ fields: 'id,name' })
-		.then(x => (groups = x))
-		.catch(error('Failed to fetch groups.'));
+	onMount(() =>
+		$pb
+			.collection('groups')
+			.getFullList({ fields: 'id,name' })
+			.then(x => (groups = x))
+			.catch(error('Failed to fetch groups.', true)),
+	);
 </script>
 
 {#if groups.length > 0}
@@ -46,24 +64,26 @@
 
 {#await req}
 	<Loading />
-{:then expenses}
-	<p class="p-2 text-sm opacity-80">
-		{#if expenses?.items?.length > 0}
+{:then}
+	<p class="text-base-content/80 p-2 text-sm">
+		{#if items.length > 0}
 			Showing all expenses
 			{filterGroups.length > 0
 				? `from ${filterGroups.length} group${filterGroups.length === 1 ? '' : 's'}`
 				: ''}
 			you are involved in.
-		{:else}
-			No expenses found.
 		{/if}
 	</p>
 
 	<div class="flex flex-col gap-2">
-		{#each expenses?.items as expense}
+		{#each items as expense}
 			<ExpenseListDetails {expense} showGroup />
 		{/each}
 	</div>
+
+	<LoadMorePagination bind:lastPage bind:total bind:items {load} />
+
+	<p class="text-base-content/80 p-2 text-sm">Showing {items.length} / {total}.</p>
 {:catch}
 	<Error />
 {/await}

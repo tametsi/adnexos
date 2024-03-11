@@ -1,39 +1,39 @@
 <script lang="ts">
 	import Error from '@/components/Error.svelte';
+	import LoadMorePagination from '@/components/LoadMorePagination.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
 	import pb from '@/lib/pb';
+	import type { RecordModel } from 'pocketbase';
 
-	let req = $pb
-		.collection('groups')
-		.getList(1, 200, { fields: '*,balance', expand: 'members,owner' });
+	const load = (page = 1) =>
+		$pb
+			.collection('groups')
+			.getList(page, 15, { fields: '*,balance', expand: 'members,owner' })
+			.then(x => {
+				items = [...items, ...x.items];
+				lastPage = x.page;
+				total = x.totalItems;
+			});
+
+	let items: RecordModel[] = [],
+		lastPage = 0,
+		total = 0,
+		req = load();
 </script>
 
 {#await req}
 	<Loading />
-{:then groups}
+{:then}
 	<div class="flex flex-col gap-2">
-		{#each groups.items as group}
+		{#each items as group}
 			<GroupListDetails {group}></GroupListDetails>
 		{/each}
 	</div>
 
-	<p class="pt-4 text-sm">
-		{#if groups.totalItems === groups.items.length}
-			Showing {groups.items.length} group{groups.items.length === 1 ? '' : 's'}.
-		{:else}
-			{groups.totalItems} groups?! This must have been an accident, right?<br />
-			If not feel free to raise an issue on
-			<a
-				href="https://github.com/tametsi/adnexos/issues"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="link">GitHub</a
-			>
-			to request proper pagination here...<br />
-			Currently only {groups.items.length} groups are shown
-		{/if}
-	</p>
+	<LoadMorePagination bind:lastPage bind:total bind:items {load} />
+
+	<p class="text-base-content/80 p-2 text-sm">Showing {items.length} / {total}.</p>
 {:catch}
 	<Error />
 {/await}

@@ -21,8 +21,11 @@ const alerts = {
 export default alerts;
 
 /**
- * creates an alert with
+ * creates an error alert
  * @param fallbackMsg fallback in case e.message is false
+ * @param force force fallbackMsg to be shown instead of error message
  */
-export const error = (fallbackMsg: string) => (e: { message: string } | undefined) =>
-	alerts.push({ level: 'ERROR', msg: e?.message || fallbackMsg });
+export const error =
+	(fallbackMsg: string, force = false) =>
+	(e: { message: string } | undefined) =>
+		alerts.push({ level: 'ERROR', msg: force ? fallbackMsg : e?.message || fallbackMsg });
