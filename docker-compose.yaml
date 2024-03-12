@@ -5,6 +5,7 @@ services:
   app:
     image: '${IMAGE_ID}:${IMAGE_TAG}'
     container_name: 'adnexos'
+    restart: always
     # ports:
     #   - '8090:8090'
     volumes:
