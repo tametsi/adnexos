@@ -27,6 +27,10 @@
 			return error('Failed to create account.')(e as any);
 		}
 
+		$pb.collection('users')
+			.requestVerification(data.email)
+			.catch(error('Failed to send verification email.'));
+
 		try {
 			await $pb
 				.collection('users')
