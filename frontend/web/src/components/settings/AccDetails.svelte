@@ -7,7 +7,6 @@
 	const refresh = () => {
 		$pb.collection('users')
 			.authRefresh({ expand: 'settings_via_user' })
-			.then(x => x.record.expand)
 			.catch(error('Failed to refresh account details.'));
 	};
 </script>

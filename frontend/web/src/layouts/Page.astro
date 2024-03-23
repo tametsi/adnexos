@@ -1,6 +1,7 @@
 ---
 import Alerts from '@/components/Alerts.svelte';
 import AppleSplashLinks from '@/components/AppleSplashLinks.astro';
+import RefreshToken from '@/components/RefreshToken.svelte';
 import ReloadPromt from '@/components/ReloadPromt.svelte';
 import RequireAuth from '@/components/RequireAuth.svelte';
 import SettingsHandler from '@/components/SettingsHandler.svelte';
@@ -43,5 +44,6 @@ const { desc, title } = Astro.props;
 
 		<SettingsHandler client:only="svelte" />
 		<RequireAuth client:idle />
+		<RefreshToken client:idle />
 	</body>
 </html>
