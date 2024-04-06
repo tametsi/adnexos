@@ -13,18 +13,18 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.4.1",
-		"@astrojs/svelte": "^5.2.0",
+		"@astrojs/svelte": "^5.3.0",
 		"@astrojs/tailwind": "^5.1.0",
 		"@vite-pwa/assets-generator": "^0.2.4",
 		"@vite-pwa/astro": "^0.2.0",
-		"astro": "^4.4.15",
-		"daisyui": "^4.7.3",
+		"astro": "^4.5.16",
+		"daisyui": "^4.10.1",
 		"lucide-svelte": "^0.354.0",
 		"pocketbase": "^0.21.1",
 		"svelte": "^4.2.12",
-		"tailwindcss": "^3.4.1",
-		"typescript": "^5.4.2",
-		"vite-plugin-pwa": "^0.19.2",
+		"tailwindcss": "^3.4.3",
+		"typescript": "^5.4.4",
+		"vite-plugin-pwa": "^0.19.8",
 		"workbox-window": "^7.0.0"
 	}
 }
