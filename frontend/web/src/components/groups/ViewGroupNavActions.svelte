@@ -30,7 +30,7 @@
 </script>
 
 <NavActionMenu>
-	{#if $group?.owner === $auth?.id}
+	{#if $group && $group?.owner === $auth?.id}
 		<li><a href="/groups/edit?id={$group?.id}"><SquarePenIcon /> Edit</a></li>
 		<li><button on:click={remove} class="text-error"><Trash2Icon /> Delete</button></li>
 	{/if}

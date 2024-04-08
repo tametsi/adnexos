@@ -9,3 +9,5 @@ export const settings = derived(auth, $auth => {
 
 /** current group store */
 export const group = writable<Partial<RecordModel> | null>(null);
+/** current expense store */
+export const expense = writable<Partial<RecordModel> | null>(null);

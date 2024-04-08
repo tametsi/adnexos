@@ -4,16 +4,21 @@
 	import { error } from '@/lib/alert';
 	import { calculateExpense } from '@/lib/expense';
 	import pb, { auth } from '@/lib/pb';
+	import { expense } from '@/lib/stores';
 	import type { RecordModel } from 'pocketbase';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	let req: Promise<RecordModel> = new Promise(() => {}),
 		id: string;
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		req = $pb.collection('expenses').getOne(id, { expand: 'members,source' });
+		req = $pb
+			.collection('expenses')
+			.getOne(id, { expand: 'members,source' })
+			.then(x => ($expense = x));
 	});
+	onDestroy(() => ($expense = null));
 
 	const remove = () => {
 		if (confirm('Do you really want to delete this expense? Really?...'))
