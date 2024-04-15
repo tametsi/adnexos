@@ -9,6 +9,10 @@ Effortlessly split expenses among friends in any situation.
 
 You can install this app as a Progressive Web App (PWA). To do so open the page and follow [this guide](https://web.dev/learn/pwa/installation)
 
+## :printer: Self-Hosting
+
+Follow the [Self-Hosting Guide](/docs/self-hosting.md) to get the application up and running and stay in control of your data.
+
 ## :wrench: Development
 
 Install prettier to format everything except `/backend`
