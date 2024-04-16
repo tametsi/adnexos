@@ -63,7 +63,7 @@ Official Docker images are maintained and published along the [GitHub repository
 
 ### Manual Setup (not recommended)
 
-Get yourself the code from a [release](https://github.com/tametsi/adnexos/releases). Make sure you got Node.js LTS, pnpm and a supported Go version installed. Perform the following commands in your terminal:
+Get yourself the code from a [release](https://github.com/tametsi/adnexos/releases). Make sure you got Node.js LTS, pnpm and a supported Go version installed. Execute the following commands in your terminal:
 
 ```bash
 # build frontend
@@ -92,6 +92,6 @@ rm -r frontend backend
 
 Visit `http://<your-ip>:<your-port>/_` and create your admin account.
 
-You are now ready to go! :party:
+You are now ready to go! :tada:
 
 However, I recommend that you visit the Settings tab of the admin dashboard and customize it to your liking.
