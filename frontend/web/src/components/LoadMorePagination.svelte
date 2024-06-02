@@ -17,7 +17,7 @@
 </script>
 
 {#if total > items.length}
-	<button on:click={loadMore} class="btn btn-neutral btn-wide mx-auto my-4 max-w-full">
+	<button on:click={loadMore} class="btn btn-neutral btn-wide mx-auto my-4 block max-w-full">
 		Load More
 	</button>
 
