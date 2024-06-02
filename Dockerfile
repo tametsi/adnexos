@@ -21,6 +21,8 @@ COPY frontend/web .
 ARG VERSION=UNKNOWN
 ENV VERSION=$VERSION
 RUN pnpm build
+# copy apple-touch-icon.png becuase reading the correct filename seems to be hard
+RUN cp dist/apple-touch-icon{-180x180,}.png
 
 
 #############
