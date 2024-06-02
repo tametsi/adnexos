@@ -10,7 +10,6 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/models"
-	"github.com/pocketbase/pocketbase/models/schema"
 	"github.com/tametsi/adnexos/internal/service"
 )
 
@@ -189,18 +188,13 @@ func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
 		return nil
 	}
 
-	// temporarily add balance field to collection
-	e.Record.Collection().Schema.AddField(&schema.SchemaField{
-		Name: "balance",
-		Type: "int",
-	})
-
 	auth := apis.RequestInfo(e.HttpContext).AuthRecord
 	balance, err := p.calculateBalanceForGroup(e.Record.Id, auth.Id)
 	if err != nil {
 		return err
 	}
 
+	e.Record.WithUnknownData(true)
 	e.Record.Set("balance", balance)
 
 	return nil
@@ -211,12 +205,6 @@ func (p *plugin) onGroupsList(e *core.RecordsListEvent) error {
 		return nil
 	}
 
-	// temporarily add balance field to collection
-	e.Collection.Schema.AddField(&schema.SchemaField{
-		Name: "balance",
-		Type: "int",
-	})
-
 	auth := apis.RequestInfo(e.HttpContext).AuthRecord
 
 	for _, record := range e.Records {
@@ -225,6 +213,7 @@ func (p *plugin) onGroupsList(e *core.RecordsListEvent) error {
 			return err
 		}
 
+		record.WithUnknownData(true)
 		record.Set("balance", balance)
 	}
 
