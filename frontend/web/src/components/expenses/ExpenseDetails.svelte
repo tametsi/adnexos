@@ -15,7 +15,7 @@
 		id = new URLSearchParams(window.location.search).get('id') || '';
 		req = $pb
 			.collection('expenses')
-			.getOne(id, { expand: 'members,source' })
+			.getOne(id, { expand: 'members,source,group' })
 			.then(x => ($expense = x));
 	});
 	onDestroy(() => ($expense = null));
@@ -86,7 +86,7 @@
 			{/each}
 		</ul>
 
-		{#if $auth?.id === e.e.source}
+		{#if $auth?.id === e.e.source || $auth?.id === e.e.expand?.group?.owner}
 			<button on:click={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
 				Delete
 			</button>
