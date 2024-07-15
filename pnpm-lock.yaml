@@ -6,17 +6,17 @@ settings:
 
 devDependencies:
   prettier:
-    specifier: ^3.2.5
-    version: 3.2.5
+    specifier: ^3.3.3
+    version: 3.3.3
   prettier-plugin-astro:
     specifier: ^0.12.3
     version: 0.12.3
   prettier-plugin-svelte:
-    specifier: ^3.2.3
-    version: 3.2.3(prettier@3.2.5)(svelte@4.2.17)
+    specifier: ^3.2.5
+    version: 3.2.5(prettier@3.3.3)(svelte@4.2.18)
   prettier-plugin-tailwindcss:
     specifier: ^0.5.14
-    version: 0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.2.3)(prettier@3.2.5)
+    version: 0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.2.5)(prettier@3.3.3)
 
 packages:
 
@@ -37,7 +37,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
       '@jridgewell/trace-mapping': 0.3.25
     dev: true
 
@@ -51,23 +51,23 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
-  /@jridgewell/sourcemap-codec@1.4.15:
-    resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
+  /@jridgewell/sourcemap-codec@1.5.0:
+    resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
     dev: true
 
   /@jridgewell/trace-mapping@0.3.25:
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
     dev: true
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
 
-  /acorn@8.11.3:
-    resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
+  /acorn@8.12.1:
+    resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
@@ -87,9 +87,9 @@ packages:
   /code-red@1.0.4:
     resolution: {integrity: sha512-7qJWqItLA8/VPVlKJlFXU+NBlo/qyfs39aJcuMT/2ere32ZqvF5OSxgdM5xOfJJ7O429gg2HM47y8v9P+9wrNw==}
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
       '@types/estree': 1.0.5
-      acorn: 8.11.3
+      acorn: 8.12.1
       estree-walker: 3.0.3
       periscopic: 3.1.0
     dev: true
@@ -126,7 +126,7 @@ packages:
   /magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
     dev: true
 
   /mdn-data@2.0.30:
@@ -146,21 +146,21 @@ packages:
     engines: {node: ^14.15.0 || >=16.0.0}
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.2.5
+      prettier: 3.3.3
       sass-formatter: 0.7.9
     dev: true
 
-  /prettier-plugin-svelte@3.2.3(prettier@3.2.5)(svelte@4.2.17):
-    resolution: {integrity: sha512-wJq8RunyFlWco6U0WJV5wNCM7zpBFakS76UBSbmzMGpncpK98NZABaE+s7n8/APDCEVNHXC5Mpq+MLebQtsRlg==}
+  /prettier-plugin-svelte@3.2.5(prettier@3.3.3)(svelte@4.2.18):
+    resolution: {integrity: sha512-vP/M/Goc8z4iVIvrwXwbrYVjJgA0Hf8PO1G4LBh/ocSt6vUP6sLvyu9F3ABEGr+dbKyxZjEKLkeFsWy/yYl0HQ==}
     peerDependencies:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
     dependencies:
-      prettier: 3.2.5
-      svelte: 4.2.17
+      prettier: 3.3.3
+      svelte: 4.2.18
     dev: true
 
-  /prettier-plugin-tailwindcss@0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.2.3)(prettier@3.2.5):
+  /prettier-plugin-tailwindcss@0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.2.5)(prettier@3.3.3):
     resolution: {integrity: sha512-Puaz+wPUAhFp8Lo9HuciYKM2Y2XExESjeT+9NQoVFXZsPPnc9VYss2SpxdQ6vbatmt8/4+SN0oe0I1cPDABg9Q==}
     engines: {node: '>=14.21.3'}
     peerDependencies:
@@ -212,13 +212,13 @@ packages:
       prettier-plugin-svelte:
         optional: true
     dependencies:
-      prettier: 3.2.5
+      prettier: 3.3.3
       prettier-plugin-astro: 0.12.3
-      prettier-plugin-svelte: 3.2.3(prettier@3.2.5)(svelte@4.2.17)
+      prettier-plugin-svelte: 3.2.5(prettier@3.3.3)(svelte@4.2.18)
     dev: true
 
-  /prettier@3.2.5:
-    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+  /prettier@3.3.3:
+    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -244,15 +244,15 @@ packages:
       s.color: 0.0.15
     dev: true
 
-  /svelte@4.2.17:
-    resolution: {integrity: sha512-N7m1YnoXtRf5wya5Gyx3TWuTddI4nAyayyIWFojiWV5IayDYNV5i2mRp/7qNGol4DtxEYxljmrbgp1HM6hUbmQ==}
+  /svelte@4.2.18:
+    resolution: {integrity: sha512-d0FdzYIiAePqRJEb90WlJDkjUEx42xhivxN8muUBmfZnP+tzUgz12DJ2hRJi8sIHCME7jeK1PTMgKPSfTd8JrA==}
     engines: {node: '>=16'}
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
       '@jridgewell/trace-mapping': 0.3.25
       '@types/estree': 1.0.5
-      acorn: 8.11.3
+      acorn: 8.12.1
       aria-query: 5.3.0
       axobject-query: 4.0.0
       code-red: 1.0.4
