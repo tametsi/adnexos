@@ -30,7 +30,7 @@
 
 		<div>
 			<div class="overflow-x-auto">
-				<PaymentsTable payments={items} />
+				<PaymentsTable bind:payments={items} on:delete={() => total--} />
 			</div>
 		</div>
 

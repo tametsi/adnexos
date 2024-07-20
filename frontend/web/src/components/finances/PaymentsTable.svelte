@@ -3,12 +3,14 @@
 	import pb, { auth } from '@/lib/pb';
 	import { Trash2Icon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
+	import { createEventDispatcher } from 'svelte';
 
 	const f = new Intl.NumberFormat(undefined, {
 		style: 'currency',
 		currency: 'EUR',
 		signDisplay: 'exceptZero',
 	});
+	const dispatch = createEventDispatcher();
 
 	export let payments: RecordModel[];
 
@@ -22,7 +24,10 @@
 
 		$pb.collection('payments')
 			.delete(p.id)
-			.then(() => (payments = payments.filter(x => x.id !== p.id)))
+			.then(() => {
+				payments = payments.filter(x => x.id !== p.id);
+				dispatch('delete');
+			})
 			.catch(error('Failed to delete payment.'));
 	};
 </script>
