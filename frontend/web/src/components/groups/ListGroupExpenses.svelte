@@ -7,25 +7,28 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	const load = (page = 1) =>
+	const load = (page = 1, reset = false) =>
 		$pb
 			.collection('expenses')
 			.getList(page, 20, {
-				filter: `group = "${id}" && isSettled = false`,
+				filter: `group = "${id}"${includeSettled ? '' : ' && isSettled = false'}`,
 				sort: '-created',
 				expand: 'members,source',
 			})
 			.then(x => {
-				items = [...items, ...x.items];
+				items = [...(reset ? [] : items), ...x.items];
 				lastPage = x.page;
 				total = x.totalItems;
 			});
 
-	let id: string,
+	let id: string | undefined,
 		items: RecordModel[] = [],
 		lastPage = 0,
 		total = 0,
-		req = load();
+		includeSettled = false,
+		req: Promise<void> = new Promise(() => {});
+
+	$: includeSettled, id && (req = load(1, true));
 
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
@@ -37,6 +40,13 @@
 <a href="/expenses/create?groupId={id}" class="btn btn-primary btn-outline w-full">
 	Create Expense
 </a>
+
+<div class="form-control">
+	<label class="label cursor-pointer justify-start gap-2 py-4">
+		<input type="checkbox" bind:checked={includeSettled} class="checkbox" />
+		<span class="label-text">Include Settled Expenses</span>
+	</label>
+</div>
 
 {#await req}
 	<Loading />

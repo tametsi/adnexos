@@ -16,14 +16,17 @@
 	class="card card-compact"
 >
 	<div class="card-body">
-		<h3 class="card-title flex justify-between">
+		<h3 class="card-title flex justify-start">
 			<span class="truncate">
 				{expense.title || 'Expense'}
 			</span>
+			{#if expense.isSettled}
+				<div class="badge badge-primary badge-outline">Settled</div>
+			{/if}
 			<span
-				class:text-error={e.toPay > 0}
-				class:text-success={e.toPay < 0}
-				class="whitespace-nowrap"
+				class:text-error={e.toPay > 0 && !expense.isSettled}
+				class:text-success={e.toPay < 0 && !expense.isSettled}
+				class="flex-grow whitespace-nowrap text-right"
 			>
 				{e.balanceDisplay}
 			</span>
