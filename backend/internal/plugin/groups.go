@@ -82,9 +82,12 @@ func (p *plugin) groupSettleRoute(c echo.Context) error {
 	auth := apis.RequestInfo(c).AuthRecord
 
 	group, err := p.app.Dao().FindRecordById("groups", id)
+	if err != nil {
+		return apis.NewNotFoundError("Group not found.", err)
+	}
 
 	members := group.GetStringSlice("members")
-	if err != nil || (!slices.Contains(members, auth.Id) && group.GetString("owner") != auth.Id) {
+	if !slices.Contains(members, auth.Id) && group.GetString("owner") != auth.Id {
 		return apis.NewNotFoundError("Group not found.", err)
 	}
 
@@ -96,38 +99,25 @@ func (p *plugin) groupSettleRoute(c echo.Context) error {
 	}
 
 	// map expenses
-	expenses := []service.Expenses{}
+	expenses := []service.Expense{}
 	for _, e := range recordExpenses {
-		expenses = append(expenses, service.Expenses{
+		expenses = append(expenses, service.Expense{
 			Amount:  e.GetInt("amount"),
 			Members: e.GetStringSlice("members"),
 			Source:  e.GetString("source"),
 		})
 	}
 
-	fullMembers := append(group.GetStringSlice("members"), group.GetString("owner"))
-	finances := &service.Finances{
-		Members: make(map[string]int),
-		Map:     make([][]int, len(fullMembers)),
-	}
-	for i, member := range fullMembers {
-		finances.Members[member] = i
-		finances.Map[i] = make([]int, len(fullMembers))
-	}
+	settle := service.NewSettle(append(members, group.GetString("owner")), expenses)
+	payments := settle.CreatePayments()
 
-	finances.AddExpenses(expenses)
-	finances.Merge()
-
-	// TODO optimization
-
-	// payment creation
 	collection, err := p.app.Dao().FindCollectionByNameOrId("payments")
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Find payments collection.", err)
 	}
 
 	paymentRecords := []models.Record{}
-	for _, payment := range finances.CreatePayments() {
+	for _, payment := range payments {
 		record := models.NewRecord(collection)
 		record.Set("to", payment.To)
 		record.Set("from", payment.From)
@@ -136,7 +126,7 @@ func (p *plugin) groupSettleRoute(c echo.Context) error {
 		err = p.app.Dao().SaveRecord(record)
 		if err != nil {
 			return apis.NewApiError(http.StatusInternalServerError,
-				"Saving at least one payment failed. Check already saved payments!", err)
+				"Creating at least one payment failed. Check already created payments!", err)
 		}
 
 		paymentRecords = append(paymentRecords, *record)
