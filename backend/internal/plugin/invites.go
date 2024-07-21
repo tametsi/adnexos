@@ -7,9 +7,12 @@ import (
 
 // remove expired invitations
 func (p *plugin) invitesRemove() {
-	p.app.Dao().DB().
+	_, err := p.app.Dao().DB().
 		NewQuery("DELETE FROM invites WHERE expires < {:now}").
 		Bind(dbx.Params{
 			"now": types.NowDateTime(),
 		}).Execute()
+	if err != nil {
+		p.app.Logger().Error("Failed to remove expired invites", "error", err)
+	}
 }

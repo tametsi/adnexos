@@ -28,7 +28,10 @@ func main() {
 	})
 
 	// register custom business logic
-	plugin.Register(app)
+	err := plugin.Register(app)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
