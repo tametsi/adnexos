@@ -1,0 +1,55 @@
+name: 🧪 Lint & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'backend/go.mod'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install project dependencies
+        run: pnpm install
+      - name: Check Prettier
+        run: pnpm check
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: make all
+      - name: Test & build backend
+        working-directory: ./backend
+        run: |
+          make test
+          make test-build
+      - name: Lint backend
+        working-directory: ./backend
+        run: make lint-check
+
+      - name: Install frontend/web dependencies
+        working-directory: ./frontend/web
+        run: pnpm install
+      - name: Check & build frontend/web
+        working-directory: ./frontend/web
+        run: |
+          pnpm check
+          pnpm build
