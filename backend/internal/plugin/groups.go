@@ -174,18 +174,32 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
 }
 
 func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
-	if !hasFieldValue(e.HttpContext, "balance") {
+	hasBalance := hasFieldValue(e.HttpContext, "balance")
+	hasCosts := hasFieldValue(e.HttpContext, "costs")
+	if !hasBalance && !hasCosts {
 		return nil
 	}
 
 	auth := apis.RequestInfo(e.HttpContext).AuthRecord
-	balance, err := p.calculateBalanceForGroup(e.Record.Id, auth.Id)
-	if err != nil {
-		return err
+	e.Record.WithUnknownData(true)
+
+	if hasBalance {
+		balance, err := p.calculateBalanceForGroup(e.Record.Id, auth.Id)
+		if err != nil {
+			return err
+		}
+
+		e.Record.Set("balance", balance)
 	}
 
-	e.Record.WithUnknownData(true)
-	e.Record.Set("balance", balance)
+	if hasCosts {
+		costs, err := p.calculateCostsForGroup(e.Record.Id, auth.Id)
+		if err != nil {
+			return err
+		}
+
+		e.Record.Set("costs", costs)
+	}
 
 	return nil
 }
@@ -238,4 +252,20 @@ func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {
 	}
 
 	return balance, nil
+}
+
+func (p *plugin) calculateCostsForGroup(groupId, authId string) (int, error) {
+	costs := 0
+
+	expenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
+		dbx.Params{"group": groupId, "auth": authId})
+	if err != nil {
+		return 0, apis.NewApiError(http.StatusInternalServerError, "Failed to query DB to calculate costs.", err)
+	}
+
+	for _, expense := range expenses {
+		costs += expense.GetInt("amount") / len(expense.GetStringSlice("members"))
+	}
+
+	return costs, nil
 }

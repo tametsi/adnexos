@@ -17,7 +17,7 @@
 
 		req = $pb
 			.collection('groups')
-			.getOne(id, { fields: '*,balance', expand: 'owner,members' })
+			.getOne(id, { fields: '*,balance,costs', expand: 'owner,members' })
 			.then(x => ($group = x));
 	});
 	onDestroy(() => ($group = null));
@@ -35,8 +35,8 @@
 
 		<li class="stats my-2 w-full">
 			<div class="stat">
-				<div class="stat-title">Members</div>
-				<div class="stat-value">{g.members.length + 1}</div>
+				<div class="stat-title">Costs</div>
+				<div class="stat-value">{f.format(g.costs / 100)}</div>
 			</div>
 			<div class="stat">
 				<div class="stat-title">Balance</div>
