@@ -7,7 +7,11 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 
-	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
+	const f = new Intl.NumberFormat(undefined, {
+		style: 'currency',
+		currency: 'EUR',
+		maximumFractionDigits: 0,
+	});
 
 	let id: string,
 		req: Promise<RecordModel> = new Promise(() => {});
@@ -36,12 +40,12 @@
 		<li class="stats my-2 w-full">
 			<div class="stat">
 				<div class="stat-title">Costs</div>
-				<div class="stat-value">{f.format(g.costs / 100)}</div>
+				<div class="stat-value text-3xl">{f.format(g.costs / 100)}</div>
 			</div>
 			<div class="stat">
 				<div class="stat-title">Balance</div>
 				<div
-					class="stat-value"
+					class="stat-value text-3xl"
 					class:text-success={g.balance > 0}
 					class:text-error={g.balance < 0}
 				>
