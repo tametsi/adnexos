@@ -5,16 +5,26 @@
 	import pb, { auth } from '@/lib/pb';
 	import { CopyIcon, Trash2Icon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
+	import { onMount } from 'svelte';
 
-	export let groupId: string,
+	let groupId = '',
 		/** determine whether to show the delete btn */
-		groupOwner = '';
+		groupOwner = '',
+		req = new Promise(() => {}),
+		invites: RecordModel[] = [];
 
-	let req = $pb
+	onMount(() => {
+		groupId = new URLSearchParams(window.location.search).get('id') || '';
+
+		req = $pb
 			.collection('invites')
 			.getList(1, 200, { skipTotal: true, filter: `group = "${groupId}"` })
-			.then(x => (invites = x.items)),
-		invites: RecordModel[] = [];
+			.then(x => (invites = x.items));
+
+		$pb.collection('groups')
+			.getOne(groupId, { fields: 'owner' })
+			.then(group => (groupOwner = group.owner));
+	});
 
 	const buildInvite = (id: string) => `${window.location.origin}/groups/join?id=${id}`;
 
@@ -33,7 +43,7 @@
 			.catch(error('Failed to delete invite.'));
 </script>
 
-<button on:click={create} class="btn btn-outline btn-primary mb-1 w-full">Create Invite</button>
+<button on:click={create} class="btn btn-outline btn-primary mb-4 w-full">Create Invite</button>
 
 {#await req}
 	<Loading />

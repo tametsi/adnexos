@@ -1,0 +1,18 @@
+---
+import EditExpenseBtn from '@/components/expenses/EditExpenseBtn.svelte';
+import InviteList from '@/components/groups/InviteList.svelte';
+import InvitesBackBtn from '@/components/groups/InvitesBackBtn.svelte';
+import PageNav from '@/layouts/PageNav.astro';
+import { UserPlusIcon } from 'lucide-svelte';
+---
+
+<PageNav activeUrl="/">
+	<Fragment slot="heading">
+		<InvitesBackBtn client:idle />
+		Group Invites
+	</Fragment>
+
+	<div class="px-2">
+		<InviteList client:load />
+	</div>
+</PageNav>

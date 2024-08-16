@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Error from '@/components/Error.svelte';
 	import Loading from '@/components/Loading.svelte';
-	import InviteList from '@/components/groups/InviteList.svelte';
 	import pb from '@/lib/pb';
 	import { group } from '@/lib/stores';
 	import type { RecordModel } from 'pocketbase';
@@ -61,17 +60,6 @@
 			{#each g.expand?.members || [] as member}
 				<span class="badge badge-outline badge-lg">{member.name || member.username}</span>
 			{/each}
-		</li>
-
-		<!-- Invites -->
-		<li>
-			<div class="bg-base-200 collapse-arrow collapse grid-cols-1 shadow-md">
-				<input type="checkbox" />
-				<div class="collapse-title text-xl font-medium">Invites</div>
-				<div class="collapse-content">
-					<InviteList groupId={g.id} groupOwner={g.owner} />
-				</div>
-			</div>
 		</li>
 	</ul>
 {:catch}

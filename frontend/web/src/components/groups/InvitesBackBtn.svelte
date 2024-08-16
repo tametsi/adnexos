@@ -1,0 +1,13 @@
+<script lang="ts">
+	import { ArrowLeftIcon } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
+	let groupId = '';
+	onMount(() => (groupId = new URLSearchParams(window.location.search).get('id') || ''));
+
+	$: backUrl = groupId ? `/groups/view?id=${groupId}` : '/';
+</script>
+
+<a href={backUrl} class="btn btn-sm btn-ghost btn-circle align-text-bottom" aria-label="Go back">
+	<ArrowLeftIcon />
+</a>
