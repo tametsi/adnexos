@@ -9,7 +9,7 @@
 		m.balance = group.membersBalance[m.id];
 		return m;
 	});
-	members.push({ balance: group.balance, ...group.expand?.owner });
+	members.push({ balance: group.membersBalance[group.owner], ...group.expand?.owner });
 	members.sort((a: RecordModel, b: RecordModel) => b.balance - a.balance);
 </script>
 

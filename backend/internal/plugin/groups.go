@@ -210,7 +210,7 @@ func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
 		memberIDs := e.Record.GetStringSlice("members")
 		membersBalance := map[string]int{}
 
-		for _, mID := range memberIDs {
+		for _, mID := range append(memberIDs, e.Record.GetString("owner")) {
 			balance, err := p.calculateBalanceForGroup(e.Record.Id, mID)
 			if err != nil {
 				return err
