@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Error from '@/components/Error.svelte';
+	import GroupMembersList from '@/components/groups/GroupMembersList.svelte';
 	import Loading from '@/components/Loading.svelte';
 	import pb from '@/lib/pb';
 	import { group } from '@/lib/stores';
@@ -20,7 +21,7 @@
 
 		req = $pb
 			.collection('groups')
-			.getOne(id, { fields: '*,balance,costs', expand: 'owner,members' })
+			.getOne(id, { fields: '*,balance,costs,members.balance', expand: 'owner,members' })
 			.then(x => ($group = x));
 	});
 	onDestroy(() => ($group = null));
@@ -53,13 +54,17 @@
 			</div>
 		</li>
 
-		<li class="flex flex-wrap gap-2 px-2">
-			<span class="badge badge-outline badge-lg">
-				{g.expand?.owner.name || g.expand?.owner.username}
-			</span>
-			{#each g.expand?.members || [] as member}
-				<span class="badge badge-outline badge-lg">{member.name || member.username}</span>
-			{/each}
+		<li>
+			<div class="bg-base-200 collapse-arrow collapse grid-cols-1 shadow-md">
+				<input type="checkbox" />
+				<div class="collapse-title text-xl font-medium">
+					{(g.expand?.members?.length ?? 0) + 1}
+					Member{(g.expand?.members?.length ?? 0) === 0 ? '' : 's'}
+				</div>
+				<div class="collapse-content">
+					<GroupMembersList group={g} />
+				</div>
+			</div>
 		</li>
 	</ul>
 {:catch}

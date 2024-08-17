@@ -175,8 +175,9 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
 
 func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
 	hasBalance := hasFieldValue(e.HttpContext, "balance")
+	hasBalanceForMembers := hasFieldValue(e.HttpContext, "members.balance")
 	hasCosts := hasFieldValue(e.HttpContext, "costs")
-	if !hasBalance && !hasCosts {
+	if !hasBalance && !hasCosts && !hasBalanceForMembers {
 		return nil
 	}
 
@@ -199,6 +200,26 @@ func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
 		}
 
 		e.Record.Set("costs", costs)
+	}
+
+	if hasBalanceForMembers {
+		// WARNING: massivly botched code ahead!
+		// However, we need to modify expanded data which is not possible without even more chaos...
+		// FIXME one day and come up with something better (:
+
+		memberIDs := e.Record.GetStringSlice("members")
+		membersBalance := map[string]int{}
+
+		for _, mID := range memberIDs {
+			balance, err := p.calculateBalanceForGroup(e.Record.Id, mID)
+			if err != nil {
+				return err
+			}
+
+			membersBalance[mID] = balance
+		}
+
+		e.Record.Set("membersBalance", membersBalance)
 	}
 
 	return nil
