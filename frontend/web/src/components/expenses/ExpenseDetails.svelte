@@ -63,6 +63,9 @@
 	</div>
 
 	<p class="px-2 text-sm">
+		{#if e.e.isPrivate}
+			Private Expense<br />
+		{/if}
 		Created: <span class="font-bold">{new Date(e.e.created).toLocaleString()}</span><br />
 		Updated: <span class="font-bold">{new Date(e.e.created).toLocaleString()}</span>
 	</p>

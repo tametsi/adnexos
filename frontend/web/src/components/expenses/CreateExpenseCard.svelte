@@ -24,6 +24,7 @@
 	let data: Partial<RecordModel> = {
 		title: '',
 		amount: undefined,
+		isPrivate: false,
 		group: '',
 		isSettled: false,
 		source: $auth?.id,
@@ -109,6 +110,14 @@
 			placeholder="amount"
 			class="input input-bordered w-full"
 		/>
+	</label>
+
+	<!-- private -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text">Private Expense</span>
+			<input type="checkbox" bind:checked={data.isPrivate} class="checkbox" />
+		</div>
 	</label>
 
 	<!-- members -->

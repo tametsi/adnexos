@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { calculateExpense } from '@/lib/expense';
 	import { auth } from '@/lib/pb';
-	import { UsersIcon } from 'lucide-svelte';
+	import { LockIcon, UsersIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
 	export let expense: RecordModel,
@@ -38,6 +38,13 @@
 				<span class="badge badge-outline badge-primary badge-sm gap-1">
 					<UsersIcon size="12" />
 					{expense.expand?.group?.name || expense.group}
+				</span>
+			{/if}
+
+			{#if expense.isPrivate}
+				<span class="badge badge-outline badge-primary badge-sm gap-1">
+					<LockIcon size="12" />
+					Private
 				</span>
 			{/if}
 

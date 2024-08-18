@@ -26,6 +26,7 @@
 	let data: Partial<RecordModel> = {
 		title: '',
 		amount: 0,
+		isPrivate: false,
 		group: '',
 		isSettled: false,
 		source: $auth?.id,
@@ -45,6 +46,7 @@
 			.update(data.id || id, {
 				title: data?.title,
 				amount: Math.floor(data.amount * 100),
+				isPrivate: data.isPrivate,
 				members: data.members,
 			})
 			.then(() => window.location.replace(`/expenses/view?id=${data.id || id}`))
@@ -83,6 +85,14 @@
 			placeholder="amount"
 			class="input input-bordered w-full"
 		/>
+	</label>
+
+	<!-- private -->
+	<label class="form-control w-full">
+		<div class="label">
+			<span class="label-text">Private Expense</span>
+			<input type="checkbox" bind:checked={data.isPrivate} class="checkbox" />
+		</div>
 	</label>
 
 	<!-- members -->
