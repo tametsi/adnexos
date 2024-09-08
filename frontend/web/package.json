@@ -12,7 +12,7 @@
 		"gen:pwa-assets": "pwa-assets-generator"
 	},
 	"devDependencies": {
-		"@astrojs/check": "^0.4.1",
+		"@astrojs/check": "^0.9.3",
 		"@astrojs/svelte": "^5.7.0",
 		"@astrojs/tailwind": "^5.1.0",
 		"@vite-pwa/assets-generator": "^0.2.4",
