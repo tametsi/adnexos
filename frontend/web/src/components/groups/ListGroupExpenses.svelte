@@ -32,7 +32,7 @@
 
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
-		req = load();
+		req = load(1, true);
 	});
 </script>
 
