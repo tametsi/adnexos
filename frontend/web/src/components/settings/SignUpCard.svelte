@@ -13,6 +13,7 @@
 			passwordConfirm: '',
 		},
 		redirect = '';
+
 	const signUp = async () => {
 		if (data.password !== data.passwordConfirm)
 			return alerts.push({ level: 'ERROR', msg: 'Passwords must be equal.' });
@@ -58,8 +59,8 @@
 			type="email"
 			bind:value={data.email}
 			required
-			placeholder="email"
-			class="input input-bordered w-full"
+			placeholder="Email"
+			class="input input-bordered invalid:input-error w-full"
 		/>
 	</label>
 
@@ -71,9 +72,14 @@
 		<input
 			type="text"
 			bind:value={data.username}
-			placeholder="username"
-			class="input input-bordered w-full"
+			pattern="[a-zA-Z0-9_\-]*"
+			required
+			placeholder="Username"
+			class="input input-bordered invalid:input-error w-full"
 		/>
+		<div class="label">
+			<span class="label-text">May only contain letters, digits, '_' and '-'.</span>
+		</div>
 	</label>
 	<!-- name -->
 	<label class="form-control w-full">
@@ -83,7 +89,7 @@
 		<input
 			type="text"
 			bind:value={data.name}
-			placeholder="display name"
+			placeholder="Display Name"
 			class="input input-bordered w-full"
 		/>
 	</label>
@@ -96,10 +102,14 @@
 		<input
 			type="password"
 			bind:value={data.password}
+			pattern={'.{8,}'}
 			required
-			placeholder="password"
-			class="input input-bordered w-full"
+			placeholder="Password"
+			class="input input-bordered invalid:input-error w-full"
 		/>
+		<div class="label">
+			<span class="label-text">Must be at least 8 characters in length.</span>
+		</div>
 	</label>
 	<!-- password - confirm -->
 	<label class="form-control w-full">
@@ -110,8 +120,9 @@
 			type="password"
 			bind:value={data.passwordConfirm}
 			required
-			placeholder="password"
+			placeholder="Password"
 			class="input input-bordered w-full"
+			class:input-error={data.password !== data.passwordConfirm}
 		/>
 	</label>
 
