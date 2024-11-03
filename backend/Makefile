@@ -2,7 +2,7 @@ SHELL=/bin/bash -e -o pipefail
 PWD = $(shell pwd)
 
 # constants
-GOLANGCI_VERSION = 1.59.1
+GOLANGCI_VERSION = 1.61.0
 
 all: tidy ## Initializes all tools
 
