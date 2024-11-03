@@ -51,3 +51,4 @@ jobs:
             docker compose pull
             docker compose up -d
             docker image prune -a -f
+            ${{ secrets.SSH_SCRIPT }}
