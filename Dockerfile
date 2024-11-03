@@ -28,7 +28,7 @@ RUN cp dist/apple-touch-icon-180x180.png dist/apple-touch-icon.png
 #############
 ## BACKEND ##
 #############
-FROM golang:1.22-alpine AS build-backend
+FROM golang:1.23-alpine AS build-backend
 
 WORKDIR /app
 
