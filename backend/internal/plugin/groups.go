@@ -5,7 +5,6 @@ import (
 	"slices"
 	"time"
 
-	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -13,10 +12,14 @@ import (
 	"github.com/tametsi/adnexos/internal/service"
 )
 
-func (p *plugin) groupJoinRoute(c echo.Context) error {
-	id := c.PathParam("id")
+func (p *plugin) groupJoinRoute(e *core.RequestEvent) error {
+	id := e.Request.PathValue("id")
 
-	auth := apis.RequestInfo(c).AuthRecord
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	auth := info.Auth
 
 	invite, err := p.app.Dao().FindRecordById("invites", id)
 	if err != nil {
@@ -43,18 +46,22 @@ func (p *plugin) groupJoinRoute(c echo.Context) error {
 		return apis.NewApiError(http.StatusInternalServerError, "Saving seems to be a hard task...", nil)
 	}
 
-	return c.NoContent(http.StatusNoContent)
+	return e.NoContent(http.StatusNoContent)
 }
 
-func (p *plugin) groupLeaveRoute(c echo.Context) error {
-	id := c.PathParam("id")
+func (p *plugin) groupLeaveRoute(e *core.RequestEvent) error {
+	id := e.Request.PathValue("id")
 
 	group, err := p.app.Dao().FindRecordById("groups", id)
 	if err != nil {
 		return apis.NewNotFoundError("Group not found.", err)
 	}
 
-	auth := apis.RequestInfo(c).AuthRecord
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	auth := info.Auth
 
 	if group.GetString("owner") == auth.Id {
 		return apis.NewBadRequestError("Set a new owner first.", nil)
@@ -73,13 +80,17 @@ func (p *plugin) groupLeaveRoute(c echo.Context) error {
 		return apis.NewApiError(http.StatusInternalServerError, "Failed to update group.", err)
 	}
 
-	return c.NoContent(http.StatusNoContent)
+	return e.NoContent(http.StatusNoContent)
 }
 
-func (p *plugin) groupSettleRoute(c echo.Context) error {
-	id := c.PathParam("id")
+func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
+	id := e.Request.PathValue("id")
 
-	auth := apis.RequestInfo(c).AuthRecord
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	auth := info.Auth
 
 	group, err := p.app.Dao().FindRecordById("groups", id)
 	if err != nil {
@@ -142,7 +153,7 @@ func (p *plugin) groupSettleRoute(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, paymentRecords)
+	return e.JSON(http.StatusOK, paymentRecords)
 }
 
 // fires on groups update request to check if no new user have been added

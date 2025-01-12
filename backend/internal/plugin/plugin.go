@@ -13,14 +13,11 @@ import (
 func Register(app core.App) error {
 	p := &plugin{app: app}
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		// routing
-		e.Router.POST("/api/collections/groups/join/:id", p.groupJoinRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
-		e.Router.POST("/api/collections/groups/:id/leave", p.groupLeaveRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
-		e.Router.POST("/api/collections/groups/:id/settle", p.groupSettleRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
+		se.Router.POST("/api/collections/groups/join/{id}", p.groupJoinRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/{id}/leave", p.groupLeaveRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/{id}/settle", p.groupSettleRoute).Bind(apis.RequireAuth())
 
 		return nil
 	})
