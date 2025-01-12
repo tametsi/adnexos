@@ -19,7 +19,7 @@ func Register(app core.App) error {
 		se.Router.POST("/api/collections/groups/{id}/leave", p.groupLeaveRoute).Bind(apis.RequireAuth())
 		se.Router.POST("/api/collections/groups/{id}/settle", p.groupSettleRoute).Bind(apis.RequireAuth())
 
-		return nil
+		return se.Next()
 	})
 
 	// record operations
