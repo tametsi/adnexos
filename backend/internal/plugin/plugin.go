@@ -1,10 +1,10 @@
 package plugin
 
 import (
+	"net/url"
 	"slices"
 	"strings"
 
-	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 )
@@ -23,14 +23,14 @@ func Register(app core.App) error {
 	})
 
 	// record operations
-	app.OnRecordBeforeCreateRequest("expenses").Add(p.onExpensesBeforeCreate)
-	app.OnRecordBeforeUpdateRequest("expenses").Add(p.onExpensesBeforeUpdate)
+	app.OnRecordCreateRequest("expenses").BindFunc(p.onExpensesBeforeCreate)
+	app.OnRecordUpdateRequest("expenses").BindFunc(p.onExpensesBeforeUpdate)
 
-	app.OnRecordViewRequest("groups").Add(p.onGroupsView)
-	app.OnRecordsListRequest("groups").Add(p.onGroupsList)
-	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
+	app.OnRecordViewRequest("groups").BindFunc(p.onGroupsView)
+	app.OnRecordsListRequest("groups").BindFunc(p.onGroupsList)
+	app.OnRecordUpdateRequest("groups").BindFunc(p.onGroupsBeforeUpdate)
 
-	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
+	app.OnRecordCreateRequest("settings").BindFunc(p.onSettingsCreate)
 
 	// cron jobs
 	app.Cron().MustAdd("remove-invites", "0 1 * * *", p.invitesRemove)
@@ -45,8 +45,8 @@ type plugin struct {
 // helpers
 
 // checks whether `value` is present in a comma separated list in query param `fields`
-func hasFieldValue(ctx echo.Context, value string) bool {
-	fields := ctx.QueryParams().Get("fields")
+func hasFieldValue(url *url.URL, value string) bool {
+	fields := url.Query().Get("fields")
 	if fields == "" {
 		return false
 	}

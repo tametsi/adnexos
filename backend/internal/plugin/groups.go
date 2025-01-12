@@ -157,7 +157,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 }
 
 // fires on groups update request to check if no new user have been added
-func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
+func (p *plugin) onGroupsBeforeUpdate(e *core.RecordRequestEvent) error {
 	oldRecord, err := p.app.Dao().FindRecordById(e.Collection.Id, e.Record.Id)
 	if err != nil {
 		return err
@@ -168,32 +168,40 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordUpdateEvent) error {
 	oldMembers := oldRecord.GetStringSlice("members")
 	newMembers := e.Record.GetStringSlice("members")
 
-	admin, _ := e.HttpContext.Get(apis.ContextAdminKey).(*models.Admin)
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	isAdmin := info.HasSuperuserAuth()
 
 	for _, v := range newMembers {
 		if newOwner == v {
 			return apis.NewBadRequestError("Owner is not allowed to be a member.", nil)
 		}
 
-		if !slices.Contains(oldMembers, v) && v != oldOwner && admin == nil {
+		if !slices.Contains(oldMembers, v) && v != oldOwner && !isAdmin {
 			// member has been added
 			return apis.NewBadRequestError("Adding members is not allowed.", nil)
 		}
 	}
 
-	return nil
+	return e.Next()
 }
 
-func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
-	hasBalance := hasFieldValue(e.HttpContext, "balance")
-	hasBalanceForMembers := hasFieldValue(e.HttpContext, "members.balance")
-	hasCosts := hasFieldValue(e.HttpContext, "costs")
+func (p *plugin) onGroupsView(e *core.RecordRequestEvent) error {
+	hasBalance := hasFieldValue(e.Request.URL, "balance")
+	hasBalanceForMembers := hasFieldValue(e.Request.URL, "members.balance")
+	hasCosts := hasFieldValue(e.Request.URL, "costs")
 	if !hasBalance && !hasCosts && !hasBalanceForMembers {
-		return nil
+		return e.Next()
 	}
 
-	auth := apis.RequestInfo(e.HttpContext).AuthRecord
-	e.Record.WithUnknownData(true)
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	auth := info.Auth
+	e.Record.WithCustomData(true)
 
 	if hasBalance {
 		balance, err := p.calculateBalanceForGroup(e.Record.Id, auth.Id)
@@ -233,15 +241,19 @@ func (p *plugin) onGroupsView(e *core.RecordViewEvent) error {
 		e.Record.Set("membersBalance", membersBalance)
 	}
 
-	return nil
+	return e.Next()
 }
 
-func (p *plugin) onGroupsList(e *core.RecordsListEvent) error {
-	if !hasFieldValue(e.HttpContext, "balance") {
-		return nil
+func (p *plugin) onGroupsList(e *core.RecordsListRequestEvent) error {
+	if !hasFieldValue(e.Request.URL, "balance") {
+		return e.Next()
 	}
 
-	auth := apis.RequestInfo(e.HttpContext).AuthRecord
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	auth := info.Auth
 
 	for _, record := range e.Records {
 		balance, err := p.calculateBalanceForGroup(record.Id, auth.Id)
@@ -249,11 +261,11 @@ func (p *plugin) onGroupsList(e *core.RecordsListEvent) error {
 			return err
 		}
 
-		record.WithUnknownData(true)
+		record.WithCustomData(true)
 		record.Set("balance", balance)
 	}
 
-	return nil
+	return e.Next()
 }
 
 func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {

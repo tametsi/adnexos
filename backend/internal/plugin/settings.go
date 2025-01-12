@@ -10,10 +10,10 @@ import (
 )
 
 // fires on settings create request to check if settings for user already exist
-func (p *plugin) onSettingsCreate(e *core.RecordCreateEvent) error {
+func (p *plugin) onSettingsCreate(e *core.RecordRequestEvent) error {
 	userId := e.Record.GetString("user")
 	if userId == "" {
-		return nil // nothing to do here, the req will fail later...
+		return e.Next() // nothing to do here, the req will fail later...
 	}
 
 	setting := models.Record{}
@@ -26,5 +26,5 @@ func (p *plugin) onSettingsCreate(e *core.RecordCreateEvent) error {
 		return apis.NewApiError(http.StatusBadRequest, "settings already exist for user", nil)
 	}
 
-	return nil
+	return e.Next()
 }
