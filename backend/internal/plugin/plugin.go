@@ -16,8 +16,8 @@ func Register(app core.App) error {
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		// routing
 		se.Router.POST("/api/collections/groups/join/{id}", p.groupJoinRoute).Bind(apis.RequireAuth())
-		se.Router.POST("/api/collections/groups/{id}/leave", p.groupLeaveRoute).Bind(apis.RequireAuth())
-		se.Router.POST("/api/collections/groups/{id}/settle", p.groupSettleRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/leave/{id}", p.groupLeaveRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/settle/{id}", p.groupSettleRoute).Bind(apis.RequireAuth())
 
 		return se.Next()
 	})
