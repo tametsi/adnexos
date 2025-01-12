@@ -7,7 +7,6 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/cron"
 )
 
 // Register registers the custom business logic to the provided app instance.
@@ -23,13 +22,6 @@ func Register(app core.App) error {
 		e.Router.POST("/api/collections/groups/:id/settle", p.groupSettleRoute,
 			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
 
-		// cron jobs
-		scheduler := cron.New()
-
-		scheduler.MustAdd("", "0 1 * * *", p.invitesRemove)
-
-		scheduler.Start()
-
 		return nil
 	})
 
@@ -42,6 +34,9 @@ func Register(app core.App) error {
 	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
 
 	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
+
+	// cron jobs
+	app.Cron().MustAdd("remove-invites", "0 1 * * *", p.invitesRemove)
 
 	return nil
 }
