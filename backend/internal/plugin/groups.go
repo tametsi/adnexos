@@ -8,7 +8,6 @@ import (
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/models"
 	"github.com/tametsi/adnexos/internal/service"
 )
 
@@ -21,7 +20,7 @@ func (p *plugin) groupJoinRoute(e *core.RequestEvent) error {
 	}
 	auth := info.Auth
 
-	invite, err := p.app.Dao().FindRecordById("invites", id)
+	invite, err := p.app.FindRecordById("invites", id)
 	if err != nil {
 		return apis.NewNotFoundError("Invite not found.", nil)
 	}
@@ -30,7 +29,7 @@ func (p *plugin) groupJoinRoute(e *core.RequestEvent) error {
 		return apis.NewApiError(http.StatusBadRequest, "Invite expired.", nil)
 	}
 
-	group, err := p.app.Dao().FindRecordById("groups", invite.GetString("group"))
+	group, err := p.app.FindRecordById("groups", invite.GetString("group"))
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Something went wrong.", nil)
 	}
@@ -41,7 +40,7 @@ func (p *plugin) groupJoinRoute(e *core.RequestEvent) error {
 	}
 	group.Set("members", append(members, auth.Id))
 
-	err = p.app.Dao().SaveRecord(group)
+	err = p.app.Save(group)
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Saving seems to be a hard task...", nil)
 	}
@@ -52,7 +51,7 @@ func (p *plugin) groupJoinRoute(e *core.RequestEvent) error {
 func (p *plugin) groupLeaveRoute(e *core.RequestEvent) error {
 	id := e.Request.PathValue("id")
 
-	group, err := p.app.Dao().FindRecordById("groups", id)
+	group, err := p.app.FindRecordById("groups", id)
 	if err != nil {
 		return apis.NewNotFoundError("Group not found.", err)
 	}
@@ -75,7 +74,7 @@ func (p *plugin) groupLeaveRoute(e *core.RequestEvent) error {
 	members = slices.DeleteFunc(members, func(x string) bool { return x == auth.Id })
 
 	group.Set("members", members)
-	err = p.app.Dao().SaveRecord(group)
+	err = p.app.Save(group)
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Failed to update group.", err)
 	}
@@ -92,7 +91,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 	}
 	auth := info.Auth
 
-	group, err := p.app.Dao().FindRecordById("groups", id)
+	group, err := p.app.FindRecordById("groups", id)
 	if err != nil {
 		return apis.NewNotFoundError("Group not found.", err)
 	}
@@ -103,7 +102,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 	}
 
 	// gather expenses
-	recordExpenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && isSettled = false", "", -1, 0,
+	recordExpenses, err := p.app.FindRecordsByFilter("expenses", "group = {:group} && isSettled = false", "", -1, 0,
 		dbx.Params{"group": id})
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Failed to query expenses.", err)
@@ -122,19 +121,19 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 	settle := service.NewSettle(append(members, group.GetString("owner")), expenses)
 	payments := settle.CreatePayments()
 
-	collection, err := p.app.Dao().FindCollectionByNameOrId("payments")
+	collection, err := p.app.FindCollectionByNameOrId("payments")
 	if err != nil {
 		return apis.NewApiError(http.StatusInternalServerError, "Find payments collection.", err)
 	}
 
-	paymentRecords := []models.Record{}
+	paymentRecords := []core.Record{}
 	for _, payment := range payments {
-		record := models.NewRecord(collection)
+		record := core.NewRecord(collection)
 		record.Set("to", payment.To)
 		record.Set("from", payment.From)
 		record.Set("amount", payment.Amount)
 
-		err = p.app.Dao().SaveRecord(record)
+		err = p.app.Save(record)
 		if err != nil {
 			return apis.NewApiError(http.StatusInternalServerError,
 				"Creating at least one payment failed. Check already created payments!", err)
@@ -147,7 +146,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 	for _, e := range recordExpenses {
 		e.Set("isSettled", true)
 
-		err = p.app.Dao().SaveRecord(e)
+		err = p.app.Save(e)
 		if err != nil {
 			return apis.NewApiError(http.StatusInternalServerError, "Update expenses.", err)
 		}
@@ -158,7 +157,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 
 // fires on groups update request to check if no new user have been added
 func (p *plugin) onGroupsBeforeUpdate(e *core.RecordRequestEvent) error {
-	oldRecord, err := p.app.Dao().FindRecordById(e.Collection.Id, e.Record.Id)
+	oldRecord, err := p.app.FindRecordById(e.Collection.Id, e.Record.Id)
 	if err != nil {
 		return err
 	}
@@ -273,7 +272,7 @@ func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {
 
 	var balancePlus int
 	// + balance for all expenses with source == me
-	err := p.app.Dao().DB().
+	err := p.app.DB().
 		NewQuery("SELECT COALESCE(SUM(amount), 0) FROM expenses WHERE `group` = {:group} AND source = {:auth} AND isSettled = false").
 		Bind(dbx.Params{
 			"group": groupId,
@@ -285,7 +284,7 @@ func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {
 	balance += balancePlus
 
 	// - balance for all expenses with: members contains me
-	expenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
+	expenses, err := p.app.FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
 		dbx.Params{"group": groupId, "auth": authId})
 	if err != nil {
 		return 0, apis.NewApiError(http.StatusInternalServerError, "Failed to query DB to calculate balance (2).", err)
@@ -301,7 +300,7 @@ func (p *plugin) calculateBalanceForGroup(groupId, authId string) (int, error) {
 func (p *plugin) calculateCostsForGroup(groupId, authId string) (int, error) {
 	costs := 0
 
-	expenses, err := p.app.Dao().FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
+	expenses, err := p.app.FindRecordsByFilter("expenses", "group = {:group} && members.id ?= {:auth} && isSettled = false", "", -1, 0,
 		dbx.Params{"group": groupId, "auth": authId})
 	if err != nil {
 		return 0, apis.NewApiError(http.StatusInternalServerError, "Failed to query DB to calculate costs.", err)

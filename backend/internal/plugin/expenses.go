@@ -27,7 +27,7 @@ func (p *plugin) onExpensesBeforeUpdate(e *core.RecordRequestEvent) error {
 }
 
 func (p *plugin) validateExpense(r *core.Record) error {
-	group, err := p.app.Dao().FindRecordById("groups", r.GetString("group"))
+	group, err := p.app.FindRecordById("groups", r.GetString("group"))
 	if err != nil {
 		return apis.NewBadRequestError("Failed to load group.", err)
 	}
