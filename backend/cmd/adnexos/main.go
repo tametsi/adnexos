@@ -9,8 +9,6 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	"github.com/tametsi/adnexos/internal/plugin"
-
-	_ "github.com/tametsi/adnexos/migrations"
 )
 
 func main() {
