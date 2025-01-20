@@ -14,7 +14,7 @@
 	const settle = () => {
 		if (!confirm('Sure? Cannot be undone.')) return;
 
-		$pb.send(`/api/collections/groups/${$group?.id}/settle`, { method: 'POST' })
+		$pb.send(`/api/collections/groups/settle/${$group?.id}`, { method: 'POST' })
 			.then(() => window.location.replace('/finances'))
 			.catch(error('Failed to settle up.'));
 	};
@@ -29,7 +29,7 @@
 	const leave = () => {
 		if (!confirm('Do you really want to leave this group?')) return;
 
-		$pb.send(`/api/collections/groups/${$group?.id}/leave`, { method: 'POST' })
+		$pb.send(`/api/collections/groups/leave/${$group?.id}`, { method: 'POST' })
 			.then(() => window.location.replace('/'))
 			.catch(error('Failed to leave.'));
 	};

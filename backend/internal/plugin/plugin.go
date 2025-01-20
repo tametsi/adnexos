@@ -1,47 +1,39 @@
 package plugin
 
 import (
+	"net/url"
 	"slices"
 	"strings"
 
-	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/cron"
 )
 
 // Register registers the custom business logic to the provided app instance.
 func Register(app core.App) error {
 	p := &plugin{app: app}
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		// routing
-		e.Router.POST("/api/collections/groups/join/:id", p.groupJoinRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
-		e.Router.POST("/api/collections/groups/:id/leave", p.groupLeaveRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
-		e.Router.POST("/api/collections/groups/:id/settle", p.groupSettleRoute,
-			apis.ActivityLogger(p.app), apis.RequireRecordAuth())
+		se.Router.POST("/api/collections/groups/join/{id}", p.groupJoinRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/leave/{id}", p.groupLeaveRoute).Bind(apis.RequireAuth())
+		se.Router.POST("/api/collections/groups/settle/{id}", p.groupSettleRoute).Bind(apis.RequireAuth())
 
-		// cron jobs
-		scheduler := cron.New()
-
-		scheduler.MustAdd("", "0 1 * * *", p.invitesRemove)
-
-		scheduler.Start()
-
-		return nil
+		return se.Next()
 	})
 
 	// record operations
-	app.OnRecordBeforeCreateRequest("expenses").Add(p.onExpensesBeforeCreate)
-	app.OnRecordBeforeUpdateRequest("expenses").Add(p.onExpensesBeforeUpdate)
+	app.OnRecordCreateRequest("expenses").BindFunc(p.onExpensesBeforeCreate)
+	app.OnRecordUpdateRequest("expenses").BindFunc(p.onExpensesBeforeUpdate)
 
-	app.OnRecordViewRequest("groups").Add(p.onGroupsView)
-	app.OnRecordsListRequest("groups").Add(p.onGroupsList)
-	app.OnRecordBeforeUpdateRequest("groups").Add(p.onGroupsBeforeUpdate)
+	app.OnRecordViewRequest("groups").BindFunc(p.onGroupsView)
+	app.OnRecordsListRequest("groups").BindFunc(p.onGroupsList)
+	app.OnRecordUpdateRequest("groups").BindFunc(p.onGroupsBeforeUpdate)
 
-	app.OnRecordBeforeCreateRequest("settings").Add(p.onSettingsCreate)
+	app.OnRecordCreateRequest("settings").BindFunc(p.onSettingsCreate)
+
+	// cron jobs
+	app.Cron().MustAdd("remove-invites", "0 1 * * *", p.invitesRemove)
 
 	return nil
 }
@@ -53,8 +45,8 @@ type plugin struct {
 // helpers
 
 // checks whether `value` is present in a comma separated list in query param `fields`
-func hasFieldValue(ctx echo.Context, value string) bool {
-	fields := ctx.QueryParams().Get("fields")
+func hasFieldValue(url *url.URL, value string) bool {
+	fields := url.Query().Get("fields")
 	if fields == "" {
 		return false
 	}
