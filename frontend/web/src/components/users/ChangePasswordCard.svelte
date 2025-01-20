@@ -15,7 +15,7 @@
 			return alerts.push({ level: 'ERROR', msg: 'Password must be at least 8 characters.' });
 
 		try {
-			await $pb.collection('users').update($auth?.id, data);
+			await $pb.collection('users').update($auth?.id ?? '', data);
 		} catch (e) {
 			return error('Failed to change password.')(e as any);
 		}
@@ -57,9 +57,10 @@
 		<input
 			type="password"
 			bind:value={data.password}
+			pattern={'.{8,}'}
 			required
 			placeholder="new password"
-			class="input input-bordered w-full"
+			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 	</label>
 	<!-- password - confirm -->
@@ -73,6 +74,7 @@
 			required
 			placeholder="password"
 			class="input input-bordered w-full"
+			class:input-error={data.password !== data.passwordConfirm}
 		/>
 	</label>
 

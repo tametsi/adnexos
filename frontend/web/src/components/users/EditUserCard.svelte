@@ -8,7 +8,7 @@
 		$pb
 			.collection('users')
 			.update(
-				data.id,
+				data.id ?? '',
 				{ username: data.username, name: data.name },
 				{ expand: 'settings_via_user' },
 			)
@@ -19,7 +19,7 @@
 <DialogCard backUrl="/settings" on:submit={edit}>
 	<svelte:fragment slot="title">Edit Profile</svelte:fragment>
 
-	<!-- username -->
+	<!-- avatar -->
 	<label class="form-control w-full">
 		<div class="label">
 			<span class="label-text">Avatar (coming soon™)</span>
@@ -35,9 +35,14 @@
 		<input
 			type="text"
 			bind:value={data.username}
+			pattern="[a-zA-Z0-9_\-]*"
+			required
 			placeholder="username"
-			class="input input-bordered w-full"
+			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
+		<div class="label">
+			<span class="label-text">May only contain letters, digits, '_' and '-'.</span>
+		</div>
 	</label>
 	<!-- name -->
 	<label class="form-control w-full">

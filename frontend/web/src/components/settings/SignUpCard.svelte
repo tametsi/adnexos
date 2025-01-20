@@ -60,7 +60,7 @@
 			bind:value={data.email}
 			required
 			placeholder="Email"
-			class="input input-bordered invalid:input-error w-full"
+			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 	</label>
 
@@ -75,7 +75,7 @@
 			pattern="[a-zA-Z0-9_\-]*"
 			required
 			placeholder="Username"
-			class="input input-bordered invalid:input-error w-full"
+			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 		<div class="label">
 			<span class="label-text">May only contain letters, digits, '_' and '-'.</span>
@@ -105,7 +105,7 @@
 			pattern={'.{8,}'}
 			required
 			placeholder="Password"
-			class="input input-bordered invalid:input-error w-full"
+			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 		<div class="label">
 			<span class="label-text">Must be at least 8 characters in length.</span>
