@@ -36,14 +36,13 @@ Official Docker images are maintained and published along the [GitHub repository
 > If you don't plan to use a reverse proxy make sure to replace the content of the `docker-compose.yaml` with the following:
 >
 > ```yaml
-> version: '3'
 > name: adnexos
 >
 > services:
 >   app:
 >     image: '${IMAGE_ID}:${IMAGE_TAG}'
 >     container_name: 'adnexos'
->     restart: always
+>     restart: unless-stopped
 >     ports:
 >       - '8090:8090'
 >     volumes:
