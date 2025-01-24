@@ -60,6 +60,27 @@ Official Docker images are maintained and published along the [GitHub repository
    docker compose up -d
    ```
 
+4. Create the admin/superuser account. Running
+
+   ```bash
+   docker compose logs
+   ```
+
+   should give you an output like:
+
+   ```
+   [...]
+   (!) Launch the URL below in the browser if it hasn't been open already to create your first superuser account:
+   http://<your-ip>:<your-port>/_/#/pbinstal/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJwYmNfMDEyMzQ1Njc4OSIsImV4cCI6OTg3NjU0MzIxMCwiaWQiOiJhZG5leG9zLXNwZXJ1c3IiLCJyZWZyZXNoYWJsZSI6ZmFsc2UsInR5cGUiOiJhdXRoIn0=.hTqGPn3pZqDtJOt9v1qSGDgu8W2k6Dov6aLGFvNqWMA=
+   [...]
+   ```
+
+   Use the link in your given output to create your first superuser account.
+
+5. You are now ready to go! :tada:
+
+   However, I recommend that you visit the Settings tab of the admin dashboard and customize it to your liking.
+
 ### Manual Setup (not recommended)
 
 Get yourself the code from a [release](https://github.com/tametsi/adnexos/releases). Make sure you got Node.js LTS, pnpm and a supported Go version installed. Execute the following commands in your terminal:
@@ -87,9 +108,7 @@ rm -r frontend backend
 ./adnexos serve --http=0.0.0.0:8090
 ```
 
-## Admin Configuration
-
-Visit `http://<your-ip>:<your-port>/_` and create your admin account.
+Visit the given link and create your first admin/superuser account.
 
 You are now ready to go! :tada:
 
