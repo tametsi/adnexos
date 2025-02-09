@@ -1,9 +1,8 @@
 ---
 import Alerts from '@/components/Alerts.svelte';
 import AppleSplashLinks from '@/components/AppleSplashLinks.astro';
-import RefreshToken from '@/components/RefreshToken.svelte';
+import AuthHandler from '@/components/AuthHandler.svelte';
 import ReloadPromt from '@/components/ReloadPromt.svelte';
-import RequireAuth from '@/components/RequireAuth.svelte';
 import SettingsHandler from '@/components/SettingsHandler.svelte';
 import CONSTS from '@/consts';
 import { ViewTransitions } from 'astro:transitions';
@@ -43,7 +42,6 @@ const { desc, title } = Astro.props;
 		</div>
 
 		<SettingsHandler client:only="svelte" />
-		<RequireAuth client:idle />
-		<RefreshToken client:idle />
+		<AuthHandler client:idle />
 	</body>
 </html>
