@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArrowLeftIcon } from 'lucide-svelte';
 
-	export let backUrl = '/';
+	export let backUrl = '/groups';
 </script>
 
 <div class="card bg-base-200 w-full max-w-sm shadow-xl">

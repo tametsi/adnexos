@@ -57,7 +57,7 @@
 			.catch(error('Failed to creaet expense.'));
 	};
 
-	$: backUrl = group ? `/groups/view?id=${group.id}` : '/';
+	$: backUrl = group ? `/groups/view?id=${group.id}` : '/groups';
 </script>
 
 <DialogCard {backUrl} on:submit={create}>

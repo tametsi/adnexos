@@ -23,14 +23,14 @@
 
 		$pb.collection('groups')
 			.delete($group?.id ?? '')
-			.then(() => window.location.replace('/'))
+			.then(() => window.location.replace('/groups'))
 			.catch(error('Failed to delete the group.'));
 	};
 	const leave = () => {
 		if (!confirm('Do you really want to leave this group?')) return;
 
 		$pb.send(`/api/collections/groups/leave/${$group?.id}`, { method: 'POST' })
-			.then(() => window.location.replace('/'))
+			.then(() => window.location.replace('/groups'))
 			.catch(error('Failed to leave.'));
 	};
 </script>

@@ -1,22 +1,7 @@
 ---
-import NavActionMenu from '@/components/NavActionMenu.svelte';
-import ListGroups from '@/components/groups/ListGroups.svelte';
-import PageNav from '@/layouts/PageNav.astro';
-import { HomeIcon, PlusCircleIcon, UserPlusIcon } from 'lucide-svelte';
-
-export const title = 'Groups';
-export const navIndex = 1;
-export const icon = HomeIcon;
+import Page from '@/layouts/Page.astro';
 ---
 
-<PageNav activeUrl="/">
-	<Fragment slot="heading">Groups</Fragment>
-	<Fragment slot="button">
-		<NavActionMenu>
-			<li><a href="/groups/create"><PlusCircleIcon /> Create Group</a></li>
-			<li><a href="/groups/join"><UserPlusIcon /> Join Group</a></li>
-		</NavActionMenu>
-	</Fragment>
-
-	<ListGroups client:load />
-</PageNav>
+<Page>
+	<h1 class="text-4xl">Adnexos</h1>
+</Page>

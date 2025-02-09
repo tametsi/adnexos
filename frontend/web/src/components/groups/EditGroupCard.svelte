@@ -39,7 +39,7 @@
 			.catch(error('Failed to update the group.'));
 	};
 
-	$: backUrl = id ? `/groups/view?id=${id}` : '/';
+	$: backUrl = id ? `/groups/view?id=${id}` : '/groups';
 </script>
 
 <DialogCard {backUrl} on:submit={edit}>

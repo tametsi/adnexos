@@ -12,12 +12,12 @@
 		if (id.startsWith(window.location.origin)) id = new URL(id).searchParams.get('id') || id;
 
 		$pb.send(`/api/collections/groups/join/${id}`, { method: 'POST' })
-			.then(() => window.location.replace('/'))
+			.then(() => window.location.replace('/groups'))
 			.catch(error('Failed to join.'));
 	};
 </script>
 
-<DialogCard backUrl="/" on:submit={join}>
+<DialogCard backUrl="/groups" on:submit={join}>
 	<svelte:fragment slot="title">Join group</svelte:fragment>
 
 	<label class="form-control w-full">
@@ -36,6 +36,6 @@
 	<!-- actions -->
 	<svelte:fragment slot="actions">
 		<button type="submit" class="btn btn-primary">Join</button>
-		<a href="/" class="btn btn-ghost">I do not trust this shit</a>
+		<a href="/groups" class="btn btn-ghost">I do not trust this shit</a>
 	</svelte:fragment>
 </DialogCard>

@@ -11,11 +11,11 @@
 		$pb
 			.collection('groups')
 			.create(data)
-			.then(() => window.location.replace('/'))
+			.then(() => window.location.replace('/groups'))
 			.catch(error('Failed to create group.'));
 </script>
 
-<DialogCard backUrl="/" on:submit={create}>
+<DialogCard backUrl="/groups" on:submit={create}>
 	<svelte:fragment slot="title">Create new group</svelte:fragment>
 
 	<!-- new group's name -->
@@ -35,6 +35,6 @@
 	<!-- actions -->
 	<svelte:fragment slot="actions">
 		<button type="submit" class="btn btn-primary">Create</button>
-		<a href="/" class="btn btn-ghost">Cancel :(</a>
+		<a href="/groups" class="btn btn-ghost">Cancel :(</a>
 	</svelte:fragment>
 </DialogCard>

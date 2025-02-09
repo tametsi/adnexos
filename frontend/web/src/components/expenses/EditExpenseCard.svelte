@@ -53,7 +53,7 @@
 			.catch(error('Failed to edit expense.'));
 	};
 
-	$: backUrl = id ? `/expenses/view?id=${id}` : '/';
+	$: backUrl = id ? `/expenses/view?id=${id}` : '/groups';
 </script>
 
 <DialogCard {backUrl} on:submit={edit}>
