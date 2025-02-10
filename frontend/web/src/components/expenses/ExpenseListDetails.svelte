@@ -7,7 +7,7 @@
 	export let expense: RecordModel,
 		/** shows information about the group, needs expanded group */
 		showGroup = false;
-	const e = calculateExpense(expense, $auth?.id);
+	const e = calculateExpense(expense, $auth?.id ?? '');
 </script>
 
 <a

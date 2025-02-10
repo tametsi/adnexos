@@ -32,7 +32,7 @@
 {#await req}
 	<Loading />
 {:then expense}
-	{@const e = calculateExpense(expense, $auth?.id)}
+	{@const e = calculateExpense(expense, $auth?.id ?? '')}
 
 	<h2 class="px-2 text-xl font-bold">{e.e.title}</h2>
 
