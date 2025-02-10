@@ -11,12 +11,12 @@
 	const update = () => {
 		const saveSettings = (settings: RecordModel) => {
 			const authStore = $pb.authStore;
-			if (!authStore.model) return;
+			if (!authStore.record) return;
 
-			const model = { ...authStore.model };
-			((model.expand ??= {}).settings_via_user ??= [])[0] = settings;
+			const record = { ...authStore.record };
+			((record.expand ??= {}).settings_via_user ??= [])[0] = settings;
 
-			authStore.save(authStore.token, model);
+			authStore.save(authStore.token, record);
 		};
 
 		// update existing settings
