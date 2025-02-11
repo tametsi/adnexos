@@ -1,7 +1,93 @@
 ---
+import PhoneContent from '@/components/index/PhoneContent.astro';
 import Page from '@/layouts/Page.astro';
+import { ArrowRight, Github } from 'lucide-svelte';
 ---
 
 <Page>
-	<h1 class="text-4xl">Adnexos</h1>
+	<nav class="navbar bg-base-200 mx-auto mt-2 w-11/12 max-w-xs rounded-full shadow-2xl">
+		<div class="mx-auto flex gap-2">
+			<img src="/logo.svg" />
+			<h1 class="text-xl font-bold">Adnexos</h1>
+		</div>
+	</nav>
+
+	<p class="mx-auto max-w-md px-6 pt-12 text-3xl font-bold">
+		Effortlessly split expenses among friends in any situation.
+	</p>
+
+	<div class="mx-auto flex flex-col items-center gap-4 px-4 py-8">
+		<a href="/signup" class="btn btn-primary btn-lg btn-outline">Register Now <ArrowRight /></a>
+
+		<p class="text-center opacity-80">
+			Already have an account? <a href="/login" class="link area">Sign in instead</a>.
+		</p>
+	</div>
+
+	<article>
+		<h2 class="sr-only">Demo Mockup</h2>
+		<p class="sr-only">
+			A demo phone mockup showing different groups and expenses which are split among some or
+			all group members.
+		</p>
+		<div class="pointer-events-none mx-auto max-w-96 px-2 py-6" aria-hidden>
+			<div class="mockup-phone w-full shadow-lg drop-shadow-xl sm:-skew-x-6 sm:skew-y-3">
+				<div class="camera"></div>
+				<div class="display">
+					<div class="artboard rounded-box bg-base-200 pt-6">
+						<PhoneContent />
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+
+	<article class="mx-auto max-w-2xl p-4">
+		<h2 class="text-4xl font-bold">Open Source</h2>
+
+		<p class="py-4 opacity-80">
+			Adnexos is just a small side project. I built this for my personal needs. If you want to
+			have full control over your data, consider following
+			<a
+				href="https://github.com/tametsi/adnexos/blob/main/docs/self-hosting.md"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">this guide</a
+			> to self-host the application.
+		</p>
+
+		<div class="mx-auto w-fit py-4">
+			<a
+				href="https://github.com/tametsi/adnexos"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn btn-secondary btn-lg btn-outline"><Github /> GitHub</a
+			>
+		</div>
+	</article>
+
+	<footer class="bg-base-300 p-10">
+		<div class="footer mx-auto max-w-lg">
+			<aside>
+				<img src="/logo.svg" class="w-20" />
+
+				<h6 class="text-lg font-bold">Adnexos</h6>
+				<p class="opacity-80">Self-hostable expense-splitter on the web.</p>
+			</aside>
+
+			<nav>
+				<h6 class="footer-title">Links</h6>
+
+				<a href="/login" class="link link-hover">Login</a>
+				<a href="/signup" class="link link-hover">Sign Up</a>
+				<a href="/about" class="link link-hover">About</a>
+				<a
+					href="https://github.com/tametsi/adnexos"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="link link-hover">GitHub</a
+				>
+			</nav>
+		</div>
+	</footer>
 </Page>

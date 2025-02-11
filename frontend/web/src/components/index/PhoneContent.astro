@@ -1,0 +1,80 @@
+---
+import BottomNavigation from '@/components/BottomNavigation.astro';
+import ExpenseListDetails from '@/components/expenses/ExpenseListDetails.svelte';
+import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
+import type { RecordModel } from 'pocketbase';
+
+const groups: RecordModel[] = [
+	{
+		id: 'g1',
+		collectionId: 'groups',
+		collectionName: 'groups',
+		name: 'Surfing 🏄',
+		balance: -32484,
+		expand: {
+			owner: { name: 'Alice' },
+			members: [{ name: 'Bob' }, { name: 'Mallory' }],
+		},
+	},
+	{
+		id: 'g2',
+		collectionId: 'groups',
+		collectionName: 'groups',
+		name: 'Flat Share 🪴',
+		balance: 1464,
+		expand: {
+			owner: { name: 'Eve' },
+			members: [{ name: 'Alice' }, { name: 'Wendy' }],
+		},
+	},
+];
+
+const expenses: RecordModel[] = [
+	{
+		id: 'e1',
+		collectionId: 'expenses',
+		collectionName: 'expenses',
+		title: 'Pizza 🍕',
+		amount: 2298,
+		source: '',
+		members: ['', 'Mallory'],
+		created: new Date(),
+		updated: new Date(),
+		expand: {
+			group: { name: 'Surfing 🏄' },
+			source: { name: 'Alice' },
+			members: [{ name: 'Alice' }, { name: 'Mallory' }],
+		},
+	},
+	{
+		id: 'e2',
+		collectionId: 'expenses',
+		collectionName: 'expenses',
+		title: 'Groceries 🍉',
+		amount: 4587,
+		source: 'Wendy',
+		members: ['', 'Eve', 'Alice'],
+		created: new Date(),
+		updated: new Date(),
+		expand: {
+			group: { name: 'Flat Share 🪴' },
+			source: { name: 'Wendy' },
+			members: [{ name: 'Wendy' }, { name: 'Alice' }, { name: 'Eve' }],
+		},
+	},
+];
+---
+
+<div class="flex flex-col gap-2">
+	{groups.map(group => <GroupListDetails {group} />)}
+</div>
+
+<div class="divider mx-4">Expenses</div>
+
+<div class="flex flex-col gap-2">
+	{expenses.map(expense => <ExpenseListDetails {expense} showGroup />)}
+</div>
+
+<div class="mt-4 [&>*]:static">
+	<BottomNavigation activeUrl="/groups" />
+</div>
