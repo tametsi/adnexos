@@ -5,14 +5,20 @@ import PageDialog from '@/layouts/PageDialog.astro';
 
 <PageDialog title="Login | Adnexos">
 	<LoginCard client:load />
-	<div class="w-full max-w-sm px-8">
-		<a href="/about" class="link">About</a>
-		•
-		<a
-			href="https://github.com/tametsi/adnexos"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="link">GitHub</a
-		>
+	<div class="flex w-full max-w-sm justify-between px-8">
+		<div>
+			<a href="/" class="link">Home</a>
+			•
+			<a href="/about" class="link">About</a>
+		</div>
+
+		<div>
+			<a
+				href="https://github.com/tametsi/adnexos"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link">GitHub</a
+			>
+		</div>
 	</div>
 </PageDialog>
