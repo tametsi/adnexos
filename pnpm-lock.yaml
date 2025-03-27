@@ -9,17 +9,17 @@ importers:
   .:
     devDependencies:
       prettier:
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.5.3
+        version: 3.5.3
       prettier-plugin-astro:
         specifier: ^0.12.3
         version: 0.12.3
       prettier-plugin-svelte:
         specifier: ^3.3.3
-        version: 3.3.3(prettier@3.4.2)(svelte@4.2.18)
+        version: 3.3.3(prettier@3.5.3)(svelte@4.2.18)
       prettier-plugin-tailwindcss:
         specifier: ^0.5.14
-        version: 0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.3.3(prettier@3.4.2)(svelte@4.2.18))(prettier@3.4.2)
+        version: 0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@4.2.18))(prettier@3.5.3)
 
 packages:
 
@@ -48,11 +48,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@types/estree@1.0.6':
-    resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
+  '@types/estree@1.0.7':
+    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  acorn@8.14.0:
-    resolution: {integrity: sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==}
+  acorn@8.14.1:
+    resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -151,8 +151,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.4.2:
-    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
+  prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -199,9 +199,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@types/estree@1.0.6': {}
+  '@types/estree@1.0.7': {}
 
-  acorn@8.14.0: {}
+  acorn@8.14.1: {}
 
   aria-query@5.3.2: {}
 
@@ -210,8 +210,8 @@ snapshots:
   code-red@1.0.4:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
-      '@types/estree': 1.0.6
-      acorn: 8.14.0
+      '@types/estree': 1.0.7
+      acorn: 8.14.1
       estree-walker: 3.0.3
       periscopic: 3.1.0
 
@@ -222,11 +222,11 @@ snapshots:
 
   estree-walker@3.0.3:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   is-reference@3.0.3:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   locate-character@3.0.0: {}
 
@@ -238,29 +238,29 @@ snapshots:
 
   periscopic@3.1.0:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       estree-walker: 3.0.3
       is-reference: 3.0.3
 
   prettier-plugin-astro@0.12.3:
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.4.2
+      prettier: 3.5.3
       sass-formatter: 0.7.9
 
-  prettier-plugin-svelte@3.3.3(prettier@3.4.2)(svelte@4.2.18):
+  prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@4.2.18):
     dependencies:
-      prettier: 3.4.2
+      prettier: 3.5.3
       svelte: 4.2.18
 
-  prettier-plugin-tailwindcss@0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.3.3(prettier@3.4.2)(svelte@4.2.18))(prettier@3.4.2):
+  prettier-plugin-tailwindcss@0.5.14(prettier-plugin-astro@0.12.3)(prettier-plugin-svelte@3.3.3(prettier@3.5.3)(svelte@4.2.18))(prettier@3.5.3):
     dependencies:
-      prettier: 3.4.2
+      prettier: 3.5.3
     optionalDependencies:
       prettier-plugin-astro: 0.12.3
-      prettier-plugin-svelte: 3.3.3(prettier@3.4.2)(svelte@4.2.18)
+      prettier-plugin-svelte: 3.3.3(prettier@3.5.3)(svelte@4.2.18)
 
-  prettier@3.4.2: {}
+  prettier@3.5.3: {}
 
   s.color@0.0.15: {}
 
@@ -279,8 +279,8 @@ snapshots:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0
       '@jridgewell/trace-mapping': 0.3.25
-      '@types/estree': 1.0.6
-      acorn: 8.14.0
+      '@types/estree': 1.0.7
+      acorn: 8.14.1
       aria-query: 5.3.2
       axobject-query: 4.1.0
       code-red: 1.0.4
