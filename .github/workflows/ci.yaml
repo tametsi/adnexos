@@ -43,7 +43,7 @@ jobs:
           make test-build
       - name: Lint backend
         working-directory: ./backend
-        run: make lint-check
+        run: make lint
 
       - name: Install frontend/web dependencies
         working-directory: ./frontend/web

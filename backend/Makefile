@@ -2,7 +2,7 @@ SHELL=/bin/bash -e -o pipefail
 PWD = $(shell pwd)
 
 # constants
-GOLANGCI_VERSION = 1.61.0
+GOLANGCI_VERSION = 2.0.2
 
 all: tidy ## Initializes all tools
 
@@ -37,10 +37,7 @@ $(GOLANGCI_LINT):
 	@mv bin/golangci-lint "$(@)"
 
 lint: fmt $(GOLANGCI_LINT) download ## Lints all code with golangci-lint
-	@$(GOLANGCI_LINT) run --exclude-dirs migrations
-
-lint-check: $(GOLANGCI_LINT) download ## Lints all code with golangci-lint with format-check
-	@$(GOLANGCI_LINT) run --exclude-dirs migrations --enable gofmt
+	@$(GOLANGCI_LINT) run
 
 test: ## Runs all tests
 	@go test $(ARGS) ./...
