@@ -3,6 +3,7 @@
 ##############
 FROM node:20-slim AS build-frontend-web
 
+RUN corepack prepare pnpm@9 --activate
 RUN corepack enable
 WORKDIR /app
 
