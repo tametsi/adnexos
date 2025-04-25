@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
-	import { Trash2Icon } from 'lucide-svelte';
+	import { CheckIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 	import { createEventDispatcher } from 'svelte';
 
@@ -42,10 +42,10 @@
 					<button
 						type="button"
 						on:click={remove(payment)}
-						aria-label="Delete Payment"
 						class="btn btn-square btn-ghost btn-sm"
 					>
-						<Trash2Icon size="18" />
+						<span class="sr-only">Payment received</span>
+						<CheckIcon size="18" />
 					</button>
 				{/if}
 			</th>
