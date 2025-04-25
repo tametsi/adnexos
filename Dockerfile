@@ -1,15 +1,16 @@
 ##############
 ## FRONTEND ##
 ##############
-FROM node:20-slim AS build-frontend-web
+FROM node:22-slim AS build-frontend-web
 
-RUN corepack prepare pnpm@9 --activate
+RUN corepack prepare pnpm@10 --activate
 RUN corepack enable
-WORKDIR /app
+WORKDIR /app/frontend/web
 
 # deps
-COPY frontend/web/package.json frontend/web/pnpm-lock.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml /app
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
+COPY frontend/web/package.json .
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
 
 # gen pwa assets
@@ -47,7 +48,7 @@ FROM alpine
 
 WORKDIR /app
 
-COPY --from=build-frontend-web /app/dist pb_public/
+COPY --from=build-frontend-web /app/frontend/web/dist pb_public/
 COPY --from=build-backend /app/adnexos adnexos
 
 EXPOSE 8090

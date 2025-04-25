@@ -21,14 +21,14 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
-      - name: Install project dependencies
+      - name: Install pnpm dependencies
         run: pnpm install
       - name: Check Prettier
         run: pnpm check
@@ -45,9 +45,6 @@ jobs:
         working-directory: ./backend
         run: make lint
 
-      - name: Install frontend/web dependencies
-        working-directory: ./frontend/web
-        run: pnpm install
       - name: Check & build frontend/web
         working-directory: ./frontend/web
         run: |
