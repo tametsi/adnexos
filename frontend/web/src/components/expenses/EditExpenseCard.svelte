@@ -85,6 +85,11 @@
 			placeholder="amount"
 			class="input input-bordered w-full"
 		/>
+		<div class="label">
+			<span class="label-text-alt text-base-content/70">
+				Tip: You can also create negative expenses 🤫
+			</span>
+		</div>
 	</label>
 
 	<!-- private -->
