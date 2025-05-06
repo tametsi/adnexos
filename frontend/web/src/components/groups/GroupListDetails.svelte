@@ -1,13 +1,17 @@
 <script lang="ts">
 	import type { RecordModel } from 'pocketbase';
 
+	interface Props {
+		group: RecordModel;
+	}
+
+	let { group }: Props = $props();
+
 	const f = new Intl.NumberFormat(undefined, {
 		style: 'currency',
 		currency: 'EUR',
 		signDisplay: 'exceptZero',
 	});
-
-	export let group: RecordModel;
 </script>
 
 <a

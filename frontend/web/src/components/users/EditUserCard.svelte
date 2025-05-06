@@ -3,7 +3,7 @@
 	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 
-	let data = { ...$auth };
+	let data = $state({ ...$auth });
 	const edit = () =>
 		$pb
 			.collection('users')
@@ -16,8 +16,10 @@
 			.catch(error('Failed to save.'));
 </script>
 
-<DialogCard backUrl="/settings" on:submit={edit}>
-	<svelte:fragment slot="title">Edit Profile</svelte:fragment>
+<DialogCard backUrl="/settings" onsubmit={edit}>
+	{#snippet title()}
+		Edit Profile
+	{/snippet}
 
 	<!-- avatar -->
 	<label class="form-control w-full">
@@ -60,8 +62,8 @@
 	<a href="/users/password" class="link">Change Password</a>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button class="btn btn-primary" type="submit">Edit</button>
 		<a href="/settings" class="btn btn-ghost">Nothing to do here</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

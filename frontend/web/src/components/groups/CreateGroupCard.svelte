@@ -3,10 +3,10 @@
 	import { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 
-	let data = {
+	let data = $state({
 		name: '',
 		owner: $auth?.id,
-	};
+	});
 	const create = () =>
 		$pb
 			.collection('groups')
@@ -15,8 +15,10 @@
 			.catch(error('Failed to create group.'));
 </script>
 
-<DialogCard backUrl="/groups" on:submit={create}>
-	<svelte:fragment slot="title">Create new group</svelte:fragment>
+<DialogCard backUrl="/groups" onsubmit={create}>
+	{#snippet title()}
+		Create new group
+	{/snippet}
 
 	<!-- new group's name -->
 	<label class="form-control w-full">
@@ -33,8 +35,8 @@
 	</label>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button type="submit" class="btn btn-primary">Create</button>
 		<a href="/groups" class="btn btn-ghost">Cancel :(</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

@@ -3,11 +3,11 @@
 	import alerts, { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 
-	let data = {
+	let data = $state({
 		oldPassword: '',
 		password: '',
 		passwordConfirm: '',
-	};
+	});
 	const change = async () => {
 		if (data.password !== data.passwordConfirm)
 			return alerts.push({ level: 'ERROR', msg: 'Passwords must be equal.' });
@@ -33,8 +33,10 @@
 	};
 </script>
 
-<DialogCard backUrl="/settings" on:submit={change}>
-	<svelte:fragment slot="title">Change Password</svelte:fragment>
+<DialogCard backUrl="/settings" onsubmit={change}>
+	{#snippet title()}
+		Change Password
+	{/snippet}
 
 	<!-- old password -->
 	<label class="form-control w-full">
@@ -79,8 +81,8 @@
 	</label>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button class="btn btn-primary" type="submit">Change!</button>
 		<a href="/settings" class="btn btn-ghost">Keep the old</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

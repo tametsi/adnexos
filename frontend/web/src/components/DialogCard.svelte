@@ -1,11 +1,22 @@
 <script lang="ts">
+	import { preventDefault } from '@/lib/event';
 	import { ArrowLeftIcon } from 'lucide-svelte';
+	import { type Snippet } from 'svelte';
 
-	export let backUrl = '/groups';
+	interface Props {
+		backUrl?: string;
+		onsubmit: () => void;
+		title?: Snippet;
+		children?: Snippet;
+		actions?: Snippet;
+		bottom?: Snippet;
+	}
+
+	let { backUrl = '/groups', onsubmit, title, children, actions, bottom }: Props = $props();
 </script>
 
 <div class="card bg-base-200 w-full max-w-sm shadow-xl">
-	<form on:submit|preventDefault class="card-body">
+	<form onsubmit={preventDefault(onsubmit)} class="card-body">
 		<h2 class="card-title">
 			{#if backUrl}
 				<a href={backUrl} class="btn btn-ghost btn-circle" aria-label="Go back">
@@ -14,17 +25,17 @@
 			{/if}
 
 			<span class="overflow-hidden text-ellipsis">
-				<slot name="title" />
+				{@render title?.()}
 			</span>
 		</h2>
 
-		<slot />
+		{@render children?.()}
 
 		<!-- actions -->
 		<div class="card-actions flex-row-reverse pt-4">
-			<slot name="actions" />
+			{@render actions?.()}
 		</div>
 
-		<slot name="bottom" />
+		{@render bottom?.()}
 	</form>
 </div>

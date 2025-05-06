@@ -38,9 +38,9 @@
 <NavActionMenu>
 	{#if $group && $group?.owner === $auth?.id}
 		<li><a href="/groups/edit?id={$group?.id}"><SquarePenIcon /> Edit</a></li>
-		<li><button on:click={remove} class="text-error"><Trash2Icon /> Delete</button></li>
+		<li><button onclick={remove} class="text-error"><Trash2Icon /> Delete</button></li>
 	{/if}
 	<li><a href="/groups/invites?id={$group?.id}"><UserPlusIcon /> Invites</a></li>
-	<li><button on:click={settle}><HandCoinsIcon /> Settle Up</button></li>
-	<li><button on:click={leave} class="text-error"><LogOutIcon /> Leave</button></li>
+	<li><button onclick={settle}><HandCoinsIcon /> Settle Up</button></li>
+	<li><button onclick={leave} class="text-error"><LogOutIcon /> Leave</button></li>
 </NavActionMenu>

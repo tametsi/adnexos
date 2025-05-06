@@ -6,12 +6,12 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	let id = '',
-		group: Partial<RecordModel> = {
+	let id = $state(''),
+		group: Partial<RecordModel> = $state({
 			name: '',
 			members: [],
 			owner: $auth?.id || '',
-		};
+		});
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
@@ -39,11 +39,13 @@
 			.catch(error('Failed to update the group.'));
 	};
 
-	$: backUrl = id ? `/groups/view?id=${id}` : '/groups';
+	let backUrl = $derived(id ? `/groups/view?id=${id}` : '/groups');
 </script>
 
-<DialogCard {backUrl} on:submit={edit}>
-	<svelte:fragment slot="title">Edit Group</svelte:fragment>
+<DialogCard {backUrl} onsubmit={edit}>
+	{#snippet title()}
+		Edit Group
+	{/snippet}
 
 	<!-- name -->
 	<label class="form-control w-full">
@@ -78,7 +80,7 @@
 			{#each group.expand?.members || [] as x (x.id)}
 				<button
 					type="button"
-					on:click={() => removeMember(x.id)}
+					onclick={() => removeMember(x.id)}
 					class="btn btn-outline btn-sm rounded-badge gap-2"
 				>
 					<XIcon size="18" />
@@ -119,8 +121,8 @@
 	</div>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button type="submit" class="btn btn-primary">Edit</button>
 		<a href={backUrl} class="btn btn-ghost">Cancel</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

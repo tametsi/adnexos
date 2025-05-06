@@ -8,7 +8,7 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 
-	let req: Promise<RecordModel> = new Promise(() => {}),
+	let req: Promise<RecordModel> = $state(new Promise(() => {})),
 		id: string;
 
 	onMount(async () => {
@@ -90,7 +90,7 @@
 		</ul>
 
 		{#if $auth?.id === e.e.source || $auth?.id === e.e.expand?.group?.owner}
-			<button on:click={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
+			<button onclick={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
 				Delete
 			</button>
 		{/if}

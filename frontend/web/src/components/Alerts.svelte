@@ -18,7 +18,7 @@
 
 			<span class="flex-grow overflow-hidden text-ellipsis">{alert.msg}</span>
 
-			<button on:click={remove(alert.id)} class="btn btn-square btn-sm btn-ghost">
+			<button onclick={remove(alert.id)} class="btn btn-square btn-sm btn-ghost">
 				<XIcon />
 			</button>
 		</div>
