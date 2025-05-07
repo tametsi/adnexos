@@ -32,7 +32,7 @@
 			type="text"
 			bind:value={identity}
 			required
-			placeholder="email or username"
+			placeholder="Email or username"
 			class="input input-bordered w-full"
 		/>
 	</label>
@@ -46,7 +46,7 @@
 			type="password"
 			bind:value={password}
 			required
-			placeholder="password"
+			placeholder="Password"
 			class="input input-bordered w-full"
 		/>
 	</label>

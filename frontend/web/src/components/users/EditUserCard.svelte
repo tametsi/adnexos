@@ -39,7 +39,7 @@
 			bind:value={data.username}
 			pattern="[a-zA-Z0-9_\-]*"
 			required
-			placeholder="username"
+			placeholder="Username"
 			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 		<div class="label">
@@ -54,7 +54,7 @@
 		<input
 			type="text"
 			bind:value={data.name}
-			placeholder="display name"
+			placeholder="Display Name"
 			class="input input-bordered w-full"
 		/>
 	</label>

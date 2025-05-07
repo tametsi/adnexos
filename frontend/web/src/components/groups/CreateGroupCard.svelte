@@ -29,7 +29,7 @@
 			type="text"
 			bind:value={data.name}
 			required
-			placeholder="name"
+			placeholder="Name"
 			class="input input-bordered w-full"
 		/>
 	</label>

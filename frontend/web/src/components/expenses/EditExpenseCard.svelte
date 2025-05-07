@@ -69,7 +69,7 @@
 		<input
 			type="text"
 			bind:value={data.title}
-			placeholder="title"
+			placeholder="Title"
 			class="input input-bordered w-full"
 		/>
 	</label>
@@ -84,7 +84,7 @@
 			bind:value={data.amount}
 			step="0.01"
 			required
-			placeholder="amount"
+			placeholder="Amount"
 			class="input input-bordered w-full"
 		/>
 		<div class="label">

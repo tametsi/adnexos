@@ -47,7 +47,7 @@
 			type="password"
 			bind:value={data.oldPassword}
 			required
-			placeholder="old password"
+			placeholder="Old password"
 			class="input input-bordered w-full"
 		/>
 	</label>
@@ -61,7 +61,7 @@
 			bind:value={data.password}
 			pattern={'.{8,}'}
 			required
-			placeholder="new password"
+			placeholder="New password"
 			class="input input-bordered [&:user-invalid]:input-error w-full"
 		/>
 	</label>
@@ -74,7 +74,7 @@
 			type="password"
 			bind:value={data.passwordConfirm}
 			required
-			placeholder="password"
+			placeholder="Password"
 			class="input input-bordered w-full"
 			class:input-error={data.password !== data.passwordConfirm}
 		/>

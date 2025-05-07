@@ -56,7 +56,7 @@
 			type="text"
 			bind:value={group.name}
 			required
-			placeholder="name"
+			placeholder="Name"
 			class="input input-bordered w-full"
 		/>
 	</label>

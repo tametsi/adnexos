@@ -30,7 +30,7 @@
 			type="text"
 			bind:value={id}
 			required
-			placeholder="invite"
+			placeholder="Invite Code"
 			class="input input-bordered w-full"
 		/>
 	</label>
