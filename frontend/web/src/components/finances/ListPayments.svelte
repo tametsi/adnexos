@@ -26,7 +26,7 @@
 	<Loading />
 {:then}
 	{#if items.length > 0}
-		<div class="divider">Payments</div>
+		<h2 class="divider">Payments</h2>
 
 		<div>
 			<div class="overflow-x-auto">
@@ -38,10 +38,10 @@
 
 		<p class="text-base-content/80 p-2 text-sm">Showing {items.length} / {total}.</p>
 
-		<div class="divider">Expenses</div>
+		<h2 class="divider">Expenses</h2>
 	{/if}
 {:catch}
-	<div class="divider">Payments</div>
+	<h2 class="divider">Payments</h2>
 	<Error />
-	<div class="divider">Expenses</div>
+	<h2 class="divider">Expenses</h2>
 {/await}
