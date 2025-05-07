@@ -16,9 +16,9 @@
 				total = x.totalItems;
 			});
 
-	let items: RecordModel[] = [],
-		lastPage = 0,
-		total = 0,
+	let items: RecordModel[] = $state([]),
+		lastPage = $state(0),
+		total = $state(0),
 		req = load();
 </script>
 
@@ -30,7 +30,7 @@
 
 		<div>
 			<div class="overflow-x-auto">
-				<PaymentsTable bind:payments={items} on:delete={() => total--} />
+				<PaymentsTable bind:payments={items} ondelete={() => total--} />
 			</div>
 		</div>
 

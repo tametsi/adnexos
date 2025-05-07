@@ -9,7 +9,7 @@ const { activeUrl } = Astro.props;
 
 // fetch page components
 const components: (AstroInstance & { title?: string; navIndex?: number; icon?: any })[] =
-	await Astro.glob('../pages/*.astro');
+	Object.values(import.meta.glob('../pages/*.astro', { eager: true }));
 // filter and sort components to show them in btm-nav
 const pages = components
 	.filter(x => x.navIndex && x.icon)

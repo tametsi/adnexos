@@ -3,7 +3,11 @@
 
 	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
 
-	export let group: RecordModel;
+	interface Props {
+		group: RecordModel;
+	}
+
+	let { group }: Props = $props();
 
 	let members = (group.expand?.members || []).map((m: RecordModel) => {
 		m.balance = group.membersBalance[m.id];

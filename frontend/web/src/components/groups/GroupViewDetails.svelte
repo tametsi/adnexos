@@ -14,7 +14,7 @@
 	});
 
 	let id: string,
-		req: Promise<RecordModel> = new Promise(() => {});
+		req: Promise<RecordModel> = $state(new Promise(() => {}));
 
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';

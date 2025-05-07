@@ -5,8 +5,8 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	let id = '',
-		members: RecordModel[] = [];
+	let id = $state(''),
+		members: RecordModel[] = $state([]);
 
 	onMount(async () => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
@@ -23,7 +23,7 @@
 		if (data?.expand?.group?.expand?.owner) members.push(data.expand.group.expand.owner);
 	});
 
-	let data: Partial<RecordModel> = {
+	let data: Partial<RecordModel> = $state({
 		title: '',
 		amount: 0,
 		isPrivate: false,
@@ -31,7 +31,7 @@
 		isSettled: false,
 		source: $auth?.id,
 		members: [],
-	};
+	});
 
 	const edit = () => {
 		if (data.amount === 0) return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
@@ -53,11 +53,13 @@
 			.catch(error('Failed to edit expense.'));
 	};
 
-	$: backUrl = id ? `/expenses/view?id=${id}` : '/groups';
+	let backUrl = $derived(id ? `/expenses/view?id=${id}` : '/groups');
 </script>
 
-<DialogCard {backUrl} on:submit={edit}>
-	<svelte:fragment slot="title">Edit expense</svelte:fragment>
+<DialogCard {backUrl} onsubmit={edit}>
+	{#snippet title()}
+		Edit expense
+	{/snippet}
 
 	<!-- title -->
 	<label class="form-control w-full">
@@ -121,8 +123,8 @@
 	</div>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button type="submit" class="btn btn-primary">Edit</button>
 		<a href={backUrl} class="btn btn-ghost">Cancel</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

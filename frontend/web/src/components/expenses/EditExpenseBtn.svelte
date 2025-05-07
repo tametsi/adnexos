@@ -3,12 +3,13 @@
 	import { expense } from '@/lib/stores';
 	import { onMount } from 'svelte';
 
-	let id: string;
+	let id: string | undefined = $state();
 	onMount(() => (id = new URLSearchParams(window.location.search).get('id') || ''));
 
-	$: show =
+	let show = $derived(
 		$expense &&
-		($auth?.id === $expense?.source || $auth?.id === $expense?.expand?.group?.owner);
+			($auth?.id === $expense?.source || $auth?.id === $expense?.expand?.group?.owner),
+	);
 </script>
 
 {#if show}

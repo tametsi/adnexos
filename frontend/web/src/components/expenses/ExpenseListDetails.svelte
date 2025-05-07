@@ -4,9 +4,14 @@
 	import { LockIcon, UsersIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
-	export let expense: RecordModel,
+	interface Props {
+		expense: RecordModel;
 		/** shows information about the group, needs expanded group */
-		showGroup = false;
+		showGroup?: boolean;
+	}
+
+	let { expense, showGroup = false }: Props = $props();
+
 	const e = calculateExpense(expense, $auth?.id ?? '');
 </script>
 

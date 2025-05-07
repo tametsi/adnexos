@@ -4,7 +4,7 @@
 	import pb from '@/lib/pb';
 	import { onMount } from 'svelte';
 
-	let id = '';
+	let id = $state('');
 
 	onMount(() => (id = new URLSearchParams(window.location.search).get('id') || ''));
 
@@ -17,8 +17,10 @@
 	};
 </script>
 
-<DialogCard backUrl="/groups" on:submit={join}>
-	<svelte:fragment slot="title">Join group</svelte:fragment>
+<DialogCard backUrl="/groups" onsubmit={join}>
+	{#snippet title()}
+		Join group
+	{/snippet}
 
 	<label class="form-control w-full">
 		<div class="label">
@@ -34,8 +36,8 @@
 	</label>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button type="submit" class="btn btn-primary">Join</button>
 		<a href="/groups" class="btn btn-ghost">I do not trust this shit</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

@@ -5,9 +5,9 @@
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
 
-	let groups: RecordModel[] = [],
-		group: RecordModel | undefined,
-		members: RecordModel[] = [];
+	let groups: RecordModel[] = $state([]),
+		group: RecordModel | undefined = $state(),
+		members: RecordModel[] = $state([]);
 
 	onMount(async () => {
 		// get all groups allowed for the user
@@ -21,7 +21,7 @@
 		data.group = new URLSearchParams(window.location.search).get('groupId') || '';
 	});
 
-	let data: Partial<RecordModel> = {
+	let data: Partial<RecordModel> = $state({
 		title: '',
 		amount: undefined,
 		isPrivate: false,
@@ -29,9 +29,9 @@
 		isSettled: false,
 		source: $auth?.id,
 		members: [],
-	};
+	});
 
-	$: {
+	$effect(() => {
 		// changed group => update group
 		if (group?.id !== data.group) {
 			group = groups?.find?.(x => x.id === data.group);
@@ -40,7 +40,7 @@
 			// select all members by default
 			data.members = members.map(x => x.id);
 		}
-	}
+	});
 
 	const create = () => {
 		if (data.amount === 0) return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
@@ -57,11 +57,13 @@
 			.catch(error('Failed to creaet expense.'));
 	};
 
-	$: backUrl = group ? `/groups/view?id=${group.id}` : '/groups';
+	let backUrl = $derived(group ? `/groups/view?id=${group.id}` : '/groups');
 </script>
 
-<DialogCard {backUrl} on:submit={create}>
-	<svelte:fragment slot="title">Create new expense</svelte:fragment>
+<DialogCard {backUrl} onsubmit={create}>
+	{#snippet title()}
+		Create new expense
+	{/snippet}
 
 	<!-- group -->
 	<div class="form-control w-full">
@@ -146,8 +148,8 @@
 	</div>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button type="submit" class="btn btn-primary">Create</button>
 		<a href={backUrl} class="btn btn-ghost">Cancel</a>
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

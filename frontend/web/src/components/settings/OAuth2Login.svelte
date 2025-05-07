@@ -2,7 +2,11 @@
 	import { error } from '@/lib/alert';
 	import pb from '@/lib/pb';
 
-	export let redirect = '';
+	interface Props {
+		redirect?: string;
+	}
+
+	let { redirect = '' }: Props = $props();
 
 	const oAuth2 = (provider: string) => () =>
 		$pb
@@ -12,9 +16,9 @@
 			.catch(error('Failed to authenticate.'));
 </script>
 
-<button on:click={oAuth2('github')} class="btn btn-secondary btn-outline">
+<button onclick={oAuth2('github')} class="btn btn-secondary btn-outline">
 	Continue with GitHub
 </button>
-<button on:click={oAuth2('discord')} class="btn btn-secondary btn-outline">
+<button onclick={oAuth2('discord')} class="btn btn-secondary btn-outline">
 	Continue with Discord
 </button>

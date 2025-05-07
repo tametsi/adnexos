@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { error } from '@/lib/alert';
+	import { preventDefault } from '@/lib/event';
 	import pb, { auth } from '@/lib/pb';
 	import { type RecordModel } from 'pocketbase';
 
-	let settings: Partial<RecordModel> = { theme: '' };
-	$: {
-		if ($auth?.expand?.settings_via_user?.[0]) settings = $auth?.expand?.settings_via_user?.[0];
-	}
+	let settings: Partial<RecordModel> = $derived(
+		$auth?.expand?.settings_via_user?.[0] || { theme: '' },
+	);
 
 	const update = () => {
 		const saveSettings = (settings: RecordModel) => {
@@ -37,7 +37,7 @@
 </script>
 
 <form
-	on:submit|preventDefault={update}
+	onsubmit={preventDefault(update)}
 	class="mx-auto flex w-64 max-w-full flex-col items-center gap-4"
 >
 	<div class="form-control w-full">

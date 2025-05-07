@@ -21,10 +21,10 @@
 			</p>
 
 			<div class="card-actions justify-end">
-				<button class="btn btn-primary gap-2" on:click={updateSw}>
+				<button class="btn btn-primary gap-2" onclick={updateSw}>
 					<DownloadIcon /> Update & Reload
 				</button>
-				<button class="btn btn-error btn-outline gap-2" on:click={close}>
+				<button class="btn btn-error btn-outline gap-2" onclick={close}>
 					<CalendarIcon /> Yeah, yeah...
 				</button>
 			</div>

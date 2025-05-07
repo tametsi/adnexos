@@ -22,19 +22,19 @@
 				total = x.totalItems;
 			});
 
-	let groups: RecordModel[] = [],
-		filterGroups: string[] = [],
-		filterGroupsQuery = '',
-		items: RecordModel[] = [],
-		lastPage = 0,
-		total = 0;
+	let groups: RecordModel[] = $state([]),
+		filterGroups: string[] = $state([]),
+		filterGroupsQuery = $state(''),
+		items: RecordModel[] = $state([]),
+		lastPage = $state(0),
+		total = $state(0);
 
-	$: {
+	$effect(() => {
 		if (filterGroups.length === 0) filterGroupsQuery = '';
 		else filterGroupsQuery = ` && (${filterGroups.map(x => `group = "${x}"`).join(' || ')})`;
-	}
+	});
 
-	$: req = load(1, true, filterGroupsQuery);
+	let req = $derived(load(1, true, filterGroupsQuery));
 
 	onMount(() =>
 		$pb

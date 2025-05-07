@@ -3,16 +3,19 @@
 	import pb, { auth } from '@/lib/pb';
 	import { CheckIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
-	import { createEventDispatcher } from 'svelte';
 
 	const f = new Intl.NumberFormat(undefined, {
 		style: 'currency',
 		currency: 'EUR',
 		signDisplay: 'exceptZero',
 	});
-	const dispatch = createEventDispatcher();
 
-	export let payments: RecordModel[];
+	interface Props {
+		payments: RecordModel[];
+		ondelete: () => void;
+	}
+
+	let { payments = $bindable(), ondelete }: Props = $props();
 
 	const remove = (p: RecordModel) => () => {
 		if (
@@ -26,7 +29,7 @@
 			.delete(p.id)
 			.then(() => {
 				payments = payments.filter(x => x.id !== p.id);
-				dispatch('delete');
+				ondelete();
 			})
 			.catch(error('Failed to delete payment.'));
 	};
@@ -41,7 +44,7 @@
 				{#if from}
 					<button
 						type="button"
-						on:click={remove(payment)}
+						onclick={remove(payment)}
 						class="btn btn-square btn-ghost btn-sm"
 					>
 						<span class="sr-only">Payment received</span>

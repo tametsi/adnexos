@@ -5,9 +5,9 @@
 	import pb from '@/lib/pb';
 	import { onMount } from 'svelte';
 
-	let identity = '',
-		password = '',
-		redirect = '';
+	let identity = $state(''),
+		password = $state(''),
+		redirect = $state('');
 	const login = () =>
 		$pb
 			.collection('users')
@@ -18,8 +18,10 @@
 	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));
 </script>
 
-<DialogCard backUrl="/" on:submit={login}>
-	<svelte:fragment slot="title">Login</svelte:fragment>
+<DialogCard backUrl="/" onsubmit={login}>
+	{#snippet title()}
+		Login
+	{/snippet}
 
 	<!-- email or username -->
 	<label class="form-control w-full">
@@ -50,15 +52,15 @@
 	</label>
 
 	<!-- actions -->
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
 		<button class="btn btn-primary" type="submit">Login</button>
 		<a href="/signup{redirect ? `?redirect=${redirect}` : ''}" class="btn btn-ghost">
 			Sign up instead
 		</a>
-	</svelte:fragment>
+	{/snippet}
 
-	<svelte:fragment slot="bottom">
+	{#snippet bottom()}
 		<div class="divider">OR</div>
 		<OAuth2Login {redirect} />
-	</svelte:fragment>
+	{/snippet}
 </DialogCard>

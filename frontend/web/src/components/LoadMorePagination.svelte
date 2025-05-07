@@ -3,12 +3,21 @@
 	import { error } from '@/lib/alert';
 	import type { RecordModel } from 'pocketbase';
 
-	export let lastPage: number,
-		total: number,
-		items: RecordModel[],
+	interface Props {
+		lastPage: number;
+		total: number;
+		items: RecordModel[];
 		load: (page: number) => Promise<void>;
+	}
 
-	let moreReq = (async () => {})();
+	let {
+		lastPage = $bindable(),
+		total = $bindable(),
+		items = $bindable(),
+		load,
+	}: Props = $props();
+
+	let moreReq = $state((async () => {})());
 
 	const loadMore = () =>
 		(moreReq = load(lastPage + 1)
@@ -17,7 +26,7 @@
 </script>
 
 {#if total > items.length}
-	<button on:click={loadMore} class="btn btn-neutral btn-wide mx-auto my-4 block max-w-full">
+	<button onclick={loadMore} class="btn btn-neutral btn-wide mx-auto my-4 block max-w-full">
 		Load More
 	</button>
 

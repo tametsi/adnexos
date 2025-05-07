@@ -21,14 +21,17 @@
 				total = x.totalItems;
 			});
 
-	let id: string | undefined,
-		items: RecordModel[] = [],
-		lastPage = 0,
-		total = 0,
-		includeSettled = false,
-		req: Promise<void> = new Promise(() => {});
+	let id: string | undefined = $state(),
+		items: RecordModel[] = $state([]),
+		lastPage = $state(0),
+		total = $state(0),
+		includeSettled = $state(false),
+		req: Promise<void> = $state(new Promise(() => {}));
 
-	$: includeSettled, id && (req = load(1, true));
+	$effect(() => {
+		includeSettled; // triggers the load
+		if (id) req = load(1, true);
+	});
 
 	onMount(() => {
 		id = new URLSearchParams(window.location.search).get('id') || '';
