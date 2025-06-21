@@ -1,4 +1,4 @@
 Contact: https://github.com/tametsi/adnexos/security/advisories/new
 Contact: mailto:security@tametsi.dev
-Expires: 2025-07-19T22:42:00.000Z
+Expires: 2026-07-19T22:42:00.000Z
 Encryption: https://github.com/tametsi/adnexos/security#pgp-public-key
