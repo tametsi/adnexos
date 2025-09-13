@@ -4,7 +4,7 @@
 	import pb, { auth } from '@/lib/pb';
 	import { type RecordModel } from 'pocketbase';
 
-	let settings: Partial<RecordModel> = $derived(
+	let settings: Partial<RecordModel> = $state(
 		$auth?.expand?.settings_via_user?.[0] || { theme: '' },
 	);
 
