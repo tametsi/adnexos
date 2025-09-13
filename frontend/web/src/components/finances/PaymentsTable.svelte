@@ -41,12 +41,12 @@
 			{@const from = payment.to === $auth?.id}
 
 			<tr>
-				<td class="w-0">
+				<td class="w-0 p-0">
 					{#if from}
 						<button
 							type="button"
 							onclick={remove(payment)}
-							class="btn btn-square btn-ghost btn-sm"
+							class="btn btn-square btn-ghost"
 						>
 							<span class="sr-only">Payment received</span>
 							<CheckIcon size="18" />
@@ -58,6 +58,11 @@
 					<span class="font-bold">
 						{from ? payment.expand?.from?.name : payment.expand?.to?.name}
 					</span>
+
+					<br />
+					<small class="text-base-content/80">
+						Created <b>{new Date(payment.created).toLocaleDateString()}</b>
+					</small>
 				</td>
 				<td class="whitespace-nowrap text-right">
 					<span class:text-error={!from} class:text-success={from}>
