@@ -4,6 +4,7 @@
 	import Loading from '@/components/Loading.svelte';
 	import PaymentsTable from '@/components/finances/PaymentsTable.svelte';
 	import pb from '@/lib/pb';
+	import { CheckIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
 	const load = (page = 1) =>
@@ -36,7 +37,14 @@
 
 		<LoadMorePagination bind:lastPage bind:total bind:items {load} />
 
-		<p class="text-base-content/80 p-2 text-sm">Showing {items.length} / {total}.</p>
+		<p class="text-base-content/80 p-2 text-sm">
+			Showing {items.length} / {total}.
+		</p>
+
+		<p class="text-base-content/70 p-2 text-xs">
+			Tip: Delete payments once you have received the money by clicking the checkmark
+			<CheckIcon class="inline-block" size="16" />.
+		</p>
 
 		<h2 class="divider">Expenses</h2>
 	{/if}
