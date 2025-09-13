@@ -36,12 +36,12 @@
 </script>
 
 <table class="table w-full">
-	{#each payments as payment}
-		{@const from = payment.to === $auth?.id}
+	<tbody>
+		{#each payments as payment}
+			{@const from = payment.to === $auth?.id}
 
-		<tbody>
 			<tr>
-				<th class="w-0">
+				<td class="w-0">
 					{#if from}
 						<button
 							type="button"
@@ -52,7 +52,7 @@
 							<CheckIcon size="18" />
 						</button>
 					{/if}
-				</th>
+				</td>
 				<td class="truncate whitespace-nowrap">
 					<small>{from ? 'from' : 'to'}</small>
 					<span class="font-bold">
@@ -65,6 +65,6 @@
 					</span>
 				</td>
 			</tr>
-		</tbody>
-	{/each}
+		{/each}
+	</tbody>
 </table>
