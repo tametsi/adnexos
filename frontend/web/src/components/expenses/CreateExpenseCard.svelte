@@ -3,10 +3,9 @@
 	import alerts, { error } from '@/lib/alert';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 
 	let groups: RecordModel[] = $state([]),
-		group: RecordModel | undefined = $state(),
 		members: RecordModel[] = $state([]);
 
 	onMount(async () => {
@@ -32,14 +31,14 @@
 	});
 
 	$effect(() => {
-		// changed group => update group
-		if (group?.id !== data.group) {
-			group = groups?.find?.(x => x.id === data.group);
-			members = group ? [group.expand?.owner, ...(group.expand?.members || [])] : [];
+		// update member list if group changes
+		let group = groups?.find?.(x => x.id === data.group);
+		members = group ? [group?.expand?.owner, ...(group?.expand?.members || [])] : [];
 
-			// select all members by default
-			data.members = members.map(x => x.id);
-		}
+		// select all members by default
+		let memberList;
+		untrack(() => (memberList = members.map(x => x.id))); // avoid adding members as $effect dependency
+		data.members = memberList;
 	});
 
 	const create = () => {
@@ -57,7 +56,7 @@
 			.catch(error('Failed to creaet expense.'));
 	};
 
-	let backUrl = $derived(group ? `/groups/view?id=${group.id}` : '/groups');
+	let backUrl = $derived(data.group ? `/groups/view?id=${data.group}` : '/groups');
 </script>
 
 <DialogCard {backUrl} onsubmit={create}>
