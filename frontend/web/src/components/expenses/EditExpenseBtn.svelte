@@ -13,7 +13,5 @@
 </script>
 
 {#if show}
-	<a href="/expenses/edit{id ? `?id=${id}` : ''}" class="btn btn-neutral btn-outline btn-sm">
-		Edit
-	</a>
+	<a href="/expenses/edit{id ? `?id=${id}` : ''}" class="btn btn-soft btn-sm">Edit</a>
 {/if}

@@ -17,7 +17,9 @@ import { ArrowRight, Github } from 'lucide-svelte';
 	</p>
 
 	<div class="mx-auto flex flex-col items-center gap-4 px-4 py-8">
-		<a href="/signup" class="btn btn-primary btn-lg btn-outline">Register Now <ArrowRight /></a>
+		<a href="/signup" class="btn btn-primary btn-lg dark:btn-soft">
+			Register Now <ArrowRight />
+		</a>
 
 		<p class="text-center opacity-80">
 			Already have an account? <a href="/login" class="link area">Sign in instead</a>.
@@ -32,11 +34,9 @@ import { ArrowRight, Github } from 'lucide-svelte';
 		</p>
 		<div inert class="mx-auto max-w-96 px-2 py-6" aria-hidden>
 			<div class="mockup-phone w-full shadow-lg drop-shadow-xl sm:-skew-x-6 sm:skew-y-3">
-				<div class="camera"></div>
-				<div class="display">
-					<div class="artboard rounded-box bg-base-200 pt-6">
-						<PhoneContent />
-					</div>
+				<div class="mockup-phone-camera"></div>
+				<div class="mockup-phone-display bg-base-100 size-auto w-full pt-8">
+					<PhoneContent />
 				</div>
 			</div>
 		</div>
@@ -61,13 +61,13 @@ import { ArrowRight, Github } from 'lucide-svelte';
 				href="https://github.com/tametsi/adnexos"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="btn btn-secondary btn-lg btn-outline"><Github /> GitHub</a
+				class="btn btn-secondary btn-lg dark:btn-soft"><Github /> GitHub</a
 			>
 		</div>
 	</article>
 
-	<footer class="bg-base-300 p-10">
-		<div class="footer mx-auto max-w-lg">
+	<footer class="dark:bg-base-300 bg-base-200 p-10">
+		<div class="footer sm:footer-horizontal mx-auto max-w-lg">
 			<aside>
 				<img src="/logo.svg" class="w-20" />
 

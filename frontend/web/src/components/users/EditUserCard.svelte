@@ -22,41 +22,28 @@
 	{/snippet}
 
 	<!-- avatar -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Avatar (coming soon™)</span>
-		</div>
-		<input type="file" class="file-input file-input-bordered w-full" />
+	<label class="fieldset">
+		<span class="label">Avatar (coming soon™)</span>
+		<input type="file" class="file-input w-full" />
 	</label>
 
 	<!-- username -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Username (can be used for login)</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Username (can be used for login)</span>
 		<input
 			type="text"
 			bind:value={data.username}
 			pattern="[a-zA-Z0-9_\-]*"
 			required
 			placeholder="Username"
-			class="input input-bordered [&:user-invalid]:input-error w-full"
+			class="input user-invalid:input-error w-full"
 		/>
-		<div class="label">
-			<span class="label-text">May only contain letters, digits, '_' and '-'.</span>
-		</div>
+		<span class="label">May only contain letters, digits, '_' and '-'.</span>
 	</label>
 	<!-- name -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Display Name (will be shown)</span>
-		</div>
-		<input
-			type="text"
-			bind:value={data.name}
-			placeholder="Display Name"
-			class="input input-bordered w-full"
-		/>
+	<label class="fieldset">
+		<span class="label">Display Name (will be shown)</span>
+		<input type="text" bind:value={data.name} placeholder="Display Name" class="input w-full" />
 	</label>
 
 	<a href="/users/password" class="link">Change Password</a>

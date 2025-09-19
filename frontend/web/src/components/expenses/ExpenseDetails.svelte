@@ -79,7 +79,7 @@
 				<li class="flex justify-between gap-2">
 					<span class="truncate">{x.name}</span>
 					<span
-						class="flex-shrink-0"
+						class="shrink-0"
 						class:text-error={x.balance < 0}
 						class:text-success={x.balance > 0}
 					>
@@ -90,9 +90,7 @@
 		</ul>
 
 		{#if $auth?.id === e.e.source || $auth?.id === e.e.expand?.group?.owner}
-			<button onclick={remove} class="btn btn-error btn-outline btn-sm my-8 w-full">
-				Delete
-			</button>
+			<button onclick={remove} class="btn btn-error dark:btn-soft my-8 w-full">Delete</button>
 		{/if}
 	</div>
 {:catch}

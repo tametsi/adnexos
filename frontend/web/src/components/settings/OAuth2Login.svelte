@@ -16,9 +16,9 @@
 			.catch(error('Failed to authenticate.'));
 </script>
 
-<button onclick={oAuth2('github')} class="btn btn-secondary btn-outline">
+<button onclick={oAuth2('github')} class="btn btn-secondary dark:btn-outline">
 	Continue with GitHub
 </button>
-<button onclick={oAuth2('discord')} class="btn btn-secondary btn-outline">
+<button onclick={oAuth2('discord')} class="btn btn-secondary dark:btn-outline">
 	Continue with Discord
 </button>

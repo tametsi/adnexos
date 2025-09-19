@@ -40,16 +40,16 @@
 </script>
 
 <!-- create expense btn -->
-<a href="/expenses/create?groupId={id}" class="btn btn-primary btn-outline w-full">
+<a href="/expenses/create?groupId={id}" class="btn btn-primary dark:btn-outline w-full">
 	Create Expense
 </a>
 
-<div class="form-control">
-	<label class="label cursor-pointer justify-start gap-2 py-4">
+<label class="fieldset py-4">
+	<div class="label">
 		<input type="checkbox" bind:checked={includeSettled} class="checkbox" />
-		<span class="label-text">Include Settled Expenses</span>
-	</label>
-</div>
+		Include Settled Expenses
+	</div>
+</label>
 
 {#await req}
 	<Loading />

@@ -18,7 +18,7 @@
 <a
 	href="/expenses/view?id={expense.id}{showGroup ? '' : `&groupId=${expense.group}`}"
 	aria-label="View expense {expense.title}"
-	class="card card-compact"
+	class="card card-sm"
 >
 	<div class="card-body">
 		<h3 class="card-title flex justify-start">
@@ -31,7 +31,7 @@
 			<span
 				class:text-error={e.toPay > 0 && !expense.isSettled}
 				class:text-success={e.toPay < 0 && !expense.isSettled}
-				class="flex-grow whitespace-nowrap text-right"
+				class="grow whitespace-nowrap text-right"
 			>
 				{e.balanceDisplay}
 			</span>
@@ -40,14 +40,14 @@
 		<div class="flex flex-wrap gap-2">
 			{#if showGroup}
 				<!-- group -->
-				<span class="badge badge-outline badge-primary badge-sm gap-1">
+				<span class="badge dark:badge-soft badge-primary badge-sm gap-1">
 					<UsersIcon size="12" />
 					{expense.expand?.group?.name || expense.group}
 				</span>
 			{/if}
 
 			{#if expense.isPrivate}
-				<span class="badge badge-outline badge-primary badge-sm gap-1">
+				<span class="badge dark:badge-soft badge-primary badge-sm gap-1">
 					<LockIcon size="12" />
 					Private
 				</span>
@@ -55,7 +55,7 @@
 
 			<!-- members -->
 			{#each expense.expand?.members || [] as x}
-				<span class="badge badge-outline badge-sm">{x?.name || x?.username}</span>
+				<span class="badge badge-soft badge-sm">{x?.name || x?.username}</span>
 			{/each}
 		</div>
 

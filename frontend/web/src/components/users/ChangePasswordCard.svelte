@@ -39,43 +39,37 @@
 	{/snippet}
 
 	<!-- old password -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Old Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Old Password</span>
 		<input
 			type="password"
 			bind:value={data.oldPassword}
 			required
 			placeholder="Old password"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 	<!-- password -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">New Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">New Password</span>
 		<input
 			type="password"
 			bind:value={data.password}
 			pattern={'.{8,}'}
 			required
 			placeholder="New password"
-			class="input input-bordered [&:user-invalid]:input-error w-full"
+			class="input user-invalid:input-error w-full"
 		/>
 	</label>
 	<!-- password - confirm -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Confirm Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Confirm Password</span>
 		<input
 			type="password"
 			bind:value={data.passwordConfirm}
 			required
 			placeholder="Password"
-			class="input input-bordered w-full"
+			class="input w-full"
 			class:input-error={data.password !== data.passwordConfirm}
 		/>
 	</label>

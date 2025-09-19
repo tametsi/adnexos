@@ -9,7 +9,7 @@
 </script>
 
 {#if $needRefresh}
-	<div class="card card-compact bg-base-300 shadow-md">
+	<div class="card card-sm bg-base-300 w-fit shadow-md">
 		<div class="card-body">
 			<h3 class="card-title">
 				<AlertCircleIcon /> Update available!
@@ -24,7 +24,7 @@
 				<button class="btn btn-primary gap-2" onclick={updateSw}>
 					<DownloadIcon /> Update & Reload
 				</button>
-				<button class="btn btn-error btn-outline gap-2" onclick={close}>
+				<button class="btn btn-error dark:btn-soft gap-2" onclick={close}>
 					<CalendarIcon /> Yeah, yeah...
 				</button>
 			</div>

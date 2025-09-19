@@ -19,10 +19,7 @@
 		<MoreVerticalIcon />
 	</div>
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex see https://bugs.webkit.org/show_bug.cgi?id=22261 -->
-	<ul
-		tabindex="0"
-		class="dropdown-content menu menu-lg bg-base-300 rounded-box z-20 w-56 p-2 shadow-md"
-	>
+	<ul tabindex="0" class="dropdown-content menu bg-base-300 rounded-box z-20 w-56 p-2 shadow-md">
 		{@render children?.()}
 	</ul>
 </div>

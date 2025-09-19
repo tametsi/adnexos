@@ -21,16 +21,14 @@
 	{/snippet}
 
 	<!-- new group's name -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Name</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Name</span>
 		<input
 			type="text"
 			bind:value={data.name}
 			required
 			placeholder="Name"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 

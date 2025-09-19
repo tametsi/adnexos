@@ -24,30 +24,26 @@
 	{/snippet}
 
 	<!-- email or username -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Email or username</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Email or username</span>
 		<input
 			type="text"
 			bind:value={identity}
 			required
 			placeholder="Email or username"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 
 	<!-- password -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Password</span>
 		<input
 			type="password"
 			bind:value={password}
 			required
 			placeholder="Password"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 

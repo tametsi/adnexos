@@ -8,6 +8,14 @@
 		$auth?.expand?.settings_via_user?.[0] || { theme: '' },
 	);
 
+	$effect(() => {
+		// dynamically update the theme without persistence
+		const theme = settings.theme;
+		if (!theme) return document.documentElement.removeAttribute('data-theme');
+
+		document.documentElement.setAttribute('data-theme', theme || '');
+	});
+
 	const update = () => {
 		const saveSettings = (settings: RecordModel) => {
 			const authStore = $pb.authStore;
@@ -40,10 +48,8 @@
 	onsubmit={preventDefault(update)}
 	class="mx-auto flex w-64 max-w-full flex-col items-center gap-4"
 >
-	<div class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Theme</span>
-		</div>
+	<div class="fieldset w-full">
+		<span class="label">Theme</span>
 
 		<div class="join w-full justify-between">
 			<input
@@ -74,7 +80,7 @@
 	</div>
 
 	<div class="flex w-full flex-col items-center gap-2 py-4">
-		<button type="submit" class="btn btn-sm btn-primary btn-outline btn-wide max-w-full">
+		<button type="submit" class="btn btn-primary dark:btn-outline btn-wide max-w-full">
 			Save
 		</button>
 	</div>

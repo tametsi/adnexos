@@ -14,7 +14,7 @@ const { desc, title, activeUrl, back = false } = Astro.props;
 ---
 
 <Page {title} {desc}>
-	<div class="bg-base-100 flex h-[calc(100vh_-_4rem)] flex-col overflow-auto">
+	<div class="bg-base-100 flex h-[calc(100vh-4rem)] flex-col overflow-auto">
 		{
 			// just a heading
 			Astro.slots.has('heading') && !Astro.slots.has('button') && (

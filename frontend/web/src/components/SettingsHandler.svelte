@@ -7,9 +7,9 @@
 	import { auth } from '@/lib/pb';
 
 	$effect(() => {
-		document.documentElement.setAttribute(
-			'data-theme',
-			$auth?.expand?.settings_via_user?.[0]?.theme || '',
-		);
+		const theme = $auth?.expand?.settings_via_user?.[0]?.theme;
+		if (!theme) return document.documentElement.removeAttribute('data-theme');
+
+		document.documentElement.setAttribute('data-theme', theme || '');
 	});
 </script>

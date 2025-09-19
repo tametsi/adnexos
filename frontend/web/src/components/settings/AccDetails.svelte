@@ -34,24 +34,17 @@
 		</p>
 	{/if}
 
-	<div class="flex flex-col items-center gap-2 py-4">
+	<div class="mx-auto flex w-64 max-w-full flex-col items-center gap-2 py-4">
 		{#if $auth}
-			<button
-				onclick={refresh}
-				class="btn btn-neutral btn-wide btn-sm btn-outline max-w-full"
-			>
+			<button onclick={refresh} class="btn btn-wide btn-sm btn-soft max-w-full">
 				Refresh
 			</button>
-			<button onclick={logout} class="btn btn-error btn-wide btn-sm btn-outline max-w-full">
+			<button onclick={logout} class="btn btn-error btn-wide btn-sm dark:btn-soft max-w-full">
 				Logout
 			</button>
 		{:else}
-			<a href="/login" class="btn btn-primary btn-wide btn-sm btn-outline max-w-full">
-				Login
-			</a>
-			<a href="/signup" class="btn btn-neutral btn-wide btn-sm btn-outline max-w-full">
-				Signup
-			</a>
+			<a href="/login" class="btn btn-primary btn-wide btn-sm max-w-full">Login</a>
+			<a href="/signup" class="btn btn-wide btn-sm btn-soft max-w-full">Signup</a>
 		{/if}
 	</div>
 </div>

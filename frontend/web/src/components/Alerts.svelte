@@ -6,7 +6,7 @@
 </script>
 
 {#each $alerts as alert (alert.id)}
-	<div role="alert" class="card card-compact bg-base-300 max-w-[calc(100vw_-_1rem)] shadow-md">
+	<div role="alert" class="card card-sm bg-base-300 w-fit shadow-md">
 		<div class="card-body flex-row items-center gap-2">
 			{#if alert.level === 'INFO'}
 				<InfoIcon class="text-info" />
@@ -16,7 +16,7 @@
 				<SprayCanIcon class="text-secondary" />
 			{/if}
 
-			<span class="flex-grow overflow-hidden text-ellipsis">{alert.msg}</span>
+			<span class="grow overflow-hidden text-ellipsis">{alert.msg}</span>
 
 			<button onclick={remove(alert.id)} class="btn btn-square btn-sm btn-ghost">
 				<XIcon />

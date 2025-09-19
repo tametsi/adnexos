@@ -17,7 +17,7 @@
 <a
 	href="/groups/view?id={group.id}"
 	aria-label="View group {group.name}"
-	class="card card-compact w-full overflow-x-hidden"
+	class="card card-sm w-full overflow-x-hidden"
 >
 	<div class="card-body">
 		<h2 class="card-title flex justify-between gap-1 truncate">
@@ -35,7 +35,7 @@
 		<!-- members -->
 		<div class="flex flex-wrap gap-2">
 			{#each [group.expand?.owner, ...(group.expand?.members || [])] as x}
-				<span class="badge badge-outline badge-lg">{x?.name || x?.username}</span>
+				<span class="badge badge-soft badge-sm">{x?.name || x?.username}</span>
 			{/each}
 		</div>
 	</div>

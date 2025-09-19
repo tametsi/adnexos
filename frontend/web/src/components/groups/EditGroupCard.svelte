@@ -48,32 +48,25 @@
 	{/snippet}
 
 	<!-- name -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Name</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Name</span>
 		<input
 			type="text"
 			bind:value={group.name}
 			required
 			placeholder="Name"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 
 	<!-- members -->
-	<div class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Members</span>
-		</div>
+	<div class="fieldset">
+		<span class="label">Members</span>
 
 		<div class="flex flex-wrap gap-2">
 			<!-- owner 👑 -->
 			<span class="btn btn-outline no-animation btn-sm rounded-badge gap-2">
-				<CrownIcon
-					size="18"
-					color="var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)))"
-				/>
+				<CrownIcon size="18" color="var(--color-primary)" />
 				{$auth?.name || 'You ♥️'}
 			</span>
 
@@ -91,10 +84,8 @@
 	</div>
 
 	<!-- owner -->
-	<div class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Owner</span>
-		</div>
+	<div class="fieldset">
+		<span class="label">Owner</span>
 
 		<div class="flex flex-wrap gap-2">
 			<input

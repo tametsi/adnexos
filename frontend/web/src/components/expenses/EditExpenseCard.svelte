@@ -62,51 +62,36 @@
 	{/snippet}
 
 	<!-- title -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Title</span>
-		</div>
-		<input
-			type="text"
-			bind:value={data.title}
-			placeholder="Title"
-			class="input input-bordered w-full"
-		/>
+	<label class="fieldset">
+		<span class="label">Title</span>
+		<input type="text" bind:value={data.title} placeholder="Title" class="input w-full" />
 	</label>
 
 	<!-- amount -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Amount</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Amount</span>
 		<input
 			type="number"
 			bind:value={data.amount}
 			step="0.01"
 			required
 			placeholder="Amount"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
-		<div class="label">
-			<span class="label-text-alt text-base-content/70">
-				Tip: You can also create negative expenses 🤫
-			</span>
-		</div>
+		<span class="label">Tip: You can also create negative expenses 🤫</span>
 	</label>
 
 	<!-- private -->
-	<label class="form-control w-full">
+	<label class="fieldset">
 		<div class="label">
-			<span class="label-text">Private Expense</span>
 			<input type="checkbox" bind:checked={data.isPrivate} class="checkbox" />
+			Private Expense
 		</div>
 	</label>
 
 	<!-- members -->
-	<div class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Members</span>
-		</div>
+	<div class="fieldset">
+		<span class="label">Members</span>
 
 		<div class="flex flex-wrap gap-2">
 			{#each members as x (x.id)}

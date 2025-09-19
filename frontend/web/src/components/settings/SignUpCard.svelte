@@ -53,77 +53,58 @@
 	{/snippet}
 
 	<!-- email -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Email</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Email</span>
 		<input
 			type="email"
 			bind:value={data.email}
 			required
 			placeholder="Email"
-			class="input input-bordered [&:user-invalid]:input-error w-full"
+			class="input user-invalid:input-error w-full"
 		/>
 	</label>
 
 	<!-- username -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Username (can be used for login)</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Username (can be used for login)</span>
 		<input
 			type="text"
 			bind:value={data.username}
 			pattern="[a-zA-Z0-9_\-]*"
 			required
 			placeholder="Username"
-			class="input input-bordered [&:user-invalid]:input-error w-full"
+			class="input user-invalid:input-error w-full"
 		/>
-		<div class="label">
-			<span class="label-text">May only contain letters, digits, '_' and '-'.</span>
-		</div>
+		<span class="label">May only contain letters, digits, '_' and '-'.</span>
 	</label>
 	<!-- name -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Display Name (will be shown)</span>
-		</div>
-		<input
-			type="text"
-			bind:value={data.name}
-			placeholder="Display Name"
-			class="input input-bordered w-full"
-		/>
+	<label class="fieldset">
+		<span class="label">Display Name (will be shown)</span>
+		<input type="text" bind:value={data.name} placeholder="Display Name" class="input w-full" />
 	</label>
 
 	<!-- password -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Password</span>
 		<input
 			type="password"
 			bind:value={data.password}
 			pattern={'.{8,}'}
 			required
 			placeholder="Password"
-			class="input input-bordered [&:user-invalid]:input-error w-full"
+			class="input user-invalid:input-error w-full"
 		/>
-		<div class="label">
-			<span class="label-text">Must be at least 8 characters in length.</span>
-		</div>
+		<span class="label">Must be at least 8 characters in length.</span>
 	</label>
 	<!-- password - confirm -->
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Confirm Password</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Confirm Password</span>
 		<input
 			type="password"
 			bind:value={data.passwordConfirm}
 			required
 			placeholder="Password"
-			class="input input-bordered w-full"
+			class="input w-full"
 			class:input-error={data.password !== data.passwordConfirm}
 		/>
 	</label>

@@ -5,6 +5,7 @@ import AuthHandler from '@/components/AuthHandler.svelte';
 import ReloadPromt from '@/components/ReloadPromt.svelte';
 import SettingsHandler from '@/components/SettingsHandler.svelte';
 import CONSTS from '@/consts';
+import '@/style/style.css';
 import { ClientRouter } from 'astro:transitions';
 import { pwaInfo } from 'virtual:pwa-info';
 
@@ -35,7 +36,7 @@ const { desc, title } = Astro.props;
 	<body>
 		<slot />
 
-		<div class="toast min-w-24 max-w-xl whitespace-normal p-2">
+		<div class="toast z-10 w-[calc(100%-2rem)] max-w-xl items-end whitespace-normal p-2">
 			<Alerts client:idle />
 
 			<ReloadPromt client:only="svelte" />

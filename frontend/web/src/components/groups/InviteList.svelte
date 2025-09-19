@@ -43,7 +43,7 @@
 			.catch(error('Failed to delete invite.'));
 </script>
 
-<button onclick={create} class="btn btn-outline btn-primary mb-4 w-full">Create Invite</button>
+<button onclick={create} class="btn dark:btn-soft btn-primary mb-4 w-full">Create Invite</button>
 
 {#await req}
 	<Loading />
@@ -53,15 +53,15 @@
 
 {#each invites as invite (invite.id)}
 	<div class="flex items-center justify-between gap-2 py-1">
-		<span class="flex-shrink truncate font-bold">{invite.id}</span>
+		<span class="shrink truncate font-bold">{invite.id}</span>
 
-		<div class="flex flex-shrink-0 gap-2">
-			<button onclick={copy(invite.id)} class="btn btn-square btn-outline">
+		<div class="flex shrink-0 gap-2">
+			<button onclick={copy(invite.id)} class="btn btn-square btn-soft">
 				<CopyIcon />
 			</button>
 
 			{#if $auth?.id === invite.creator || $auth?.id === groupOwner}
-				<button onclick={remove(invite.id)} class="btn btn-square btn-outline btn-error">
+				<button onclick={remove(invite.id)} class="btn btn-square btn-soft btn-error">
 					<Trash2Icon />
 				</button>
 			{/if}

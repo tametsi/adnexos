@@ -22,16 +22,14 @@
 		Join group
 	{/snippet}
 
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text">Invite</span>
-		</div>
+	<label class="fieldset">
+		<span class="label">Invite</span>
 		<input
 			type="text"
 			bind:value={id}
 			required
 			placeholder="Invite Code"
-			class="input input-bordered w-full"
+			class="input w-full"
 		/>
 	</label>
 

@@ -11,7 +11,7 @@ export const icon = WrenchIcon;
 
 <PageNav activeUrl="/settings">
 	<Fragment slot="heading">Settings</Fragment>
-	<a slot="button" href="/users/edit" class="btn btn-neutral btn-outline btn-sm">Edit Profile</a>
+	<a slot="button" href="/users/edit" class="btn btn-soft btn-sm">Edit Profile</a>
 
 	<AccDetails client:load />
 
@@ -22,6 +22,8 @@ export const icon = WrenchIcon;
 	<div class="divider"></div>
 
 	<div class="mx-auto w-64 max-w-full">
-		<a href="/about" class="btn btn-outline btn-wide max-w-full">About Adnexos</a>
+		<a href="/about" class="btn dark:btn-soft btn-secondary btn-wide max-w-full">
+			About Adnexos
+		</a>
 	</div>
 </PageNav>
