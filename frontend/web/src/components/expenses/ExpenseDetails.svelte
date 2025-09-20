@@ -29,6 +29,12 @@
 	};
 </script>
 
+<svelte:head>
+	{#await req then expense}
+		<title>Expense {expense.title} | Adnexos</title>
+	{/await}
+</svelte:head>
+
 {#await req}
 	<Loading />
 {:then expense}

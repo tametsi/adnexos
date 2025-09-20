@@ -27,6 +27,12 @@
 	onDestroy(() => ($group = null));
 </script>
 
+<svelte:head>
+	{#await req then g}
+		<title>{g.name} | Adnexos</title>
+	{/await}
+</svelte:head>
+
 {#await req}
 	<Loading />
 {:then g}

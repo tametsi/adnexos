@@ -61,7 +61,7 @@
 
 <DialogCard {backUrl} onsubmit={create}>
 	{#snippet title()}
-		Create new expense
+		Create new Expense
 	{/snippet}
 
 	<!-- group -->

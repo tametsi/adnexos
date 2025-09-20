@@ -56,9 +56,13 @@
 	let backUrl = $derived(id ? `/expenses/view?id=${id}` : '/groups');
 </script>
 
+<svelte:head>
+	<title>Edit Expense {data.title} | Adnexos</title>
+</svelte:head>
+
 <DialogCard {backUrl} onsubmit={edit}>
 	{#snippet title()}
-		Edit expense
+		Edit Expense
 	{/snippet}
 
 	<!-- title -->

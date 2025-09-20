@@ -19,7 +19,7 @@
 
 <DialogCard backUrl="/groups" onsubmit={join}>
 	{#snippet title()}
-		Join group
+		Join Group
 	{/snippet}
 
 	<label class="fieldset">

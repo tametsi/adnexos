@@ -17,7 +17,7 @@
 
 <DialogCard backUrl="/groups" onsubmit={create}>
 	{#snippet title()}
-		Create new group
+		Create new Group
 	{/snippet}
 
 	<!-- new group's name -->
