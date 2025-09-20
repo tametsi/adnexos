@@ -41,7 +41,7 @@
 			return window.location.replace('/login');
 		}
 
-		window.location.replace(redirect || '/settings');
+		window.location.replace(redirect || '/groups');
 	};
 
 	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));

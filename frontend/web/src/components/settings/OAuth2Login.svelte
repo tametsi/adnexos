@@ -12,7 +12,7 @@
 		$pb
 			.collection('users')
 			.authWithOAuth2({ provider, query: { expand: 'settings_via_user' } })
-			.then(() => window.location.replace(redirect || '/settings'))
+			.then(() => window.location.replace(redirect || '/groups'))
 			.catch(error('Failed to authenticate.'));
 </script>
 

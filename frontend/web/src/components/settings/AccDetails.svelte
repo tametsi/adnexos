@@ -3,7 +3,10 @@
 	import pb, { auth } from '@/lib/pb';
 	import { UserIcon } from 'lucide-svelte';
 
-	const logout = () => $pb.authStore.clear();
+	const logout = () => {
+		$pb.authStore.clear();
+		window.location.replace('/');
+	};
 	const refresh = () => {
 		$pb.collection('users')
 			.authRefresh({ expand: 'settings_via_user' })

@@ -12,7 +12,7 @@
 		$pb
 			.collection('users')
 			.authWithPassword(identity, password, { expand: 'settings_via_user' })
-			.then(() => window.location.replace(redirect || '/settings'))
+			.then(() => window.location.replace(redirect || '/groups'))
 			.catch(error('Login failed.'));
 
 	onMount(() => (redirect = new URLSearchParams(window.location.search).get('redirect') || ''));
