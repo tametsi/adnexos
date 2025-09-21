@@ -11,13 +11,6 @@
 		UserPlusIcon,
 	} from 'lucide-svelte';
 
-	const settle = () => {
-		if (!confirm('Sure? Cannot be undone.')) return;
-
-		$pb.send(`/api/collections/groups/settle/${$group?.id}`, { method: 'POST' })
-			.then(() => window.location.replace('/finances'))
-			.catch(error('Failed to settle up.'));
-	};
 	const remove = () => {
 		if (!confirm('Do you really want to delete this awesome group?')) return;
 
@@ -41,6 +34,6 @@
 		<li><button onclick={remove} class="text-error"><Trash2Icon /> Delete</button></li>
 	{/if}
 	<li><a href="/groups/invites?id={$group?.id}"><UserPlusIcon /> Invites</a></li>
-	<li><button onclick={settle}><HandCoinsIcon /> Settle Up</button></li>
+	<li><a href="/groups/settle?id={$group?.id}"><HandCoinsIcon /> Settle Up</a></li>
 	<li><button onclick={leave} class="text-error"><LogOutIcon /> Leave</button></li>
 </NavActionMenu>

@@ -91,6 +91,11 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 	}
 	auth := info.Auth
 
+	note, _ := info.Body["note"].(string)
+	if len(note) > 50 {
+		return apis.NewBadRequestError("Invalid Note.", err)
+	}
+
 	group, err := p.app.FindRecordById("groups", id)
 	if err != nil {
 		return apis.NewNotFoundError("Group not found.", err)
@@ -132,6 +137,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 		record.Set("to", payment.To)
 		record.Set("from", payment.From)
 		record.Set("amount", payment.Amount)
+		record.Set("note", note)
 
 		err = p.app.Save(record)
 		if err != nil {

@@ -1,16 +1,16 @@
 ---
 import GroupSubpageBackBtn from '@/components/groups/GroupSubpageBackBtn.svelte';
-import InviteList from '@/components/groups/InviteList.svelte';
+import SettleOverview from '@/components/groups/SettleOverview.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 ---
 
-<PageNav activeUrl="/groups" title="Group Invites | Adnexos">
+<PageNav activeUrl="/groups" title="Settle Group | Adnexos">
 	<Fragment slot="heading">
 		<GroupSubpageBackBtn client:idle />
-		Group Invites
+		Settle Up
 	</Fragment>
 
 	<div class="px-2">
-		<InviteList client:load />
+		<SettleOverview client:load />
 	</div>
 </PageNav>

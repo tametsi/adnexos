@@ -68,7 +68,7 @@
 					Member{(g.expand?.members?.length ?? 0) === 0 ? '' : 's'}
 				</div>
 				<div class="collapse-content">
-					<GroupMembersList group={g} />
+					<GroupMembersList group={g} compact />
 				</div>
 			</div>
 		</li>
