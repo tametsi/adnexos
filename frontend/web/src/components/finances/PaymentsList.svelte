@@ -35,41 +35,48 @@
 	};
 </script>
 
-<table class="table w-full">
-	<tbody>
-		{#each payments as payment}
-			{@const from = payment.to === $auth?.id}
+<ul class="list">
+	{#each payments as payment}
+		{@const from = payment.to === $auth?.id}
+		<li class="list-row items-center">
+			<div class="size-10">
+				{#if from}
+					<button
+						type="button"
+						onclick={remove(payment)}
+						class="btn btn-square btn-soft btn-success"
+					>
+						<span class="sr-only">Payment received</span>
+						<CheckIcon size="18" />
+					</button>
+				{/if}
+			</div>
 
-			<tr>
-				<td class="w-0 p-0">
-					{#if from}
-						<button
-							type="button"
-							onclick={remove(payment)}
-							class="btn btn-square btn-ghost"
-						>
-							<span class="sr-only">Payment received</span>
-							<CheckIcon size="18" />
-						</button>
-					{/if}
-				</td>
-				<td class="truncate whitespace-nowrap">
+			<div class="overflow-hidden">
+				<p class="truncate">
 					<small>{from ? 'from' : 'to'}</small>
 					<span class="font-bold">
 						{from ? payment.expand?.from?.name : payment.expand?.to?.name}
 					</span>
+				</p>
+			</div>
 
-					<br />
-					<small class="text-base-content/80">
-						Created <b>{new Date(payment.created).toLocaleDateString()}</b>
-					</small>
-				</td>
-				<td class="whitespace-nowrap text-right">
-					<span class:text-error={!from} class:text-success={from}>
+			<div>
+				<div class="text-right">
+					<span
+						class="badge badge-soft"
+						class:badge-error={!from}
+						class:badge-success={from}
+					>
+						<span class="sr-only">Amount:</span>
 						{f.format(((from ? 1 : -1) * payment.amount) / 100)}
 					</span>
-				</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
+				</div>
+
+				<small class="text-base-content/70">
+					Created <b>{new Date(payment.created).toLocaleDateString()}</b>
+				</small>
+			</div>
+		</li>
+	{/each}
+</ul>

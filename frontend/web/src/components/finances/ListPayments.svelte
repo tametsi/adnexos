@@ -2,7 +2,7 @@
 	import Error from '@/components/Error.svelte';
 	import LoadMorePagination from '@/components/LoadMorePagination.svelte';
 	import Loading from '@/components/Loading.svelte';
-	import PaymentsTable from '@/components/finances/PaymentsTable.svelte';
+	import PaymentsList from '@/components/finances/PaymentsList.svelte';
 	import pb from '@/lib/pb';
 	import { CheckIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
@@ -31,7 +31,7 @@
 
 		<div>
 			<div class="overflow-x-auto">
-				<PaymentsTable bind:payments={items} ondelete={() => total--} />
+				<PaymentsList bind:payments={items} ondelete={() => total--} />
 			</div>
 		</div>
 
