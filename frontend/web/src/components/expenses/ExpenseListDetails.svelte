@@ -26,7 +26,7 @@
 				{expense.title || 'Expense'}
 			</span>
 			{#if expense.isSettled}
-				<div class="badge badge-primary badge-outline">Settled</div>
+				<div class="badge badge-secondary badge-soft">Settled</div>
 			{/if}
 			<span
 				class:text-error={e.toPay > 0 && !expense.isSettled}
