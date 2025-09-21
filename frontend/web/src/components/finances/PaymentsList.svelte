@@ -59,6 +59,12 @@
 						{from ? payment.expand?.from?.name : payment.expand?.to?.name}
 					</span>
 				</p>
+				{#if payment.note}
+					<div class="truncate text-xs font-semibold uppercase opacity-60">
+						<span class="sr-only">Note:</span>
+						{payment.note}
+					</div>
+				{/if}
 			</div>
 
 			<div>
