@@ -48,10 +48,9 @@
 				level: 'ERROR',
 				msg: 'You need some members on the expense, too.',
 			});
-		data.amount = Math.floor(data.amount * 100);
 
 		$pb.collection('expenses')
-			.create(data)
+			.create({ ...data, amount: Math.floor(data.amount * 100) })
 			.then(() => window.location.replace(`/groups/view?id=${data.group}`))
 			.catch(error('Failed to creaet expense.'));
 	};
