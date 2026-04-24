@@ -2,52 +2,88 @@ name: 🧪 Lint & Test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
 
 jobs:
-  test:
+  format-pnpm:
+    name: 🎨 format (pnpm)
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          cache: true
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm check
+
+  check-frontend-web:
+    name: 📋 check frontend/web (pnpm)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          cache: true
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check frontend/web
+        working-directory: ./frontend/web
+        run: pnpm check
+
+      - name: Build frontend/web
+        working-directory: ./frontend/web
+        run: pnpm build
+
+  test-lint-backend:
+    name: 🧪 test & lint backend (go)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: backend/go.mod
           cache-dependency-path: backend/go.sum
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: 'pnpm'
-
-      - name: Install pnpm dependencies
-        run: pnpm install
-      - name: Check Prettier
-        run: pnpm check
-
       - name: Install backend dependencies
         working-directory: ./backend
         run: make all
+
       - name: Test & build backend
         working-directory: ./backend
         run: |
           make test
           make test-build
+
       - name: Lint backend
         working-directory: ./backend
         run: make lint
-
-      - name: Check & build frontend/web
-        working-directory: ./frontend/web
-        run: |
-          pnpm check
-          pnpm build
