@@ -7,8 +7,38 @@ on:
   pull_request:
 
 jobs:
+  changes:
+    name: 🎯 identify changes
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      contents: read
+
+    outputs:
+      go: ${{ steps.filter.outputs.go }}
+      pnpm: ${{ steps.filter.outputs.pnpm }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: dorny/paths-filter@v4.0.1
+        id: filter
+        with:
+          filters: |
+            go:
+              - backend/**
+            pnpm:
+              - frontend/web/**
+              - '**/*.yaml'
+              - '**/*.json'
+              - '**/*.md'
+            frontend:
+              - frontend/web/**
+
   format-pnpm:
     name: 🎨 format (pnpm)
+    needs: changes
+    if: ${{ needs.changes.outputs.pnpm == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +63,8 @@ jobs:
 
   check-frontend-web:
     name: 📋 check frontend/web (pnpm)
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -62,6 +94,8 @@ jobs:
 
   test-lint-backend:
     name: 🧪 test & lint backend (go)
+    needs: changes
+    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
