@@ -1,7 +1,7 @@
 ##############
 ## FRONTEND ##
 ##############
-FROM node:22-slim AS build-frontend-web
+FROM node:24-slim AS build-frontend-web
 
 RUN corepack prepare pnpm@10 --activate
 RUN corepack enable
