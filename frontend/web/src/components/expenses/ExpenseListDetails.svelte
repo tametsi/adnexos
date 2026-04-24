@@ -31,7 +31,7 @@
 			<span
 				class:text-error={e.toPay > 0 && !expense.isSettled}
 				class:text-success={e.toPay < 0 && !expense.isSettled}
-				class="grow whitespace-nowrap text-right"
+				class="grow text-right whitespace-nowrap"
 			>
 				{e.balanceDisplay}
 			</span>

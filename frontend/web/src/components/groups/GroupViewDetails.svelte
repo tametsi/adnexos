@@ -38,7 +38,7 @@
 {:then g}
 	<ul class="flex flex-col gap-4">
 		<li
-			class="from-primary to-secondary bg-linear-to-r truncate text-clip bg-clip-text text-center text-4xl font-bold text-transparent"
+			class="from-primary to-secondary truncate bg-linear-to-r bg-clip-text text-center text-4xl font-bold text-clip text-transparent"
 		>
 			{g.name}
 		</li>

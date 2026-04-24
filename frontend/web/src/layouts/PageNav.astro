@@ -18,7 +18,7 @@ const { desc, title, activeUrl, back = false } = Astro.props;
 		{
 			// just a heading
 			Astro.slots.has('heading') && !Astro.slots.has('button') && (
-				<h1 class="bg-base-100 sticky top-0 z-10 mb-2 bg-opacity-80 px-2 py-4 text-3xl font-bold backdrop-blur">
+				<h1 class="bg-base-100 bg-opacity-80 sticky top-0 z-10 mb-2 px-2 py-4 text-3xl font-bold backdrop-blur">
 					{back && (
 						<a
 							href={back}
@@ -38,7 +38,7 @@ const { desc, title, activeUrl, back = false } = Astro.props;
 			// heading with awesome button
 			// backdrop problem: elements with position relative
 			Astro.slots.has('heading') && Astro.slots.has('button') && (
-				<h1 class="bg-base-100 sticky top-0 z-10 mb-2 flex items-center justify-between gap-4 bg-opacity-80 px-2 py-4 text-3xl font-bold backdrop-blur">
+				<h1 class="bg-base-100 bg-opacity-80 sticky top-0 z-10 mb-2 flex items-center justify-between gap-4 px-2 py-4 text-3xl font-bold backdrop-blur">
 					<span class="truncate">
 						{back && (
 							<a
