@@ -9,7 +9,7 @@
 	const load = (page = 1) =>
 		$pb
 			.collection('groups')
-			.getList(page, 15, { fields: '*,balance', expand: 'members,owner' })
+			.getList(page, 25, { fields: '*,balance', expand: 'members,owner' })
 			.then(x => {
 				items = [...items, ...x.items];
 				lastPage = x.page;
@@ -33,7 +33,9 @@
 
 	<LoadMorePagination bind:lastPage bind:total bind:items {load} />
 
-	<p class="text-base-content/80 p-2 text-sm">Showing {items.length} / {total}.</p>
+	{#if items.length < total}
+		<p class="text-base-content/60 p-2 text-xs">Showing {items.length} / {total}.</p>
+	{/if}
 {:catch}
 	<Error />
 {/await}
