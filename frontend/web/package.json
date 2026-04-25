@@ -9,7 +9,7 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"check": "astro check",
+		"check": "astro check && svelte-check",
 		"gen:pwa-assets": "pwa-assets-generator"
 	},
 	"devDependencies": {
@@ -23,6 +23,7 @@
 		"lucide-svelte": "^0.454.0",
 		"pocketbase": "^0.26.8",
 		"svelte": "^5.55.5",
+		"svelte-check": "^4.4.6",
 		"tailwindcss": "^4.2.4",
 		"typescript": "^5.9.3",
 		"vite-plugin-pwa": "^1.2.0",
