@@ -1,7 +1,7 @@
 ---
 import BottomNavigation from '@/components/BottomNavigation.astro';
 import ExpenseListDetails from '@/components/expenses/ExpenseListDetails.svelte';
-import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
+import GroupsListItem from '@/components/groups/GroupsListItem.svelte';
 import { HeartIcon } from 'lucide-svelte';
 import type { RecordModel } from 'pocketbase';
 
@@ -66,8 +66,8 @@ const expenses: RecordModel[] = [
 ];
 ---
 
-<div class="flex flex-col gap-2">
-	{groups.map(group => <GroupListDetails {group} />)}
+<div class="list">
+	{groups.map(group => <GroupsListItem {group} />)}
 </div>
 
 <div class="divider mx-4">Expenses</div>
