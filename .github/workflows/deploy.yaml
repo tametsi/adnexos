@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: 🔧 build & publish image
     if: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
     runs-on: ubuntu-latest
     permissions:
@@ -17,14 +18,14 @@ jobs:
       - name: Create image tag
         run: echo "IMAGE_TAG=${GITHUB_REF_NAME:1}" >> $GITHUB_ENV
 
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Build image
         run: docker build --pull -t ghcr.io/${{ github.repository }}:${{ env.IMAGE_TAG }} -t ghcr.io/${{ github.repository }}:latest --build-arg VERSION="${{ github.ref_name }}" .
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -33,12 +34,13 @@ jobs:
         run: docker push --all-tags ghcr.io/${{ github.repository }}
 
   deploy:
+    name: 🚀 deploy
     runs-on: ubuntu-latest
     needs: build
 
     steps:
       - name: Fetch image and compose up
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
