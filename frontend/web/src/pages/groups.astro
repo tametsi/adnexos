@@ -1,6 +1,6 @@
 ---
 import NavActionMenu from '@/components/NavActionMenu.svelte';
-import ListGroups from '@/components/groups/ListGroups.svelte';
+import GroupsList from '@/components/groups/GroupsList.svelte';
 import PageNav from '@/layouts/PageNav.astro';
 import { HomeIcon, PlusCircleIcon, UserPlusIcon } from 'lucide-svelte';
 
@@ -18,5 +18,5 @@ export const icon = HomeIcon;
 		</NavActionMenu>
 	</Fragment>
 
-	<ListGroups client:load />
+	<GroupsList client:load />
 </PageNav>

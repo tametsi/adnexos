@@ -2,14 +2,14 @@
 	import Error from '@/components/Error.svelte';
 	import LoadMorePagination from '@/components/LoadMorePagination.svelte';
 	import Loading from '@/components/Loading.svelte';
-	import GroupListDetails from '@/components/groups/GroupListDetails.svelte';
+	import GroupsListItem from '@/components/groups/GroupsListItem.svelte';
 	import pb from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 
 	const load = (page = 1) =>
 		$pb
 			.collection('groups')
-			.getList(page, 25, { fields: '*,balance', expand: 'members,owner' })
+			.getList(page, 25, { fields: '*,balance' })
 			.then(x => {
 				items = [...items, ...x.items];
 				lastPage = x.page;
@@ -25,9 +25,9 @@
 {#await req}
 	<Loading />
 {:then}
-	<div class="flex flex-col gap-2">
+	<div class="list">
 		{#each items as group}
-			<GroupListDetails {group}></GroupListDetails>
+			<GroupsListItem {group}></GroupsListItem>
 		{/each}
 	</div>
 
