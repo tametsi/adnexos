@@ -18,12 +18,8 @@
 	let { payments = $bindable(), ondelete }: Props = $props();
 
 	const remove = (p: RecordModel) => () => {
-		if (
-			!confirm(
-				`Got ${f.format(p.amount / 100)} from ${p.expand?.from?.name || p.from}? Awesome!`,
-			)
-		)
-			return;
+		const fromString = p.expand?.from?.name || p.expand?.from?.username || p.from;
+		if (!confirm(`Got ${f.format(p.amount / 100)} from ${fromString}? Awesome!`)) return;
 
 		$pb.collection('payments')
 			.delete(p.id)
@@ -56,7 +52,11 @@
 				<p class="truncate">
 					<small>{from ? 'from' : 'to'}</small>
 					<span class="font-bold">
-						{from ? payment.expand?.from?.name : payment.expand?.to?.name}
+						{#if from}
+							{payment.expand?.from?.name || payment.expand?.from?.username}
+						{:else}
+							{payment.expand?.to?.name || payment.expand?.from?.username}
+						{/if}
 					</span>
 				</p>
 				{#if payment.note}
