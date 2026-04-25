@@ -15,12 +15,14 @@
 
 	let { group, compact = false }: Props = $props();
 
-	let members = (group.expand?.members || []).map((m: RecordModel) => {
-		m.balance = group.membersBalance[m.id];
-		return m;
-	});
-	members.push({ balance: group.membersBalance[group.owner], ...group.expand?.owner });
-	members.sort((a: RecordModel, b: RecordModel) => b.balance - a.balance);
+	let members = $derived(
+		[...(group.expand?.members || []), group.expand?.owner]
+			.map((m: RecordModel) => {
+				m.balance = group.membersBalance[m.id];
+				return m;
+			})
+			.sort((a: RecordModel, b: RecordModel) => b.balance - a.balance),
+	);
 </script>
 
 <ul class="list">

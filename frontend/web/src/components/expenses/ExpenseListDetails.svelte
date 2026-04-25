@@ -12,7 +12,7 @@
 
 	let { expense, showGroup = false }: Props = $props();
 
-	const e = calculateExpense(expense, $auth?.id ?? '');
+	let e = $derived(calculateExpense(expense, $auth?.id ?? ''));
 </script>
 
 <a
