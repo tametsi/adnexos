@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import alerts, { error } from '@/lib/alert';
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
@@ -14,11 +15,11 @@
 		try {
 			data = await $pb
 				.collection('expenses')
-				.getOne(id, { expand: 'group.members,group.owner' });
+				.getOne(id, { expand: 'group.members,group.owner,group.currency' });
 		} catch (e) {
 			return error('Failed to fetch expense.')(e as any);
 		}
-		data.amount /= 100; // don't show cents to the user
+		data.amount /= getCurrencyFractionFactor(data.expand?.group?.currency);
 		members = data?.expand?.group?.expand?.members || [];
 		if (data?.expand?.group?.expand?.owner) members.push(data.expand.group.expand.owner);
 	});
@@ -41,11 +42,19 @@
 				msg: 'You need some members on the expense, too.',
 			});
 
+		if (!data.expand?.group?.currency)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'Failed to resolve the group locally.',
+			});
+
 		$pb.collection('expenses')
 			// only send possibly changed data
 			.update(data.id || id, {
 				title: data?.title,
-				amount: Math.floor(data.amount * 100),
+				amount: Math.floor(
+					data.amount * getCurrencyFractionFactor(data.expand?.group?.currency),
+				),
 				isPrivate: data.isPrivate,
 				members: data.members,
 			})

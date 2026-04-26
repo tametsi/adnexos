@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { calculateExpense } from '@/lib/expense';
 	import { auth } from '@/lib/pb';
+	import { group } from '@/lib/stores';
 	import { LockIcon, UsersIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
@@ -12,7 +13,13 @@
 
 	let { expense, showGroup = false }: Props = $props();
 
-	let e = $derived(calculateExpense(expense, $auth?.id ?? ''));
+	let e = $derived(
+		calculateExpense(
+			expense,
+			$auth?.id ?? '',
+			showGroup ? expense.expand?.group?.currency : $group?.currency,
+		),
+	);
 </script>
 
 <a

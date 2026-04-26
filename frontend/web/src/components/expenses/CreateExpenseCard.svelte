@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import alerts, { error } from '@/lib/alert';
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount, untrack } from 'svelte';
@@ -49,8 +50,18 @@
 				msg: 'You need some members on the expense, too.',
 			});
 
+		const group = groups.find(x => x.id === data.group);
+		if (!group)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'Failed to resolve the group locally.',
+			});
+
 		$pb.collection('expenses')
-			.create({ ...data, amount: Math.floor(data.amount * 100) })
+			.create({
+				...data,
+				amount: Math.floor(data.amount * getCurrencyFractionFactor(group.currency)),
+			})
 			.then(() => window.location.replace(`/groups/view?id=${data.group}`))
 			.catch(error('Failed to creaet expense.'));
 	};

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import { UsersIcon } from 'lucide-svelte';
 	import type { RecordModel } from 'pocketbase';
 
@@ -8,11 +9,13 @@
 
 	let { group }: Props = $props();
 
-	const f = new Intl.NumberFormat(undefined, {
-		style: 'currency',
-		currency: 'EUR',
-		signDisplay: 'exceptZero',
-	});
+	let f = $derived(
+		new Intl.NumberFormat(undefined, {
+			style: 'currency',
+			currency: group.currency || 'XXX',
+			signDisplay: 'exceptZero',
+		}),
+	);
 </script>
 
 <a
@@ -44,7 +47,7 @@
 			class:badge-success={group.balance > 0}
 			class:badge-error={group.balance < 0}
 		>
-			{f.format(group.balance / 100)}
+			{f.format(group.balance / getCurrencyFractionFactor(group.currency))}
 		</span>
 	{/if}
 </a>
