@@ -171,6 +171,10 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordRequestEvent) error {
 		return err
 	}
 
+	if oldRecord.GetString("currency") != e.Record.GetString("currency") {
+		return apis.NewBadRequestError("Updating currency is not supported.", nil)
+	}
+
 	oldOwner := oldRecord.GetString("owner")
 	newOwner := e.Record.GetString("owner")
 	oldMembers := oldRecord.GetStringSlice("members")
