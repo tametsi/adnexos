@@ -1,3 +1,4 @@
+import { getCurrencyFractionFactor } from '@/lib/currency';
 import type { RecordModel } from 'pocketbase';
 
 /**
@@ -29,10 +30,12 @@ const calculateBalance = (expense: RecordModel, id: string) => {
  * simple helper function that brings light into the dark expenses
  * @param expense the expense as is
  * @param me the current user's ID
+ * @param currency The ISO 4217 currency code
  * @returns some sort of useful expense-stat data
  */
-export const calculateExpense = (expense: RecordModel, me: string) => {
-	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' });
+export const calculateExpense = (expense: RecordModel, me: string, currency: string) => {
+	const f = new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'XXX' });
+	const currencyFractionFactor = getCurrencyFractionFactor(currency);
 
 	const amountPaid = me === expense.source ? expense.amount : 0;
 	const balance = calculateBalance(expense, me);
@@ -51,19 +54,19 @@ export const calculateExpense = (expense: RecordModel, me: string) => {
 			/** members balance, positive values => they get money */
 			balance,
 			/** prettified members balance, positive values => they get money */
-			balanceDisplay: f.format(balance / 100),
+			balanceDisplay: f.format(balance / currencyFractionFactor),
 		};
 	});
 
 	return {
 		/** formatted in provided currency */
-		amountDisplay: f.format(expense.amount / 100),
+		amountDisplay: f.format(expense.amount / currencyFractionFactor),
 		/** the amount paid by me (might be negative), `0` means it's paid by someone else */
 		amountPaid,
 		/** raw value in cents (integer (hopefully)), negative values => I get money back */
 		toPay: balance === 0 ? balance : -balance,
 		/** inverted `toPay`! formatted in provided currency, positve values => I get money back */
-		balanceDisplay: f.format(balance / 100),
+		balanceDisplay: f.format(balance / currencyFractionFactor),
 
 		/**
 		 * members with basic member information and their expense balance

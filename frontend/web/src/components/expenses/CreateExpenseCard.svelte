@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import alerts, { error } from '@/lib/alert';
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount, untrack } from 'svelte';
@@ -49,13 +50,34 @@
 				msg: 'You need some members on the expense, too.',
 			});
 
+		const group = groups.find(x => x.id === data.group);
+		if (!group)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'Failed to resolve the group locally.',
+			});
+
 		$pb.collection('expenses')
-			.create({ ...data, amount: Math.floor(data.amount * 100) })
+			.create({
+				...data,
+				amount: Math.floor(data.amount * getCurrencyFractionFactor(group.currency)),
+			})
 			.then(() => window.location.replace(`/groups/view?id=${data.group}`))
 			.catch(error('Failed to creaet expense.'));
 	};
 
 	let backUrl = $derived(data.group ? `/groups/view?id=${data.group}` : '/groups');
+
+	let currencySymbol = $derived.by(() => {
+		const group = groups.find(x => x.id === data.group);
+
+		const f = new Intl.NumberFormat(undefined, {
+			style: 'currency',
+			currency: group?.currency || 'XXX',
+		});
+
+		return f.formatToParts(0).find(x => (x.type = 'currency'))?.value || '¤';
+	});
 </script>
 
 <DialogCard {backUrl} onsubmit={create}>
@@ -91,14 +113,16 @@
 	<!-- amount -->
 	<label class="fieldset">
 		<span class="label">Amount</span>
-		<input
-			type="number"
-			bind:value={data.amount}
-			step="0.01"
-			required
-			placeholder="Amount"
-			class="input w-full"
-		/>
+		<div class="input w-full">
+			<div class="label">{currencySymbol}</div>
+			<input
+				type="number"
+				bind:value={data.amount}
+				step="0.01"
+				required
+				placeholder="Amount"
+			/>
+		</div>
 		<span class="label">Tip: You can also create negative expenses 🤫</span>
 	</label>
 

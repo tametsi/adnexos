@@ -2,16 +2,19 @@
 	import Error from '@/components/Error.svelte';
 	import GroupMembersList from '@/components/groups/GroupMembersList.svelte';
 	import Loading from '@/components/Loading.svelte';
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import pb from '@/lib/pb';
 	import { group } from '@/lib/stores';
 	import type { RecordModel } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 
-	const f = new Intl.NumberFormat(undefined, {
-		style: 'currency',
-		currency: 'EUR',
-		maximumFractionDigits: 0,
-	});
+	let f = $derived(
+		new Intl.NumberFormat(undefined, {
+			style: 'currency',
+			currency: $group?.currency || 'XXX',
+			maximumFractionDigits: 0,
+		}),
+	);
 
 	let id: string,
 		req: Promise<RecordModel> = $state(new Promise(() => {}));
@@ -46,7 +49,9 @@
 		<li class="stats my-2 w-full">
 			<div class="stat">
 				<div class="stat-title">Costs</div>
-				<div class="stat-value text-3xl">{f.format(g.costs / 100)}</div>
+				<div class="stat-value text-3xl">
+					{f.format(g.costs / getCurrencyFractionFactor(g.currency))}
+				</div>
 			</div>
 			<div class="stat">
 				<div class="stat-title">Balance</div>
@@ -55,7 +60,7 @@
 					class:text-success={g.balance > 0}
 					class:text-error={g.balance < 0}
 				>
-					{f.format(g.balance / 100)}
+					{f.format(g.balance / getCurrencyFractionFactor(g.currency))}
 				</div>
 			</div>
 		</li>

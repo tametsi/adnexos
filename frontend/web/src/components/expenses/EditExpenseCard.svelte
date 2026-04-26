@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
 	import alerts, { error } from '@/lib/alert';
+	import { getCurrencyFractionFactor } from '@/lib/currency';
 	import pb, { auth } from '@/lib/pb';
 	import type { RecordModel } from 'pocketbase';
 	import { onMount } from 'svelte';
@@ -14,11 +15,11 @@
 		try {
 			data = await $pb
 				.collection('expenses')
-				.getOne(id, { expand: 'group.members,group.owner' });
+				.getOne(id, { expand: 'group.members,group.owner,group.currency' });
 		} catch (e) {
 			return error('Failed to fetch expense.')(e as any);
 		}
-		data.amount /= 100; // don't show cents to the user
+		data.amount /= getCurrencyFractionFactor(data.expand?.group?.currency);
 		members = data?.expand?.group?.expand?.members || [];
 		if (data?.expand?.group?.expand?.owner) members.push(data.expand.group.expand.owner);
 	});
@@ -41,11 +42,19 @@
 				msg: 'You need some members on the expense, too.',
 			});
 
+		if (!data.expand?.group?.currency)
+			return alerts.push({
+				level: 'ERROR',
+				msg: 'Failed to resolve the group locally.',
+			});
+
 		$pb.collection('expenses')
 			// only send possibly changed data
 			.update(data.id || id, {
 				title: data?.title,
-				amount: Math.floor(data.amount * 100),
+				amount: Math.floor(
+					data.amount * getCurrencyFractionFactor(data.expand?.group?.currency),
+				),
 				isPrivate: data.isPrivate,
 				members: data.members,
 			})
@@ -54,6 +63,15 @@
 	};
 
 	let backUrl = $derived(id ? `/expenses/view?id=${id}` : '/groups');
+
+	let currencySymbol = $derived.by(() => {
+		const f = new Intl.NumberFormat(undefined, {
+			style: 'currency',
+			currency: data.expand?.group?.currency || 'XXX',
+		});
+
+		return f.formatToParts(0).find(x => (x.type = 'currency'))?.value || '¤';
+	});
 </script>
 
 <svelte:head>
@@ -74,14 +92,16 @@
 	<!-- amount -->
 	<label class="fieldset">
 		<span class="label">Amount</span>
-		<input
-			type="number"
-			bind:value={data.amount}
-			step="0.01"
-			required
-			placeholder="Amount"
-			class="input w-full"
-		/>
+		<div class="input w-full">
+			<div class="label">{currencySymbol}</div>
+			<input
+				type="number"
+				bind:value={data.amount}
+				step="0.01"
+				required
+				placeholder="Amount"
+			/>
+		</div>
 		<span class="label">Tip: You can also create negative expenses 🤫</span>
 	</label>
 
