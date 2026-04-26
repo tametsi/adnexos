@@ -101,6 +101,8 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 		return apis.NewNotFoundError("Group not found.", err)
 	}
 
+	currency := group.GetString("currency")
+
 	members := group.GetStringSlice("members")
 	if !slices.Contains(members, auth.Id) && group.GetString("owner") != auth.Id {
 		return apis.NewNotFoundError("Group not found.", err)
@@ -137,6 +139,7 @@ func (p *plugin) groupSettleRoute(e *core.RequestEvent) error {
 		record.Set("to", payment.To)
 		record.Set("from", payment.From)
 		record.Set("amount", payment.Amount)
+		record.Set("currency", currency)
 		record.Set("note", note)
 
 		err = p.app.Save(record)
