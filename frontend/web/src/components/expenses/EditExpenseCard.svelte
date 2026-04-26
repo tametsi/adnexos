@@ -63,6 +63,15 @@
 	};
 
 	let backUrl = $derived(id ? `/expenses/view?id=${id}` : '/groups');
+
+	let currencySymbol = $derived.by(() => {
+		const f = new Intl.NumberFormat(undefined, {
+			style: 'currency',
+			currency: data.expand?.group?.currency || 'XXX',
+		});
+
+		return f.formatToParts(0).find(x => (x.type = 'currency'))?.value || '¤';
+	});
 </script>
 
 <svelte:head>
@@ -83,14 +92,16 @@
 	<!-- amount -->
 	<label class="fieldset">
 		<span class="label">Amount</span>
-		<input
-			type="number"
-			bind:value={data.amount}
-			step="0.01"
-			required
-			placeholder="Amount"
-			class="input w-full"
-		/>
+		<div class="input w-full">
+			<div class="label">{currencySymbol}</div>
+			<input
+				type="number"
+				bind:value={data.amount}
+				step="0.01"
+				required
+				placeholder="Amount"
+			/>
+		</div>
 		<span class="label">Tip: You can also create negative expenses 🤫</span>
 	</label>
 
