@@ -178,7 +178,28 @@ export const CURRENCIES = [
 	'XPD',
 	'XPT',
 	'XAG',
-];
+] as const;
+
+export type Currency = (typeof CURRENCIES)[number];
+
+export const CURRENCIES_DETAILS = CURRENCIES.map(x => {
+	const formatterText = new Intl.NumberFormat(undefined, {
+		style: 'currency',
+		currency: x,
+		currencyDisplay: 'name',
+	});
+	const formatterSymbol = new Intl.NumberFormat(undefined, {
+		style: 'currency',
+		currency: x,
+		currencyDisplay: 'symbol',
+	});
+
+	return {
+		key: x,
+		symbol: formatterSymbol.formatToParts(0).find(x => x.type === 'currency')?.value,
+		text: formatterText.formatToParts(0).find(x => x.type === 'currency')?.value,
+	};
+});
 
 /**
  * Returns the fraction factor from minor currency.

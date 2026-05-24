@@ -1,12 +1,13 @@
 <script lang="ts">
 	import DialogCard from '@/components/DialogCard.svelte';
+	import InputCurrency from '@/components/shared/InputCurrency.svelte';
 	import { error } from '@/lib/alert';
-	import { CURRENCIES } from '@/lib/currency';
+	import type { Currency } from '@/lib/currency';
 	import pb, { auth } from '@/lib/pb';
 
 	let data = $state({
 		name: '',
-		currency: 'EUR',
+		currency: 'EUR' as Currency,
 		owner: $auth?.id,
 	});
 	const create = () =>
@@ -35,31 +36,13 @@
 	</label>
 
 	<!-- currency -->
-	<label class="fieldset">
+	<div class="fieldset">
 		<span class="label">Currency</span>
 
-		<select bind:value={data.currency} required placeholder="Currency" class="select w-full">
-			{#each CURRENCIES as currency}
-				{@const formatterText = new Intl.NumberFormat(undefined, {
-					style: 'currency',
-					currency,
-					currencyDisplay: 'name',
-				})}
-				{@const formatterSymbol = new Intl.NumberFormat(undefined, {
-					style: 'currency',
-					currency,
-					currencyDisplay: 'symbol',
-				})}
-
-				<option value={currency}>
-					{formatterText.formatToParts(0).find(x => x.type === 'currency')?.value}
-					({formatterSymbol.formatToParts(0).find(x => x.type === 'currency')?.value})
-				</option>
-			{/each}
-		</select>
+		<InputCurrency bind:value={data.currency}></InputCurrency>
 
 		<span class="label text-wrap">This value cannot be changed.</span>
-	</label>
+	</div>
 
 	<!-- actions -->
 	{#snippet actions()}
