@@ -18,39 +18,35 @@
 		}
 
 		// group to select based on url param
-		data.group = new URLSearchParams(window.location.search).get('groupId') || '';
+		let groupId = new URLSearchParams(window.location.search).get('groupId') || '';
+		group = groups.find(x => x.id === groupId);
 	});
 
-	let data: Partial<RecordModel> = $state({
-		title: '',
-		amount: undefined,
-		isPrivate: false,
-		group: '',
-		isSettled: false,
-		source: $auth?.id,
-		members: [],
-	});
+	let expenseTitle = $state('');
+	let amount = $state<number>();
+	let group = $state<RecordModel>();
+	let isPrivate = $state(false);
+	let selectedMembers = $state<string[]>([]);
 
 	$effect(() => {
 		// update member list if group changes
-		let group = groups?.find?.(x => x.id === data.group);
 		members = group ? [group?.expand?.owner, ...(group?.expand?.members || [])] : [];
 
 		// select all members by default
-		let memberList;
+		let memberList: string[] = [];
 		untrack(() => (memberList = members.map(x => x.id))); // avoid adding members as $effect dependency
-		data.members = memberList;
+		selectedMembers = memberList;
 	});
 
 	const create = () => {
-		if (data.amount === 0) return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
-		if (data.members?.length === 0)
+		if (!amount || amount === 0)
+			return alerts.push({ level: 'ERROR', msg: 'Amount `0`? Really?' });
+		if (selectedMembers?.length === 0)
 			return alerts.push({
 				level: 'ERROR',
 				msg: 'You need some members on the expense, too.',
 			});
 
-		const group = groups.find(x => x.id === data.group);
 		if (!group)
 			return alerts.push({
 				level: 'ERROR',
@@ -59,18 +55,21 @@
 
 		$pb.collection('expenses')
 			.create({
-				...data,
-				amount: Math.floor(data.amount * getCurrencyFractionFactor(group.currency)),
+				title: expenseTitle,
+				isPrivate,
+				group: group.id,
+				isSettled: false,
+				source: $auth?.id,
+				members: selectedMembers,
+				amount: Math.floor(amount * getCurrencyFractionFactor(group.currency)),
 			})
-			.then(() => window.location.replace(`/groups/view?id=${data.group}`))
+			.then(() => window.location.replace(`/groups/view?id=${group?.id}`))
 			.catch(error('Failed to creaet expense.'));
 	};
 
-	let backUrl = $derived(data.group ? `/groups/view?id=${data.group}` : '/groups');
+	let backUrl = $derived(group ? `/groups/view?id=${group.id}` : '/groups');
 
 	let currencySymbol = $derived.by(() => {
-		const group = groups.find(x => x.id === data.group);
-
 		const f = new Intl.NumberFormat(undefined, {
 			style: 'currency',
 			currency: group?.currency || 'XXX',
@@ -94,8 +93,8 @@
 				<input
 					type="radio"
 					name="group"
-					bind:group={data.group}
-					value={x.id}
+					bind:group
+					value={x}
 					required
 					aria-label={x?.name}
 					class="btn btn-outline btn-sm rounded-badge"
@@ -107,7 +106,7 @@
 	<!-- title -->
 	<label class="fieldset">
 		<span class="label">Title</span>
-		<input type="text" bind:value={data.title} placeholder="Title" class="input w-full" />
+		<input type="text" bind:value={expenseTitle} placeholder="Title" class="input w-full" />
 	</label>
 
 	<!-- amount -->
@@ -117,7 +116,7 @@
 			<div class="label">{currencySymbol}</div>
 			<input
 				type="number"
-				bind:value={data.amount}
+				bind:value={amount}
 				step="0.01"
 				required
 				placeholder="Amount"
@@ -129,7 +128,7 @@
 	<!-- private -->
 	<label class="fieldset">
 		<div class="label">
-			<input type="checkbox" bind:checked={data.isPrivate} class="checkbox" />
+			<input type="checkbox" bind:checked={isPrivate} class="checkbox" />
 			Private Expense
 		</div>
 	</label>
@@ -144,7 +143,7 @@
 					type="checkbox"
 					name="members"
 					value={x.id}
-					bind:group={data.members}
+					bind:group={selectedMembers}
 					aria-label={x.name || x.username}
 					class="btn btn-outline btn-sm rounded-badge"
 				/>
