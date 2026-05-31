@@ -171,7 +171,13 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordRequestEvent) error {
 		return err
 	}
 
-	if oldRecord.GetString("currency") != e.Record.GetString("currency") {
+	info, err := e.RequestInfo()
+	if err != nil {
+		return apis.NewInternalServerError("Failed to get Request Info.", err)
+	}
+	isAdmin := info.HasSuperuserAuth()
+
+	if !isAdmin && oldRecord.GetString("currency") != e.Record.GetString("currency") {
 		return apis.NewBadRequestError("Updating currency is not supported.", nil)
 	}
 
@@ -179,12 +185,6 @@ func (p *plugin) onGroupsBeforeUpdate(e *core.RecordRequestEvent) error {
 	newOwner := e.Record.GetString("owner")
 	oldMembers := oldRecord.GetStringSlice("members")
 	newMembers := e.Record.GetStringSlice("members")
-
-	info, err := e.RequestInfo()
-	if err != nil {
-		return apis.NewInternalServerError("Failed to get Request Info.", err)
-	}
-	isAdmin := info.HasSuperuserAuth()
 
 	for _, v := range newMembers {
 		if newOwner == v {
