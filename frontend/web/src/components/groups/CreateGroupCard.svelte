@@ -39,7 +39,7 @@
 	<div class="fieldset">
 		<span class="label">Currency</span>
 
-		<InputCurrency bind:value={data.currency}></InputCurrency>
+		<InputCurrency bind:value={data.currency} class="w-full" />
 
 		<span class="label text-wrap">This value cannot be changed.</span>
 	</div>

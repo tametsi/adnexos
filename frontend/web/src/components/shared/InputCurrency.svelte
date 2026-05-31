@@ -2,8 +2,21 @@
 	import Dialog from '@/components/shared/Dialog.svelte';
 	import { CURRENCIES_DETAILS, type Currency } from '@/lib/currency';
 	import { SearchIcon } from 'lucide-svelte';
+	import type { ClassValue } from 'svelte/elements';
 
-	let { value = $bindable() }: { value: Currency } = $props();
+	let {
+		value = $bindable(),
+		class: classProp = '',
+		format = 'long',
+	}: { value: Currency; class?: ClassValue; format?: 'short' | 'long' } = $props();
+
+	let currencyString = $derived.by(() => {
+		const c = CURRENCIES_DETAILS.find(x => x.key === value);
+
+		if (format === 'short') return c?.symbol;
+
+		return `${c?.text} (${c?.symbol})`;
+	});
 
 	let dialog = $state<HTMLDialogElement>();
 
@@ -32,17 +45,10 @@
 	};
 </script>
 
-<button type="button" onclick={openDialog} class="select w-full">
-	{CURRENCIES_DETAILS.find(x => x.key === value)?.text}
-	({CURRENCIES_DETAILS.find(x => x.key === value)?.symbol})
-
-	<span class="sr-only">click to change</span>
-</button>
-
 <Dialog bind:dialog>
 	<h3 class="text-base">Pick a currency</h3>
 
-	<label class="input my-4 w-full">
+	<label class="input rounded-field my-4 w-full">
 		<SearchIcon size="18" />
 
 		<input type="search" bind:value={search} placeholder="Search" />
@@ -69,3 +75,9 @@
 		{/each}
 	</ul>
 </Dialog>
+
+<button type="button" onclick={openDialog} class={['select', classProp]}>
+	{currencyString}
+
+	<span class="sr-only">click to change</span>
+</button>

@@ -3,6 +3,8 @@
 
 	let { dialog = $bindable(), children }: { children?: Snippet; dialog?: HTMLDialogElement } =
 		$props();
+
+	const close = () => dialog?.close();
 </script>
 
 <dialog bind:this={dialog} class="modal">
@@ -10,7 +12,7 @@
 		{@render children?.()}
 	</div>
 
-	<form method="dialog" class="modal-backdrop">
-		<button>Close</button>
-	</form>
+	<button type="button" onclick={close} class="modal-backdrop">
+		<span class="sr-only">close</span>
+	</button>
 </dialog>
